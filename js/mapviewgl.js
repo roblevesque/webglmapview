@@ -14,6 +14,7 @@ render();
 });
 }
 
+
 function loadData(_callback) {
 	// Load Data (hopefully) before the rest of the place loads. 
 	var xmlhttp = new XMLHttpRequest();
@@ -31,6 +32,12 @@ function loadData(_callback) {
 	
 }
 
+function reset_view() {  
+	camera.position.set(-9300,50,550);
+	controls.target.x = jsonEmpire['UFP'].cenx;
+    	controls.target.y = jsonEmpire['UFP'].ceny;
+      	controls.target.z = jsonEmpire['UFP'].cenz;
+}
 
 function init() {
 	scene = new THREE.Scene();
