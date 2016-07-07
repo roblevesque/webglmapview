@@ -1,5 +1,5 @@
 if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
-var jsonEmpire = {
+/* var jsonEmpire = {
 	"CU": {
 		"name": "Cardasian Union",
 		"color": "#CC9933",
@@ -1060,7 +1060,7 @@ var jsonEmpire = {
 		},
 		"bases": {}
 	}
-};
+}; */
 var camera, controls, scene, renderer;
 var canvas_t=[];
 var context_t=[];
