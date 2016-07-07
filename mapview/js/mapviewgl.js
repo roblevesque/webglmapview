@@ -19,8 +19,13 @@ var canvas_t=[];
 var context_t=[];
 var clock = new THREE.Clock();
 var WIDTH = window.innerWidth , HEIGHT = window.innerHeight
+
+window.onload = function() {
 init();
 animate();
+render();
+}
+
 
 function init() {
         scene = new THREE.Scene();
@@ -158,7 +163,6 @@ function render () {
       renderer.render( scene, camera );
       
 }
-			render();
 
 
 
