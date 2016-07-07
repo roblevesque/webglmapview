@@ -1,36 +1,18 @@
-
 if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+require(./empiredata.js)
 var camera, controls, scene, renderer;
-var jsonEmpire = [];
 var canvas_t=[];
 var context_t=[];
 var clock = new THREE.Clock();
 var WIDTH = window.innerWidth , HEIGHT = window.innerHeight
 
 window.onload = function() {
-loadData(function() { 
 init();
 animate();
 render();
 });
 }
 
-function loadData(_callback) {
-	// Load Data (hopefully) before the rest of the place loads. 
-	var xmlhttp = new XMLHttpRequest();
-	var url = "js/empiredata.json";
-	
-	xmlhttp.onreadystatechange = function() {
-	    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-	        jsonEmpire = JSON.parse(xmlhttp.responseText);
-	        _callback();
-	
-	    }
-	};
-	xmlhttp.open("GET", url, true);
-	xmlhttp.send();
-	
-}
 function init() {
 	scene = new THREE.Scene();
         //scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
