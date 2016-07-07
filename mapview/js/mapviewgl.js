@@ -1176,7 +1176,7 @@ for (var key in jsonEmpire) {
     // Initial Target spot. UFP for convinence. 
       controls.target.x = jsonEmpire['UFP'].cenx;
       controls.target.y = jsonEmpire['UFP'].ceny;
-      controls.target.z = jsomEmpire['UFP'].cenz;
+      controls.target.z = jsonEmpire['UFP'].cenz;
  
   
 }
