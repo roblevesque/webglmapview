@@ -1,5 +1,5 @@
 if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
-console.log(require( "./empiredata.js" ));
+
 var camera, controls, scene, renderer;
 var canvas_t=[];
 var context_t=[];
