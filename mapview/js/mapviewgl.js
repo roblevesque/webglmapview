@@ -8,13 +8,14 @@ var clock = new THREE.Clock();
 var WIDTH = window.innerWidth , HEIGHT = window.innerHeight
 
 window.onload = function() {
-loadData();
+loadData( { 
 init();
 animate();
 render();
+});
 }
 
-function loadData() {
+function loadData(_callback) {
 	// Load Data (hopefully) before the rest of the place loads. 
 	var xmlhttp = new XMLHttpRequest();
 	var url = "js/empiredata.json";
@@ -27,6 +28,7 @@ function loadData() {
 	};
 	xmlhttp.open("GET", url, true);
 	xmlhttp.send();
+	_callback();
 }
 function init() {
 	scene = new THREE.Scene();
