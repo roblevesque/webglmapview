@@ -10,7 +10,6 @@ window.onload = function() {
 init();
 animate();
 render();
-});
 }
 
 function init() {
