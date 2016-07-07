@@ -128,9 +128,9 @@ for (var key in jsonEmpire) {
  }
   
     // Initial Target spot. UFP for convinence. 
-      controls.target.x = borders['UFP'].position.x;
-      controls.target.y = borders['UFP'].position.y;
-      controls.target.z = borders['UFP'].position.z;
+      controls.target.x = borders["UFP"].position.x;
+      controls.target.y = borders["UFP"].position.y;
+      controls.target.z = borders["UFP"].position.z;
  
   
 }
