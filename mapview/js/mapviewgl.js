@@ -1,5 +1,20 @@
 
 if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+// Load Data
+	var xmlhttp = new XMLHttpRequest();
+	var url = "js/empiredata.json";
+	var jsonEmpire=[];
+	
+	xmlhttp.onreadystatechange = function() {
+	    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+	        jsonEmpire = JSON.parse(xmlhttp.responseText);
+	
+	    }
+	};
+	xmlhttp.open("GET", url, true);
+	xmlhttp.send();
+	
+	
 var camera, controls, scene, renderer;
 var canvas_t=[];
 var context_t=[];
@@ -14,21 +29,7 @@ render();
 
 
 function init() {
-	// Load Data
-	var xmlhttp = new XMLHttpRequest();
-	var url = "js/empiredata.json";
-	var jsonEmpire=[];
-	
-	xmlhttp.onreadystatechange = function() {
-	    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-	        jsonEmpire = JSON.parse(xmlhttp.responseText);
-	
-	    }
-	};
-	xmlhttp.open("GET", url, true);
-	xmlhttp.send();
-
-        scene = new THREE.Scene();
+	scene = new THREE.Scene();
         //scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
         renderer = new THREE.WebGLRenderer();
         renderer.setSize( window.innerWidth, window.innerHeight );
