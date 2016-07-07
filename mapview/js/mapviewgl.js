@@ -17,7 +17,7 @@ function init() {
 	// Load Data
 	var xmlhttp = new XMLHttpRequest();
 	var url = "js/empiredata.json";
-	var jsonEmpire;
+	var jsonEmpire=[];
 	
 	xmlhttp.onreadystatechange = function() {
 	    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
