@@ -140,7 +140,7 @@ for (var key in jsonEmpire) {
   
 }
 
-function onWindowResize() {
+window.onresize = function() {
 
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
