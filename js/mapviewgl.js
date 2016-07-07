@@ -1,3 +1,17 @@
+// Load Data
+var xmlhttp = new XMLHttpRequest();
+var url = "empiredata.json";
+var jsonEmpire;
+
+xmlhttp.onreadystatechange = function() {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        jsonEmpire = JSON.parse(xmlhttp.responseText);
+
+    }
+};
+xmlhttp.open("GET", url, true);
+xmlhttp.send();
+
 
 if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 var camera, controls, scene, renderer;
