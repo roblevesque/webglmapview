@@ -23,12 +23,13 @@ function loadData(_callback) {
 	xmlhttp.onreadystatechange = function() {
 	    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 	        jsonEmpire = JSON.parse(xmlhttp.responseText);
+	        _callback();
 	
 	    }
 	};
 	xmlhttp.open("GET", url, true);
 	xmlhttp.send();
-	_callback();
+	
 }
 function init() {
 	scene = new THREE.Scene();
