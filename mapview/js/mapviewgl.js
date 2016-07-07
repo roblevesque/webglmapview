@@ -1,6 +1,6 @@
 // Load Data
 var xmlhttp = new XMLHttpRequest();
-var url = "empiredata.json";
+var url = "js/empiredata.json";
 var jsonEmpire;
 
 xmlhttp.onreadystatechange = function() {
