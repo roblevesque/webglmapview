@@ -2,7 +2,7 @@ if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 var jsonEmpire = {
 	"CU": {
 		"name": "Cardasian Union",
-		"color": "0xCC9933",
+		"color": "#CC9933",
 		"cenx": -9337.944,
 		"ceny": 310,
 		"cenz": 20,
@@ -81,7 +81,7 @@ var jsonEmpire = {
 	},
 	"UFP": {
 		"name": "United Federation Of Planets",
-		"color": "0x0000FF",
+		"color": "#0000FF",
 		"cenx": -9197.944,
 		"ceny": 0,
 		"cenz": 0,
@@ -244,7 +244,7 @@ var jsonEmpire = {
 	},
 	"BFN": {
 		"name": "Bajoran Free Nation",
-		"color": "0xffaaaa",
+		"color": "#ffaaaa",
 		"cenx": -9325.944,
 		"ceny": 221.7,
 		"cenz": -45.1,
@@ -268,7 +268,7 @@ var jsonEmpire = {
 	},
 	"BC": {
 		"name": "Breen Confederacy",
-		"color": "0x00AAAA",
+		"color": "#00AAAA",
 		"cenx": 9376.050179,
 		"ceny": 203.150816,
 		"cenz": -46.281517,
@@ -295,7 +295,7 @@ var jsonEmpire = {
 	},
 	"KE": {
 		"name": "Klingon Empire",
-		"color": "0xFF0000",
+		"color": "#FF0000",
 		"cenx": -9577.944,
 		"ceny": 120,
 		"cenz": -90.160,
@@ -372,7 +372,7 @@ var jsonEmpire = {
 	},
 	"RSE": {
 		"name": "Romulan Star Empire",
-		"color": "0x00ff00",
+		"color": "#00ff00",
 		"cenx": -9477.00,
 		"ceny": -230.00,
 		"cenz": 10.00,
@@ -444,7 +444,7 @@ var jsonEmpire = {
 	},
 	"GFA": {
 		"name": "Galactic Ferengal Alliance",
-		"color": "0xFFFF00",
+		"color": "#FFFF00",
 		"cenx": -8977.944,
 		"ceny": 260.00,
 		"cenz": -50.00,
@@ -511,7 +511,7 @@ var jsonEmpire = {
 	},
 	"OA": {
 		"name": "Orion Alliance",
-		"color": "0x00FFFF",
+		"color": "#00FFFF",
 		"cenx": 0,
 		"ceny": 0,
 		"cenz": 0,
@@ -543,7 +543,7 @@ var jsonEmpire = {
 	},
 	"DOM": {
 		"name": "Dominion",
-		"color": "0xA9FFEE",
+		"color": "#A9FFEE",
 		"cenx": 0,
 		"ceny": 0,
 		"cenz": 0,
@@ -625,7 +625,7 @@ var jsonEmpire = {
 	},
 	"UNITY": {
 		"name": "The Unity",
-		"color": "0xFFA9EE",
+		"color": "#FFA9EE",
 		"cenx": 0,
 		"ceny": 0,
 		"cenz": 0,
@@ -713,7 +713,7 @@ var jsonEmpire = {
 	},
 	"TA": {
 		"name": "Tholian Assembly",
-		"color": "0xFEA901",
+		"color": "#FEA901",
 		"cenx": -9107.944,
 		"ceny": -290.00,
 		"cenz": -10.00,
@@ -745,7 +745,7 @@ var jsonEmpire = {
 	},
 	"UQS": {
 		"name": "Unified Qvarne Systems",
-		"color": "0x990103",
+		"color": "#990103",
 		"cenx": -9109.941,
 		"ceny": 228.477,
 		"cenz": -135.785,
@@ -798,7 +798,7 @@ var jsonEmpire = {
 	},
 	"GORN": {
 		"name": "Gorn",
-		"color": "0xFF02FF",
+		"color": "#FF02FF",
 		"cenx": -9267.944,
 		"ceny": -330.00,
 		"cenz": 80.00,
@@ -845,7 +845,7 @@ var jsonEmpire = {
 	},
 	"20": {
 		"abr": "UNK",
-		"color": "0xB3B3B3",
+		"color": "#B3B3B3",
 		"cenx": 0,
 		"ceny": 0,
 		"cenz": 0,
