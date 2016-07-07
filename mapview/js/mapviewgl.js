@@ -8,7 +8,7 @@ var clock = new THREE.Clock();
 var WIDTH = window.innerWidth , HEIGHT = window.innerHeight
 
 window.onload = function() {
-loadData( { 
+loadData(function() { 
 init();
 animate();
 render();
