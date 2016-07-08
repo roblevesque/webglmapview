@@ -1,8 +1,14 @@
-function openTab(tabName) {
-    var i;
-    var x = document.getElementsByClassName("tab");
+
+function openTab(evt,tabName) {
+    var i, x, tablinks;
+    x = document.getElementsByClassName("tools");
     for (i = 0; i < x.length; i++) {
-        x[i].style.display = "none"; 
+        x[i].style.display = "none";
     }
-    document.getElementById(tabName).style.display = "block"; 
+    tablinks = document.getElementsByClassName("tablink");
+    for (i = 0; i < x.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" tab-active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " tab-active";
 }

@@ -6,17 +6,39 @@
       <script src="js/three-text2d.js"></script>
       <script src="js/Detector.js"></script> 
       <script src="js/mapviewgl.js"></script>
+      <script src="js/GUI.Utils.js"></script>
+      <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
       <style type="text/css">
           body { margin: 0; }
           canvas { width: 75%; height: 100% ; }
-	  #reset-button { position: absolute; top: 0; left: 90%; background-color: #AAA; width: 50px; height: 25px; color: #FFF; font-weight: bold; text-align: center;}
-	  #controls { position: fixed; left: 85%; height: 100%; width: 15%; background-color: #FFF; } 
+	  .reset-button {margin: 0; padding: 0; padding: 5px 5px; color: #67988A;  }
+	  .reset-container { margin: 0; padding: 0; padding: 8px 10px; font-weight: bold; text-align: center; font-family: 'Space Mono', monospace; color:#67989A; float; right; width: auto; height: 100%;  }
+	  #controls { position: fixed; left: 85%; height: 96%; width: 15%; background-color: #FFF; margin-top: 1%; } 
+	  ul.navbar { height: 3vh; width: 100%; background-color: #003133; list-style-type: none; overflow: hidden; padding: 0; margin: 0;  }
+	  ul.navbar li { width:auto; height: 100%; float: left; } .tablink { margin: 0; padding: 0; padding: 8px 10px; font-weight: bold; text-align: center; font-family: 'Space Mono', monospace; color:#67989A; } 
+	  .tab-active { background-color: #0D4A4D; color: #003133; }
+	  div.tools { width: 100%; height: 98%; background: #333; display: none; }
+          div.first {  display: block; }
+	  
       </style>
   </head>
   <body>
       <div id="container"></div>
-      <div id="reset-button" onClick="reset_view();"> Reset </div>
-      <div id="controls"> </div>
+     <!--  <div id="reset-button" onClick="reset_view();"> Reset </div> -->
+      <div id="controls"> 
+      		<ul class="navbar">
+			<li><a class="tablink tab-active" href='#' onclick="openTab(event,'Find');">Find</a></li>
+			<li><a class="tablink" href='#' onclick="openTab(event,'Info');">Info</a></li>
+			<li class="reset-container"><a class="reset-button" href="#" onclick="reset_view();">Reset</a></li>
+		</ul>
+		<div class="tools first" id="Find">
+			Arg!
+		</div>
+		<div class="tools" id="Info"> 
+			Info
+		</div>
+		
+      </div>
   </body>
   
 </html>
