@@ -176,4 +176,41 @@ function render () {
 }
 
 
+function listobjects(type) {
+	var objects = {};
+	
+	for (var key in jsonEmpire) {
+		area=jsonEmpire[key];
+		for (var key2 in area[type]) {
+			object = area[type][key2];
+			objectname = object.name;
+			objects[object.name] = object;
+				
+		}
+	}	
+	return objects;
+}
 
+function zoomfocus(name) {
+	
+	var types = ['planets','stations'];
+	for (var type in types){
+		var objects = listobjects(types[type]); 
+        	for ( var key in objects ) {
+			if (escapeHTML(key) == name) {
+				var object = objects[key]; 
+				controls.target.x = object.x;
+			    	controls.target.y = object.y;
+			      	controls.target.z = object.z;
+				var focus = new THREE.Vector3( object.x, object.y, object.z );
+				var vantage = new THREE.Vector3( 5, 60 , 150 ); 
+				focus.add(vantage); 
+				camera.position.set(focus.x,focus.y,focus.z);
+
+			}
+
+		}
+    	    		 
+	} 	
+
+}
