@@ -18,7 +18,7 @@ render();
 function loadData(_callback) {
 	// Load Data (hopefully) before the rest of the place loads. 
 	var xmlhttp = new XMLHttpRequest();
-	var url = "js/empiredata.json";
+	var url = "js/atsdata.json";
 	
 	xmlhttp.onreadystatechange = function() {
 	    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -34,9 +34,9 @@ function loadData(_callback) {
 
 function reset_view() {  
 	camera.position.set(-9300,50,550);
-	controls.target.x = jsonEmpire['UFP'].cenx;
-    	controls.target.y = jsonEmpire['UFP'].ceny;
-      	controls.target.z = jsonEmpire['UFP'].cenz;
+	controls.target.x = jsonEmpire[1]['borders'][0].x;
+    	controls.target.y = jsonEmpire[1]['borders'][0].y;
+      	controls.target.z = jsonEmpire[1]['borders'][0].z;
 }
 
 function init() {
@@ -86,52 +86,54 @@ var textAlign = THREE_Text.textAlign
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
 
-
+jsonEmpire = jsonEmpire['ATS_Navcomp_DB']['empires'];
   
 for (var key in jsonEmpire) {
-  area=jsonEmpire[key];
+  area=jsonEmpire[key]; 
   // Border Generation. If it's not visible, don't generate it, dummy.
-  if( area.bordervis) {
-  geometry[key] = new THREE.SphereGeometry( area.rad, 10, 10 )
-  material[key] = new THREE.MeshBasicMaterial( { color: area.color, wireframe: true} );
-  borders[key]= new THREE.Mesh( geometry[key], material[key] );
-  borders[key].position.x=area.cenx;
-  borders[key].position.y=area.ceny;
-  borders[key].position.z=area.cenz;
-  scene.add( borders[key] );  
+  for (var key2 in area['borders']) {
+	var border = area['borders'][key2];
+	
+ 	geometry[border.name] = new THREE.SphereGeometry( border.radius, 10, 10 ); 
+  	material[border.name] = new THREE.MeshBasicMaterial( { color: area.color, wireframe: true} );
+	borders[border.name] = new THREE.Mesh( geometry[border.name], material[border.name] );
+  	borders[border.name].position.x = border.x;
+  	borders[border.name].position.y = border.y;
+  	borders[border.name].position.z = border.z;
+  	scene.add( borders[border.name] );  
   }
   
   // Planet Generation
   for (var key in area["planets"]) {
     var planet = area.planets[key];
-    geometry[key] = new THREE.SphereGeometry( 1, 10, 10 );
-    material[key] = new THREE.MeshBasicMaterial( { color: area.color, wireframe: false} );
-    planets[key]= new THREE.Mesh( geometry[key], material[key] );  
-    planets[key].position.x=planet.X;
-    planets[key].position.y=planet.Y;
-    planets[key].position.z=planet.Z;
-    var text = new Text2D(key, { align: textAlign.right,  font: '12px Arial', fillStyle: '#FFF' , antialias: false });
+    geometry[planet.name] = new THREE.SphereGeometry( 1, 10, 10 );
+    material[planet.name] = new THREE.MeshBasicMaterial( { color: area.color, wireframe: false} );
+    planets[planet.name]= new THREE.Mesh( geometry[planet.name], material[planet.name] );  
+    planets[planet.name].position.x=planet.x;
+    planets[planet.name].position.y=planet.y;
+    planets[planet.name].position.z=planet.z;
+    var text = new Text2D(planet.name, { align: textAlign.right,  font: '12px Arial', fillStyle: '#FFF' , antialias: false });
         text.material.alphaTest = 0.0;
-        text.position.set(planet.X,planet.Y,planet.Z);
+        text.position.set(planet.x,planet.y,planet.z);
         text.scale.set(0.25,0.25,0.25);
         scene.add(text);
-        scene.add( planets[key] );
+        scene.add( planets[planet.name] );
    }    
   
   // Base Generation
-  for (var key in area["bases"]) {
-          var base = area.bases[key];
+  for (var key in area["stations"]) {
+          var base = area.stations[key];
           var TILE_SIZE = 0.5; 
-          geometry[key] = new THREE.CylinderGeometry( 0.1, TILE_SIZE*3, TILE_SIZE*3, 4 );
-          material[key] = new THREE.MeshBasicMaterial( { color: area.color, wireframe: false} );
-          bases[key] = new THREE.Mesh( geometry[key], material[key] );
-          bases[key].position.x=base.X;
-          bases[key].position.y=base.Y;
-          bases[key].position.z=base.Z;
-          scene.add( bases[key] );
-           var text = new Text2D(key, { align: textAlign.left,  font: '12px Arial', fillStyle: '#ABABAB' , antialias: false });
+          geometry[base.name] = new THREE.CylinderGeometry( 0.1, TILE_SIZE*3, TILE_SIZE*3, 4 );
+          material[base.name] = new THREE.MeshBasicMaterial( { color: area.color, wireframe: false} );
+          bases[base.name] = new THREE.Mesh( geometry[base.name], material[base.name] );
+          bases[base.name].position.x=base.x;
+          bases[base.name].position.y=base.y;
+          bases[base.name].position.z=base.z;
+          scene.add( bases[base.name] );
+           var text = new Text2D(base.name, { align: textAlign.left,  font: '12px Arial', fillStyle: '#ABABAB' , antialias: false });
                text.material.alphaTest = 0.0;
-               text.position.set(base.X,base.Y+3,base.Z);
+               text.position.set(base.x,base.y+3,base.z);
                text.scale.set(0.20,0.20,0.20);
                scene.add(text);
                
@@ -140,10 +142,7 @@ for (var key in jsonEmpire) {
  }
   
     // Initial Target spot. UFP for convinence. 
-      controls.target.x = jsonEmpire['UFP'].cenx;
-      controls.target.y = jsonEmpire['UFP'].ceny;
-      controls.target.z = jsonEmpire['UFP'].cenz;
- 
+    reset_view(); 
   
 }
 
@@ -177,4 +176,41 @@ function render () {
 }
 
 
+function listobjects(type) {
+	var objects = {};
+	
+	for (var key in jsonEmpire) {
+		area=jsonEmpire[key];
+		for (var key2 in area[type]) {
+			object = area[type][key2];
+			objectname = object.name;
+			objects[object.name] = object;
+				
+		}
+	}	
+	return objects;
+}
 
+function zoomfocus(name) {
+	
+	var types = ['planets','stations'];
+	for (var type in types){
+		var objects = listobjects(types[type]); 
+        	for ( var key in objects ) {
+			if (escapeHTML(key) == name) {
+				var object = objects[key]; 
+				controls.target.x = object.x;
+			    	controls.target.y = object.y;
+			      	controls.target.z = object.z;
+				var focus = new THREE.Vector3( object.x, object.y, object.z );
+				var vantage = new THREE.Vector3( 5, 60 , 150 ); 
+				focus.add(vantage); 
+				camera.position.set(focus.x,focus.y,focus.z);
+
+			}
+
+		}
+    	    		 
+	} 	
+
+}

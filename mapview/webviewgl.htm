@@ -1,21 +1,118 @@
+<!doctype html>
 <html>
   <head>
-      
       <script src="js/three.js"></script>
       <script src="js/OrbitControls.js"></script>
       <script src="js/three-text2d.js"></script>
-      <script src="js/Detector.js"></script>  <!-- Not sure if this is even needed anymore. -->
+      <script src="js/Detector.js"></script> 
       <script src="js/mapviewgl.js"></script>
+      <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
+      <script src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script> 
+      <script src="js/GUI.Utils.js"></script>
       <style type="text/css">
-          body { margin: 0; }
-          canvas { width: 100%; height: 100% }
-	  #reset-button { position: absolute; top:0; left:90%; background-color:#AAA; width: 50px; height:25px; color:#FFF; font-weight: bold; text-align:center;}
-	  
+          body { margin: 0; overflow:hidden;}
+          canvas { width: 75%; height: 100% ;}
+	  .reset-button {margin: 0; padding: 0; padding: 5px 5px; color: #AAA;  }
+	  .menu-button {  float: right; position: absolute; right: 0.1vw; top: 0; z-index: 5; color:white; background-color:#003133; padding: 0px; font-weight: bold; font-size:2.5vh; }
+	  .reset-container { margin: 0; padding: 0; padding: 8px; font-weight: bold; text-align: center; font-family: 'Space Mono', monospace; color:#67989A; background-color: maroon;  width: 100%; height: 2vh; float:bottom;  }
+	  .wvg-controls { position: fixed; left: 85%; height: 96%; width: 15%; margin-top: 0; display: none;} 
+	  ul.wvg-navbar { height: 3vh; width: 100%; background-color: #003133; list-style-type: none; overflow: hidden; padding: 0; margin: 0;  }
+	  ul.wvg-navbar li { width:auto; height: 100%; float: left; } .wvg-tablink { margin: 0; padding: 0; padding: 8px 10px; font-weight: bold; text-align: center; font-family: 'Space Mono', monospace; color:#67989A; } 
+	  .wvg-tab-active { background-color: #0D4A4D; color: #003133; }
+	  .wvg-tools { width: 100%; height: 98%; background: #333; display: none; color: #AAA; padding-top: 2vh; padding-left:1vw; padding-right: 2.5vw;}
+	  .wvg-tools select { 
+		width: 75%;
+		padding: 5px;
+		font-size: 16px;
+		line-height: 1;
+		border: 1px solid #67878A;
+		border-radius: 0;
+		height: auto;
+		-webkit-appearance: none;
+		background: url('assets/select-arrow.png') no-repeat right center #333;
+		color: #67989A;
+		margin: 0 auto;
+	  }
+	  .wvg-tools span { text-align: center; color: #FFF; font-family: 'Space Mono', monospace;  margin: 0 auto;} 
+          .wvg-first {  display: block; }
+	  #wrapper { height: inherit; width: 100%; }
+	  .active { display: block; }
+ 	  input[type=radio], input[type=checkbox] {
+ 		display:none;
+	  } 
+	  input[type=checkbox] + label:before {
+    		content: "";  
+    		display: inline-block;  
+    		width: 15px;  
+    		height: 15px;  
+    		vertical-align:middle;
+    		margin-right: 8px;  
+	    	background-color: #aaa;  
+    		box-shadow: inset 0px 2px 2px rgba(0, 0, 0, .3);
+	    	border-radius: 4px;  
+	  }
+	  input[type=radio]:checked + label:before {
+	 	content: "\2022"; /* Bullet */
+	   	color:white;
+    		background-color: #666; 
+	    	font-size:1.8em;
+    		text-align:center;
+    		line-height:14px;
+   	 	text-shadow:0px 0px 3px #eee;
+	  }
+         input[type=checkbox]:checked + label:before {
+    		content:"\2714"; /* Tick */
+		color:white;
+    		background-color: #666; 
+    		text-align:center;
+    		line-height:15px;
+    		text-shadow:0px 0px 3px #eee;
+	 } 
+	.btn {
+		background: #67989A;
+		-webkit-border-radius: 0;
+		-moz-border-radius: 0;
+		border-radius: 0px;
+		font-family: 'Space Mono', monospace; 
+		color: #003133;
+		font-size: 14px;
+		width: 75%;
+		height: 4vh;
+		padding: 3px;
+		border: solid #67878A 1px;
+		text-decoration: none;
+	}
+
+	.btn:hover {
+		background: #0D4A4D;
+		text-decoration: none;
+	}	
       </style>
   </head>
   <body>
       <div id="container"></div>
-      <div id="reset-button" onClick="reset_view();"> Reset </div>
+      <div class="menu-button" id="hotdog">     &#9776;      </div>
+      <div id="controls" class="wvg-controls active">
+	<div id="wrapper"> 
+      		<ul class="wvg-navbar">
+			<li><a class="wvg-tablink wvg-tab-active" href='#' onclick="openTab(event,'Find');">Find</a></li>
+			<li><a class="wvg-tablink" href='#' onclick="openTab(event,'Info');">Info</a></li>
+		</ul>
+		<div class="wvg-tools wvg-first" id="Find">
+			<span> Find Object By Name </span>
+			<span> <select id="findbyselect">
+				<option value=''></option>
+			</select> </span>
+			<br/ ><input type="checkbox" name="objtype" id="cbp" value="planets" onclick="populateUserFields();"><label for="cbp"> Planets</label> <input type="checkbox" name="objtype" id="cbs" value="stations" onclick="populateUserFields();"> <label for="cbs">Stations</label>
+		<br><button id="submitfindbyname" class="btn">Find</button>
+		</div> 
+		
+		<div class="wvg-tools" id="Info"> 
+			<span> This tool was designed by Frey @ ATSMUSH. It is based on MapView for ATS with data used from the Navcomp MUSHClient plugin with permission. </span>
+		</div>
+	</div> <div class="reset-container"><span class="reset-button">  Reset </span></div>
+
+      </div>
   </body>
   
 </html>
