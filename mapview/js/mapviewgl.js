@@ -100,8 +100,17 @@ for (var key in jsonEmpire) {
   	borders[border.name].position.x = border.x;
   	borders[border.name].position.y = border.y;
   	borders[border.name].position.z = border.z;
-  	scene.add( borders[border.name] );  
-  }
+  	scene.add( borders[border.name] );
+	if (border.radius > 10) {
+		var text = new Text2D(border.name, { align: textAlign.center,  font: '25px Arial', fillStyle: '#777' , antialias: false });
+		text.material.alphaTest = 0.5;
+		text.position.set(border.x,border.y,border.z);
+		text.scale.set(0.75,0.75,0.75);
+		scene.add(text);
+	}
+   }
+ 
+  
   
   // Planet Generation
   for (var key in area["planets"]) {
