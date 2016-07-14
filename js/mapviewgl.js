@@ -85,6 +85,7 @@ var SpriteText2D = THREE_Text.SpriteText2D;
 var textAlign = THREE_Text.textAlign      
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2();
+var rays = [];
 
 jsonEmpire = jsonEmpire['ATS_Navcomp_DB']['empires'];
   
@@ -100,7 +101,8 @@ for (var key in jsonEmpire) {
   	borders[border.name].position.x = border.x;
   	borders[border.name].position.y = border.y;
   	borders[border.name].position.z = border.z;
-  	scene.add( borders[border.name] );
+  	borders[border.name].name = border.name;
+	scene.add( borders[border.name] );
 	if (border.radius > 10) {
 		var text = new Text2D(border.name, { align: textAlign.center,  font: '25px Arial', fillStyle: '#777' , antialias: false });
 		text.material.alphaTest = 0.5;
@@ -121,6 +123,7 @@ for (var key in jsonEmpire) {
     planets[planet.name].position.x=planet.x;
     planets[planet.name].position.y=planet.y;
     planets[planet.name].position.z=planet.z;
+    planets[planet.name].name = planet.name;
     var text = new Text2D(planet.name, { align: textAlign.right,  font: '12px Arial', fillStyle: '#FFF' , antialias: false });
         text.material.alphaTest = 0.0;
         text.position.set(planet.x,planet.y,planet.z);
@@ -139,6 +142,7 @@ for (var key in jsonEmpire) {
           bases[base.name].position.x=base.x;
           bases[base.name].position.y=base.y;
           bases[base.name].position.z=base.z;
+	  bases[base.name].name = base.name;
           scene.add( bases[base.name] );
            var text = new Text2D(base.name, { align: textAlign.left,  font: '12px Arial', fillStyle: '#ABABAB' , antialias: false });
                text.material.alphaTest = 0.0;
@@ -162,7 +166,6 @@ window.onresize = function() {
         
 				renderer.setSize( window.innerWidth, window.innerHeight );
 
-				controls.handleResize();
 
 				render();
 
@@ -171,8 +174,9 @@ window.onresize = function() {
 function animate() {
         var delta = clock.getDelta();
         requestAnimationFrame( animate );
-        
-				controls.update(delta);
+        scene.updateMatrixWorld()
+	controls.update(delta);
+        renderer.render(scene, camera);
 }
 
 
@@ -222,4 +226,22 @@ function zoomfocus(name) {
     	    		 
 	} 	
 
+}
+
+
+function drawline(name,origin,dest) {
+	  var geometry  = new THREE.Geometry();
+          var material = new THREE.LineBasicMaterial( { color: '#FFF', });
+	  geometry.vertices.push(origin, direction); 
+          var line = new THREE.Line( geometry, material );
+	  ray.name = "test";
+	  scene.add(ray);
+	  animate();
+
+}
+
+function removeEntity(object) {
+    var selectedObject = scene.getObjectByName(object);
+    scene.remove( selectedObject );
+    animate();
 }
