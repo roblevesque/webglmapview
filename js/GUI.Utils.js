@@ -31,6 +31,9 @@ $(document).ready(function() {
 			lastInputBox = "pointb";
 		//	console.log('Updating last touched box to : ' + lastInputBox)
 		});
+		String.prototype.capitalize = function(lower) {
+    return (lower ? this.toLowerCase() : this).replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+		};
 
 
 });
@@ -47,20 +50,28 @@ function populateUserFields() {
 
 	 }
 	 var option = '';
-	 for (var type in types){
-        	 for ( var key in listobjects(types[type]) ){
-    	    		 option += '<option value="'+ escapeHTML(key) + '">' + escapeHTML(key) + '</option>';
-   		 }
+	 for (var type in types) {
+		 				var keys = Object.keys(listobjects(types[type]));
+          	keys.sort().forEach(function(element, index, array){
+							 option += '<option value="'+ escapeHTML(element) + '">' + escapeHTML(element) + '</option>';
+						 });
+
 	}
 
 	$('#findbyselect').html(option);
 
   // Populate pointa and pointb dropdowns
 	var types = ['planets','stations'];
+	option = "";
 	for (var type in types){
-					for ( var key in listobjects(types[type]) ){
-							option += '<option value="'+ escapeHTML(key) + '">' + escapeHTML(key) + '</option>';
-			}
+			var keys = Object.keys(listobjects(types[type]));
+			var captype = types[type];
+			captype = captype.capitalize()
+			option += '<option value="">==== ' + captype + ' ====</option>';
+			keys.sort().forEach(function(element, index, array){
+				 option += '<option value="'+ escapeHTML(element) + '">' + escapeHTML(element) + '</option>';
+			 });
+
  	}
 
  	$('#pointa').html(option);
