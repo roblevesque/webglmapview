@@ -2,12 +2,15 @@ if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
 
 var camera, controls, scene, renderer;
 var clock = new THREE.Clock();
+var raycaster = new THREE.Raycaster();
+var mouse = new THREE.Vector2(), INTERSECTED;
 var WIDTH = window.innerWidth , HEIGHT = window.innerHeight
 
 window.onload = function() {
 loadData(function() {
 init();
 animate();
+populateUserFields();
 });
 }
 
@@ -54,18 +57,13 @@ function init() {
 				controls.dampingFactor = 0.25;
 				controls.enableZoom = true;
   		  controls.addEventListener( 'change', render );
-
-
-
-
+				document.addEventListener( 'mousedown', onCanvasClick, false );
 
 
 
 var Text2D = THREE_Text.Text2D;
 var SpriteText2D = THREE_Text.SpriteText2D;
 var textAlign = THREE_Text.textAlign
-var raycaster = new THREE.Raycaster();
-var mouse = new THREE.Vector2();
 var b_geometry, b_material, b_mesh, p_geometry, p_material, p_mesh, s_geometry, s_material, s_mesh, l_text;
 
 
@@ -83,7 +81,7 @@ for (var key in jsonEmpire) {
 		  b_mesh.position.x = border.x;
 		  b_mesh.position.y = border.y;
 		  b_mesh.position.z = border.z;
-		  b_mesh.name = border.name;
+		  b_mesh.name = escapeHTML(border.name);
 			scene.add( b_mesh );
 			if (border.radius > 10) {
 				l_text = new Text2D(border.name, { align: textAlign.center,  font: '25px Arial', fillStyle: '#777' , antialias: false });
@@ -105,9 +103,9 @@ for (var key in jsonEmpire) {
     p_mesh.position.x=planet.x;
     p_mesh.position.y=planet.y;
     p_mesh.position.z=planet.z;
-    p_mesh.name = planet.name;
+    p_mesh.name = escapeHTML(planet.name);
 		scene.add( p_mesh );
-    l_text = new Text2D(planet.name, { align: textAlign.right,  font: '12px Arial', fillStyle: '#FFF' , antialias: false });
+    l_text = new Text2D(escapeHTML(planet.name), { align: textAlign.right,  font: '12px Arial', fillStyle: '#FFF' , antialias: false });
     l_text.material.alphaTest = 0.0;
     l_text.position.set(planet.x,planet.y,planet.z);
     l_text.scale.set(0.25,0.25,0.25);
@@ -123,9 +121,9 @@ for (var key in jsonEmpire) {
     s_mesh.position.x=base.x;
     s_mesh.position.y=base.y;
     s_mesh.position.z=base.z;
-		s_mesh.name = base.name;
+		s_mesh.name = escapeHTML(base.name);
     scene.add( s_mesh );
-  	l_text = new Text2D(base.name, { align: textAlign.left,  font: '12px Arial', fillStyle: '#ABABAB' , antialias: false });
+  	l_text = new Text2D(escapeHTML(base.name), { align: textAlign.left,  font: '12px Arial', fillStyle: '#ABABAB' , antialias: false });
     l_text.material.alphaTest = 0.0;
     l_text.position.set(base.x,base.y+3,base.z);
 		l_text.scale.set(0.20,0.20,0.20);
@@ -148,20 +146,46 @@ window.onresize = function() {
 				render();
 
 }
+function onCanvasClick( event ) {
+
+				//event.preventDefault();
+
+				mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+				mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+							raycaster.setFromCamera( mouse, camera );
+							var intersects = raycaster.intersectObjects( scene.children );
+
+							if ( intersects.length > 0 ) {
+								if ( INTERSECTED != intersects[ 0 ].object ) {
+
+									INTERSECTED = intersects[ 0 ].object;
+									// console.log( INTERSECTED.name );
+									document.getElementById(lastInputBox).value = INTERSECTED.name;
+
+								}
+
+							} else {
+
+								INTERSECTED = null;
+
+							}
+
+			}
+
 function animate() {
 				var delta = clock.getDelta();
 	        requestAnimationFrame( animate );
 	        scene.updateMatrixWorld()
 					controls.update(delta);
 	        render();
-
-
-			}
+}
 
 
 function render () {
 		//requestAnimationFrame( render );
     renderer.render( scene, camera );
+		// find intersections
 
 }
 
@@ -187,7 +211,7 @@ function zoomfocus(name) {
 	for (var type in types) {
 		var objects = listobjects(types[type]);
     for ( var key in objects ) {
-			if (escapeHTML(key) == name) {
+			if (key == name) {
 					var object = objects[key];
 					controls.target.x = object.x;
 				  controls.target.y = object.y;
@@ -224,4 +248,54 @@ function removeEntity(object) {
     var selectedObject = scene.getObjectByName(object);
     scene.remove( selectedObject );
     animate();
+}
+
+// Calculates SU/s with given warp factor
+function calcSUpS(warpfactor) {
+	// 14.0*29.979246*1298.737508 = 257494817.55 SU/s
+	// Velocity = WF^3.333333*lightspeed*cochranes
+	// 3087467836.3256578445 = 1 Parsec
+	var cochranes = 1298.737508; // Average cochranes
+	var lightspeed = 29.979246; // Lightspeed constant
+	var exponent = 3.333333;
+
+	var sus =  Math.pow(warpfactor,exponent) * lightspeed * cochranes ;
+	return sus;
+}
+
+function su2pc ( su ) {
+	return su / 3087467836.3256578445;
+}
+
+// Calculates ETA for given distance and velocity.
+// Velocity should be supplied as an array of speed and unit
+function calcETA(velocity,distance) {
+			var speed = velocity.speed;
+			var unit = velocity.unit;
+			var seconds;
+			switch (unit) {
+					case 'SU/s':
+						seconds = new Decimal(  distance / su2pc(speed)  );
+						break;
+					case 'PC/s':
+						seconds = new Decimal( distance /  speed  );
+						break;
+					case 'WF':
+						seconds = distance / su2pc(calcSUpS(speed));
+						break;
+					default:
+						throw "Invalid unit of speed."
+			}
+
+			return seconds;
+
+}
+
+// Calculate the distance between two named points ( Stations or Bases )
+function calcDist(pointa, pointb) {
+		var obj_A = scene.getObjectByName(pointa);
+		var obj_B = scene.getObjectByName(pointb);
+
+		var distance =  obj_A.position.distanceTo(obj_B.position);
+		return distance;
 }
