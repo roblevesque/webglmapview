@@ -2,3 +2,7 @@
 	path = webview
 	url = https://github.com/roblevesque/webglmapview.git
 	branch = master
+[submodule "mapview"]
+	path = mapview
+	url = https://github.com/roblevesque/webglmapview.git
+	branch = master
