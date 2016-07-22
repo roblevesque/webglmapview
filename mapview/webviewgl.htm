@@ -1,0 +1,165 @@
+<!doctype html>
+<html>
+  <head>
+      <script src="js/three.js"></script>
+      <script src="js/decimal.min.js"></script>
+      <script src="js/OrbitControls.js"></script>
+      <script src="js/three-text2d.js"></script>
+      <script src="js/Detector.js"></script>
+      <script src="js/mapviewgl.js"></script>
+      <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
+      <script src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
+      <script src="js/GUI.Utils.js"></script>
+      <script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+		  ga('create', 'UA-80748037-1', 'auto');
+		  ga('send', 'pageview');
+
+      </script>
+      <style type="text/css">
+    	  body { margin: 0; overflow:hidden;}
+    	  canvas { width: 75%; height: 100% ;}
+    		.reset-button {margin: 0; padding: 0; padding: 3px 3px; color: #AAA;  }
+    		.menu-button {  float: right; position: absolute; right: 0.1vw; top: 0; z-index: 5; color:white; background-color:#003133; padding: 0px; font-weight: bold; font-size:2.5vh; }
+    		.reset-container { margin: 0; padding: 10px; font-weight: bold; text-align: center; font-family: 'Space Mono', monospace; color:#67989A; background-color: maroon;  width: 100%; height: 2.5vh; float:bottom;  }
+    		.wvg-controls { position: fixed; left: 85%; height: 96%; width: 15%; margin-top: 0; display: none;}
+    		ul.wvg-navbar { height: 3vh; width: 100%; background-color: #003133; list-style-type: none; overflow: hidden; padding: 0; margin: 0;  }
+    		ul.wvg-navbar li { width:auto; height: 100%; float: left; } .wvg-tablink { margin: 0; padding: 0; padding: 8px 10px; font-weight: bold; text-align: center; font-family: 'Space Mono', monospace; color:#67989A; }
+    		.wvg-tab-active { background-color: #0D4A4D; color: #003133; }
+    		.wvg-tools { width: 100%; height: 98%; background: #333; display: none; color: #AAA; padding-top: 2vh; padding-left:1vw; padding-right: 2.5vw;}
+    		.wvg-tools select, .wvg-tools input {
+    			width: 12vw;
+    			padding: 5px;
+    			font-size: 16px;
+    			line-height: 1;
+    			border: 1px solid #67878A;
+    			border-radius: 0;
+    			height: auto;
+    			-webkit-appearance: none;
+    			background: url('assets/select-arrow.png') no-repeat right center #333;
+    			color: #67989A;
+    			margin: 0 auto;
+    		  }
+        .wvg-tools input { background: #333; width: 11.4vw; }
+    		.wvg-tools span { text-align: center; color: #FFF; font-family: 'Space Mono', monospace; display: block; padding-right: 3vw; }
+    	  .wvg-first {  display: block; }
+    		#wrapper { height: inherit; width: 100%; }
+    		.active { display: block; }
+    	 	input[type=radio], input[type=checkbox] {
+    	 		display:none;
+    		}
+    		input[type=checkbox] + label:before {
+    			content: "";
+    			display: inline-block;
+    			width: 15px;
+    			height: 15px;
+    			vertical-align:middle;
+    			margin-right: 8px;
+    	    	background-color: #aaa;
+    			box-shadow: inset 0px 2px 2px rgba(0, 0, 0, .3);
+    	    	border-radius: 4px;
+    		}
+    		input[type=radio]:checked + label:before {
+    	 		content: "\2022"; /* Bullet */
+    	   		color:white;
+    			background-color: #666;
+    	    	font-size:1.8em;
+    			text-align:center;
+    			line-height:14px;
+    		 		text-shadow:0px 0px 3px #eee;
+    		}
+    	    input[type=checkbox]:checked + label:before {
+    			content:"\2714"; /* Tick */
+    			color:white;
+    			background-color: #666;
+    			text-align:center;
+    			line-height:15px;
+    			text-shadow:0px 0px 3px #eee;
+    		}
+    		.btn {
+    			background: #67989A;
+    			-webkit-border-radius: 0;
+    			-moz-border-radius: 0;
+    			border-radius: 0px;
+    			font-family: 'Space Mono', monospace;
+    			color: #003133;
+    			font-size: 14px;
+          font-weight: bolder;
+    			width: 75%;
+    			height: 4vh;
+    			padding: 3px;
+          margin-top:1vh;
+    			border: solid #67878A 1px;
+    			text-decoration: none;
+    		}
+    		.btn:hover {
+    			background: #0D4A4D;
+    			text-decoration: none;
+    		}
+        .tool-header { font-weight: bold; padding-top: 5vh; display: block; }
+
+        .toolsep { margin-right: 1vw; padding:0;  padding-top: 1vh; padding-bottom: 2.5vh; border-bottom: 1px #AAA solid; height: 1vh; display: block; width: 64%;}
+        .calc_data { padding-top: 2.5vh; font-size: 0.9em;  }
+      </style>
+  </head>
+  <body>
+      	<div id="container"></div>
+      	<div class="menu-button" id="hotdog">     &#9776;      </div>
+      	<div id="controls" class="wvg-controls active">
+    		  	<div id="wrapper">
+    	      		<ul class="wvg-navbar">
+    				          <li><a class="wvg-tablink wvg-tab-active" href='#' onclick="openTab(event,'Find');">Find & Calc</a></li>
+                    <!--  <li><a class="wvg-tablink" href='#' onclick="openTab(event,'Tools');">Tools</a></li> -->
+    				          <li><a class="wvg-tablink" href='#' onclick="openTab(event,'Info');">Info</a></li>
+    			      </ul>
+    		  <div class="wvg-tools wvg-first" id="Find">
+    				<span class="tool-header"> Find Object By Name </span>
+    				<span>
+              <select id="findbyselect">
+    					       <option value=''></option>
+    				  </select> <br />
+          	   <input type="checkbox" name="objtype" id="cbp" value="planets" checked><label for="cbp"> Planets</label> <input type="checkbox" name="objtype" id="cbs" value="stations" onclick="populateUserFields();"> <label for="cbs">Stations</label>
+    			     <button id="submitfindbyname" class="btn">Find</button>
+            </span>
+            <span class="toolsep"></span>
+            <span class="tool-header"> Travel Time & Distances </span>
+            <span>
+                <label for="pointa">Point A</label>
+                <select id="pointa" name="Point_A">
+                  <!-- Options will generated in code -->
+                </select>
+                <br />
+                <label for="pointb"> Point B </label>
+                <select id="pointb" name="Point_B">
+                  <!-- Options will generated in code -->
+                </select>
+                <label for="speed">Travel Speed</label>
+                <input type="text" id="speed" value="14">
+                <select id="speedunit" name="Speed Unit">
+                   <option value='WF'>Warp Factor</option>
+                   <option value='PC/s'>PC/s</option>
+                   <option value='SU/s'>SU/s</option>
+                </select>
+                <br />
+                <button id="calctnd" class="btn">Calculate</button>
+            </span>
+            <span class="calc_data"><br />
+              From: <u><i id="cal_start">Empty</i></u> <br />
+              To: <u><i id="cal_end">Empty</i></u><br />
+              Distance: <u><i id="cal_dist">Unknown</i></u><br />
+              ETA @ <u><i id="cal_speed">Unknown</i></u> : <u><i id="cal_eta">Unknown</i></u>
+            </span>
+    		  </div>
+    			<div class="wvg-tools" id="Info">
+    				<span> This tool was designed by Frey @ ATSMUSH. It is based on MapView for ATS with data used from the Navcomp MUSHClient plugin with permission. </span>
+    			</div>
+    		</div>
+    		<div class="reset-container"><span class="reset-button">  Reset </span></div>
+
+      </div>
+  </body>
+</html>
