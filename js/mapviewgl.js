@@ -161,7 +161,9 @@ function onCanvasClick( event ) {
 
 									INTERSECTED = intersects[ 0 ].object;
 									// console.log( INTERSECTED.name );
-									document.getElementById(lastInputBox).value = INTERSECTED.name;
+									if (lastInputBox) {
+										document.getElementById(lastInputBox).value = INTERSECTED.name;
+									}
 
 								}
 

@@ -100,9 +100,9 @@ function timeformat(secs) {
 		m = m.floor();
     s = s - (m * 60 );
 		s = Math.round(s,0)
-		console.log("Hours :"+ h);
-		console.log("Minutes :"+ m);
-		console.log("Seconds :"+ s);
-		console.log("Input :"+ secs);
+	//	console.log("Hours :"+ h);
+	//	console.log("Minutes :"+ m);
+	//	console.log("Seconds :"+ s);
+	//	console.log("Input :"+ secs);
 		return h+":"+(m < 10 ? '0'+m : m)+":"+(s < 10 ? '0'+s : s); //zero padding on minutes and seconds
 }
