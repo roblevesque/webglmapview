@@ -235,13 +235,13 @@ function zoomfocus(name) {
 }
 
 
-function drawline(name,origin,dest) {
-	  var geometry  = new THREE.Geometry();
-    var material = new THREE.LineBasicMaterial( { color: '#FFF', });
-	  geometry.vertices.push(origin, direction);
-    var line = new THREE.Line( geometry, material );
-	  ray.name = "test";
-	  scene.add(ray);
+function drawline(origin,dest) {
+		var direction = dest.clone().sub(origin);
+		var length = origin.distanceTo(dest);
+	  var arrowHelper = new THREE.ArrowHelper(direction.normalize(),origin,length,0xffffff,10,5);
+		arrowHelper.name = "arrow";
+		scene.add( arrowHelper );
+
 		animate();
 
 }
@@ -300,4 +300,27 @@ function calcDist(pointa, pointb) {
 
 		var distance =  obj_A.position.distanceTo(obj_B.position);
 		return distance;
+}
+
+function grabPositionByName(name) { return scene.getObjectByName(name).position;  }
+
+
+function calcEndpointByHeading(heading,startvec = new THREE.Vector3(0,0,0)) {
+		// heading.x = azimuth
+		// heading.y = inclination
+		// heading.z = radius (distance)
+		var calcvec = new THREE.Vector3();
+		calcvec.x = Math.cos(heading.x / 180 * Math.PI ) * Math.cos(heading.y / 180 * Math.PI ) * heading.z;
+		calcvec.x = Number(calcvec.x.toFixed(6));
+		if (Math.sign(calcvec.x) == -1 && calcvec.x == 0) { calcvec.x=0; }   // A dirty hack to fix negative zero situations.
+		calcvec.y = Math.sin(heading.x / 180 * Math.PI ) * Math.cos(heading.y / 180 *  Math.PI ) * heading.z;
+		calcvec.y = Number(calcvec.y.toFixed(6));
+		if (Math.sign(calcvec.y) == -1 && calcvec.y == 0) { calcvec.y=0; }   // A dirty hack to fix negative zero situations.
+		calcvec.z = Math.sin(heading.y / 180 * Math.PI) * heading.z;
+		calcvec.z = Number(calcvec.z.toFixed(6));
+		if (Math.sign(calcvec.z) == -1 && calcvec.z == 0) { calcvec.z=0; }   // A dirty hack to fix negative zero situations.
+		var finalvec = new THREE.Vector3();
+		calcvec.add(startvec);
+		return calcvec;
+
 }
