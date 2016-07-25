@@ -240,6 +240,9 @@ function drawline(origin,dest) {
 		var length = origin.distanceTo(dest);
 	  var arrowHelper = new THREE.ArrowHelper(direction.normalize(),origin,length,0xffffff,10,5);
 		arrowHelper.name = "arrow";
+		arrowHelper.cone.material.transparent = true;
+		arrowHelper.cone.material.opacity = 0.25;
+		arrowHelper.line.material.linewidth = 2;
 		scene.add( arrowHelper );
 
 		animate();
