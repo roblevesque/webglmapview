@@ -15,6 +15,7 @@ $(document).ready(function() {
 		$('#calctnd').click(function() {
 			removeEntity('arrow');
 			lastInputBox = null;
+			if ( $('#pointa  option:selected').text() != $('#pointb  option:selected').text() && (!$('#pointa  option:selected').text().match("[=.] (.+) [=.]") && !$('#pointb  option:selected').text().match("[=.] (.+) [=.]"))) {
 			$('#cal_start').html( $('#pointa  option:selected').text() );
 			$('#cal_end').html( $('#pointb  option:selected').text() );
 			$('#cal_speed').html( $('#speed').val() +" " + $('#speedunit option:selected').val() );
@@ -22,8 +23,7 @@ $(document).ready(function() {
 			var eta = calcETA({'speed': $('#speed').val(), 'unit':  $('#speedunit option:selected').val()},dist)
 			$('#cal_eta').html( timeformat(eta) );
 			$('#cal_dist').html( dist.toFixed(2) + " PC");
-			if ( $('#pointa  option:selected').text() != $('#pointb  option:selected').text() ) {
-				drawline(grabPositionByName($('#pointa  option:selected').text()),grabPositionByName($('#pointb  option:selected').text()));
+			drawline(grabPositionByName($('#pointa  option:selected').text()),grabPositionByName($('#pointb  option:selected').text()));
 			}
 		});
 
