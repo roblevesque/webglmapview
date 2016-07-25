@@ -26,7 +26,8 @@ $(document).ready(function() {
 			drawline(grabPositionByName($('#pointa  option:selected').text()),grabPositionByName($('#pointb  option:selected').text()));
 			}
 		});
-
+		$('#cbs').click(function() {populateFBSelect(); });
+		$('#cbp').click(function() {populateFBSelect(); });
 		$("#pointa").focus(function() {
 			lastInputBox = "pointa";
 		//	console.log('Updating last touched box to : ' + lastInputBox)
@@ -44,26 +45,8 @@ $(document).ready(function() {
 
 
 function populateUserFields() {
-	//Populate find by select dropdown
-   var types = [];
-	 var checkboxes = document.getElementsByName("objtype");
-	 for (var type in checkboxes) {
-	 if(checkboxes[type].checked) {
-			types[type] = checkboxes[type].value;
-		}
-
-	 }
-	 var option = '';
-	 for (var type in types) {
-		 				var keys = Object.keys(listobjects(types[type]));
-          	keys.sort().forEach(function(element, index, array){
-							 option += '<option value="'+ escapeHTML(element) + '">' + escapeHTML(element) + '</option>';
-						 });
-
-	}
-
-	$('#findbyselect').html(option);
-
+	// Populate findby box
+	populateFBSelect();
   // Populate pointa and pointb dropdowns
 	var types = ['planets','stations'];
 	option = "";
@@ -80,6 +63,28 @@ function populateUserFields() {
 
  	$('#pointa').html(option);
 	$('#pointb').html(option);
+
+}
+function populateFBSelect() {
+	//Populate find by select dropdown
+	 var types = [];
+	 var checkboxes = document.getElementsByName("objtype");
+	 for (var type in checkboxes) {
+	 if(checkboxes[type].checked) {
+			types[type] = checkboxes[type].value;
+		}
+
+	 }
+	 var option = '';
+	 for (var type in types) {
+						var keys = Object.keys(listobjects(types[type]));
+						keys.sort().forEach(function(element, index, array){
+							 option += '<option value="'+ escapeHTML(element) + '">' + escapeHTML(element) + '</option>';
+						 });
+
+	}
+
+	$('#findbyselect').html(option);
 
 }
 
