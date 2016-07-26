@@ -23,6 +23,7 @@ function loadData(_callback) {
 	xmlhttp.onreadystatechange = function() {
 	    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 	        jsonEmpire = JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['empires'];
+					jsonGate =  JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['gates'];
 	        _callback();
 
 	    }
@@ -325,5 +326,47 @@ function calcEndpointByHeading(heading,startvec = new THREE.Vector3(0,0,0)) {
 		var finalvec = new THREE.Vector3();
 		calcvec.add(startvec);
 		return calcvec;
+}
 
+function calcBestRoute(pointa,pointb) {
+	var route = [{}];
+	delete route['0']; // WTF? We shouldn't need to do this. I hate JS....
+
+	// Calculate direct route.
+	route['Direct'] =  { 'stops': [pointb], 'distance': calcDist(pointa, pointb)};
+
+	// Find route via stargate.
+	var distance_a = {};
+	var distance_b = {};
+	var near_a,near_b;
+	// Find gate closest to point a
+	jsonGate.forEach(function(name) { distance_a[name.name] = calcDist(pointa,name.name) ;});
+	var dist_a_sorted = Object.keys(distance_a).sort(function(a,b) {return distance_a[a]-distance_a[b]});
+	var near_a = dist_a_sorted[0];
+
+	// Dump out right now if A->nearest gate > direct. Save the compute cycles.
+	if(distance_a[near_a] > route['Direct'].distance) {
+		return route['Direct'];
+	}
+
+	// Find gate closest to point b
+	jsonGate.forEach(function(name) { distance_b[name.name] = calcDist(pointb,name.name) ;});
+	var dist_b_sorted = Object.keys(distance_b).sort(function(a,b) {return distance_b[a]-distance_b[b]});
+	var near_b = dist_b_sorted[0];
+
+	// Dump out right now if B->nearest gate > direct or the same fucking gate. Save the compute cycles.
+
+	if(distance_a[near_b] > route['Direct'].distance || near_a == near_b) {
+		return route['Direct'];
+	}
+	// Assemble the gate travel plan. With our powers unite, we are shitty code!
+	gate_distance = distance_a[near_a] + distance_b[near_b];
+	route['Gate'] = {'stops': [near_a,near_b,pointb], 'distance':gate_distance}
+
+	// Sort all routes by distance traveled.
+
+	console.log(Object.keys(route))
+	var route_keys_sorted = Object.keys(route).sort(function(a,b) {return route[a].distance-route[b].distance});
+
+	return route[route_keys_sorted[0]];
 }

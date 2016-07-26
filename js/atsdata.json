@@ -1,6 +1,13 @@
 {
 	"ATS_Navcomp_DB": {
 	"version": 2.11,
+	"gates": [
+		 { "name":"Sherman's Planet / USB Galadriel"},
+		 { "name":"Dark Phoenix City / USB Milliways"},
+		 { "name":"New Risa / USB Lothlorien"},
+		 { "name":"Lily Yo II / USB Celestine Gate"},
+		 { "name":"Kildare V / Kildare IX / Kildare XI / USB Stormwatch"}
+	],
 	"empires": [
 {
 "name": "Cardassian",
@@ -201,7 +208,7 @@
 		{ "name":"ch'Nahir", "x": -9507.044174, "y": -128.000000, "z": -19.100000, "cochranes":1298, "market":-1 },
 		{ "name":"Mol'Rihan <New Romulus>", "x": -9429.742, "y": -147.389, "z": -8.21, "cochranes":1475.271911805, "market":-1 },
 		{ "name":"ch'Rihan", "x": -9384.244174, "y": -158.800000, "z": -1.800000, "cochranes":1298, "market":-1 }
-        
+
 	],
 	"stations":[
 		{ "name":"RIS Sienovan B", "x": -9581.352300, "y": -314.942000, "z": 13.693000, "cochranes":1298, "market":-1 },
@@ -217,7 +224,7 @@
     "name": "GFA",
     "desc":"The Galactic Ferengi Alliance is a sparse cluster of planets, centered around Ferenganor, which is colonized by the Ferengi and governed by the Ferengi Commerce Authority (or FCA). As an intensely capitalist society, the alliance is inclusive of most races which are capable of turning a profit. ",
 	"color": "#FFFF00",
-	
+
     "borders":[
         { "name":"GFA", "x": -8977.944000, "y": 260.000000, "z":-50.000000, "radius":100 }
     ],
