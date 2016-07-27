@@ -27,10 +27,10 @@
     		.reset-button {margin: 0; padding: 0; padding: 3px 3px; color: #AAA;  }
     		.menu-button {  float: right; position: absolute; right: 0.1vw; top: 0; z-index: 5; color:white; background-color:#003133; padding: 0px; font-weight: bold; font-size:2.5vh; }
     		.reset-container { margin: 0; padding: 10px; font-weight: bold; text-align: center; font-family: 'Space Mono', monospace; color:#67989A; background-color: maroon;  width: 100%; height: 2.5vh; float:bottom;  }
-    		.wvg-controls { position: fixed; left: 85%; height: 96%; width: 15%; margin-top: 0; display: none;}
-    		ul.wvg-navbar { height: 3vh; width: 100%; background-color: #003133; list-style-type: none; overflow: hidden; padding: 0; margin: 0;  }
-    		ul.wvg-navbar li { width:auto; height: 100%; float: left; } .wvg-tablink { margin: 0; padding: 0; padding: 8px 10px; font-weight: bold; text-align: center; font-family: 'Space Mono', monospace; color:#67989A; }
-    		.wvg-tab-active { background-color: #0D4A4D; color: #003133; }
+    		.wvg-controls { position: fixed; left: 85%; height: 96%; width: 15%; margin: 0; display: none;}
+    		ul.wvg-navbar { height: 3vh; width: 100%; background-color: #003133; list-style-type: none; overflow: hidden; padding: 0; margin: 0; border: 0;  }
+    		ul.wvg-navbar li { width:auto; height: 100%; float: left; padding: 0; margin: 0; border: 0; } .wvg-tablink { height: 100%; border: 0; margin: 0; padding: 0; padding: 8px 10px; font-weight: bold; text-align: center; font-family: 'Space Mono', monospace; color:#67989A; font-size: 1.25vh; }
+        .wvg-tab-active { background-color: #0D4A4D; color: #003133; }
     		.wvg-tools { width: 100%; height: 98%; background: #333; display: none; color: #AAA; padding-top: 2vh; padding-left:1vw; padding-right: 2.5vw;}
     		.wvg-tools select, .wvg-tools input {
     			width: 12vw;
@@ -44,6 +44,7 @@
     			background: url('assets/select-arrow.png') no-repeat right center #333;
     			color: #67989A;
     			margin: 0 auto;
+
     		  }
         .wvg-tools input { background: #333; width: 11.4vw; }
     		.wvg-tools span { text-align: center; color: #FFF; font-family: 'Space Mono', monospace; display: block; padding-right: 3vw; }
@@ -102,7 +103,7 @@
     			text-decoration: none;
     		}
         .tool-header { font-weight: bold; padding-top: 5vh; display: block; }
-
+        #route_output {font-size: 0.9vh; height: 25%; padding-top: 2.5vh;}
         .toolsep { margin-right: 1vw; padding:0;  padding-top: 1vh; padding-bottom: 2.5vh; border-bottom: 1px #AAA solid; height: 1vh; display: block; width: 64%;}
         .calc_data { padding-top: 2.5vh; font-size: 0.9em;  }
       </style>
@@ -114,8 +115,10 @@
     		  	<div id="wrapper">
     	      		<ul class="wvg-navbar">
     				          <li><a class="wvg-tablink wvg-tab-active" href='#' onclick="openTab(event,'Find');">Find & Calc</a></li>
-                    <!--  <li><a class="wvg-tablink" href='#' onclick="openTab(event,'Tools');">Tools</a></li> -->
+                      <li><a class="wvg-tablink" href='#' onclick="openTab(event,'Plan');">Plan</a></li>
     				          <li><a class="wvg-tablink" href='#' onclick="openTab(event,'Info');">Info</a></li>
+
+
     			      </ul>
     		  <div class="wvg-tools wvg-first" id="Find">
     				<span class="tool-header"> Find Object By Name </span>
@@ -127,7 +130,9 @@
     			     <button id="submitfindbyname" class="btn">Find</button>
             </span>
             <span class="toolsep"></span>
-            <span class="tool-header"> Travel Time & Distances </span>
+    		  </div>
+          <div class="wvg-tools" id="Plan">
+            <span class="tool-header"> Route Planner </span>
             <span>
                 <label for="pointa">Point A</label>
                 <select id="pointa" name="Point_A">
@@ -148,13 +153,19 @@
                 <br />
                 <button id="calctnd" class="btn">Calculate</button>
             </span>
+            <br />
+            <br />
+            <select multiple="multiple" id="route_output" class="select-route-map">
+              <option> No route calculated </option>
+            </select>
+
             <span class="calc_data"><br />
               From: <u><i id="cal_start">Empty</i></u> <br />
               To: <u><i id="cal_end">Empty</i></u><br />
               Distance: <u><i id="cal_dist">Unknown</i></u><br />
               ETA @ <u><i id="cal_speed">Unknown</i></u> : <u><i id="cal_eta">Unknown</i></u>
             </span>
-    		  </div>
+          </div>
     			<div class="wvg-tools" id="Info">
     				<span> This tool was designed by Frey @ ATSMUSH. It is based on MapView for ATS with data used from the Navcomp MUSHClient plugin with permission. </span>
     			</div>
