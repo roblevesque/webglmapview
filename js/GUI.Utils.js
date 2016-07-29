@@ -20,6 +20,7 @@ $(document).ready(function() {
 
 			removeEntity('arrow');
 			lastInputBox = null;
+			$('#route_output').html("No route calculated");
 			var speed = {'speed': $('#speed').val(), 'unit':$ ('#speedunit option:selected').val() };
 			populateRoutePlan( $('#pointa  option:selected').text() , $('#pointb  option:selected').text(),speed );
 
@@ -151,12 +152,11 @@ function populateRoutePlan(pointa,pointb,speed) {
 				routeplan += '<optgroup label="' + waypoint.name + '">';
 				if(typeof self[index+1] != 'undefined' ) {
 					if(waypoint.gate && self[index+1].gate) {routeplan += '<option>^---- Gate From</option>'; }
-					console.log(waypoint.gate)
 				}
 				if(waypoint.gate && lastWaypoint.gate) {routeplan += '<option>^---- Gate Exit</option>'; }
 
 				if(!waypoint.gate || (!lastWaypoint.gate && waypoint.gate)) {
-					routeplan += '<option>Distance:' + calcDist(lastWaypoint.name,waypoint.name) + '</option>'
+					routeplan += '<option>Distance:' + calcDist(lastWaypoint.name,waypoint.name).toFixed(2) + '</option>'
 					routeplan += '<option>ETA: ' + timeformat(calcETA(speed,calcDist(lastWaypoint.name,waypoint.name))) + '</option>';
 					drawline(grabPositionByName(lastWaypoint.name),grabPositionByName(waypoint.name));
 				}
