@@ -188,7 +188,6 @@ function animate() {
 function render () {
 		//requestAnimationFrame( render );
     renderer.render( scene, camera );
-		// find intersections
 
 }
 
@@ -210,16 +209,13 @@ function listobjects(type) {
 
 function zoomfocus(name) {
 
-	var types = ['planets','stations'];
-	for (var type in types) {
-		var objects = listobjects(types[type]);
-    for ( var key in objects ) {
-			if (key == name) {
-					var object = objects[key];
-					controls.target.x = object.x;
-				  controls.target.y = object.y;
-				  controls.target.z = object.z;
-					var focus = new THREE.Vector3( object.x, object.y, object.z );
+
+			var zoomto = grabPositionByName(name)
+			if (zoomto != null) {
+					controls.target.x = zoomto.x;
+				  controls.target.y = zoomto.y;
+				  controls.target.z = zoomto.z;
+					var focus = new THREE.Vector3( zoomto.x, zoomto.y, zoomto.z );
 					var vantage = new THREE.Vector3( 5, 60 , 150 );
 					focus.add(vantage);
 					camera.position.set(focus.x,focus.y,focus.z);
@@ -229,9 +225,7 @@ function zoomfocus(name) {
 
 			}
 
-		}
 
-	}
 
 }
 
