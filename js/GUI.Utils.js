@@ -21,7 +21,7 @@ $(document).ready(function() {
 			removeEntity('arrow');
 			lastInputBox = null;
 			$('#route_output').html("No route calculated");
-			var speed = {'speed': $('#speed').val(), 'unit':$ ('#speedunit option:selected').val() };
+			var speed = {'speed': $('#speed').val(), 'unit':$('#speedunit option:selected').val() };
 			populateRoutePlan( $('#pointa  option:selected').text() , $('#pointb  option:selected').text(),speed );
 
 
@@ -39,6 +39,18 @@ $(document).ready(function() {
 		String.prototype.capitalize = function(lower) {
     return (lower ? this.toLowerCase() : this).replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
 		};
+		$('.rpcoord').blur(function() {
+			 if(!$(this).val()) { $(this).val( $(this).attr("id") ) }
+
+		});
+		$('.rpcoord').focus(function() {
+			if($(this).val() == $(this).attr("id")) { $(this).val("") }
+		});
+		$('#calcpredict').click(function() {
+				$('#intel_predicted').html("");
+				var predicted = predictDestination(new THREE.Vector3(Number($('#x').val()),Number($('#y').val()),Number($('#z').val())),new THREE.Vector2(Number($('#azmuth').val()),Number($('#inclination').val())),$('#intel_frame option:selected').val());
+				$('#intel_predicted').html(predicted);
+		});
 
 
 });
@@ -64,6 +76,17 @@ function populateUserFields() {
 
  	$('#pointa').html(option);
 	$('#pointb').html(option);
+
+	// Populate list of borders for intel frame selection
+	option = $('#intel_frame').html();
+	var borderlist = listobjects("borders");
+
+	for (var border in borderlist) {
+		if(borderlist[border].radius > 10) {
+			option += '<option value="'+ escapeHTML(border) + '">' + escapeHTML(border) + '</option>';
+		}
+	}
+		$('#intel_frame').html(option);
 
 }
 function populateFBSelect() {

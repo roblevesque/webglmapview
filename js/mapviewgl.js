@@ -210,7 +210,7 @@ function listobjects(type) {
 function zoomfocus(name) {
 
 
-			var zoomto = grabPositionByName(name)
+			var zoomto = grabPositionByName(name);
 			if (zoomto != null) {
 					controls.target.x = zoomto.x;
 				  controls.target.y = zoomto.y;
@@ -364,4 +364,36 @@ function calcBestRoute(pointa,pointb) {
 	var route_keys_sorted = Object.keys(route).sort(function(a,b) {return route[a].distance-route[b].distance});
 
 	return route[route_keys_sorted[0]];
+}
+
+
+function predictDestination(loc,heading,frame) {
+		removeEntity('arrow');
+		if(frame != "Galactic") {
+			var objFrame = grabPositionByName(frame);
+		} else {
+				var objFrame = new THREE.Vector3(0,0,0);
+		}
+
+		console.log(frame)
+		var adjLoc = loc.clone();
+		adjLoc = adjLoc.add(objFrame);
+		var headingvec = new THREE.Vector3(heading.x, heading.y, 300);
+		var farpoint = calcEndpointByHeading(headingvec,adjLoc);
+		drawline(adjLoc,farpoint);
+		var directionvector = farpoint.sub(adjLoc);
+		var ray = new THREE.Raycaster(adjLoc, directionvector.clone().normalize());
+		scene.updateMatrixWorld();
+		var intersects = ray.intersectObjects(scene.children,false);
+		var correctedintersections=[];
+		if (intersects[0]) {
+				intersects.forEach(function(obj) {
+					if (obj.object.geometry.boundingSphere.radius != 'undefined' &&  obj.object.geometry.boundingSphere.radius < 2) {
+							correctedintersections.push(obj.object.name);
+					}
+				});
+				return correctedintersections[0];
+			}
+			return "Unable to predict"
+
 }

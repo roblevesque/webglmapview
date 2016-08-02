@@ -117,7 +117,8 @@
     	      		<ul class="wvg-navbar">
     				          <li class="wvg-tablink wvg-tab-active" onclick="openTab(event,'Find');">Find</li>
                       <li class="wvg-tablink" onclick="openTab(event,'Plan');">Plan</li>
-    				          <li class="wvg-tablink" onclick="openTab(event,'Info');">Info</li>
+    				          <li class="wvg-tablink" onclick="openTab(event,'Intel');">Intel</li>
+                      <li class="wvg-tablink" onclick="openTab(event,'Info');">Info</li>
     			      </ul>
     		  <div class="wvg-tools wvg-first" id="Find">
     				<span class="tool-header"> Find Object By Name </span>
@@ -164,6 +165,27 @@
               Distance: <b id="cal_dist">Unknown</b><br />
               ETA @ <b id="cal_speed">Unknown</b> : <b id="cal_eta">Unknown</b>
             </span>
+          </div>
+          <div class="wvg-tools" id="Intel">
+              <span class="tool-header"> Route Prediction </span>
+              <span>
+                <input type="text" class="rpcoord" id="x" value="x" style="width:3vw;">
+                <input type="text" class="rpcoord" id="y" value="y" style="width:3vw;">
+                <input type="text" class="rpcoord" id="z" value="z" style="width:3vw;"><br /><br />
+                <input type="text" class="rpcoord" id="azmuth" value="azmuth" style="width:3.1vw;"><label for='inclination'> mark </label>
+                <input type="text" class="rpcoord" id="inclination" value="inclination" style="width:3.5vw;"> <br /><br />
+
+                <label for="intel_frame">Coordinate Frame</label>
+                <select id="intel_frame">
+                  <option val="Galactic"> Galactic </option>
+                </select>
+              </span>
+              <span>
+                Perdicted Destination: <b id="intel_predicted"></b>
+
+                <button id="calcpredict" class="btn">Predict</button>
+              </span>
+
           </div>
     			<div class="wvg-tools" id="Info">
     				<span> This tool was designed by Frey @ ATSMUSH. It is based on MapView for ATS with data used from the Navcomp MUSHClient plugin with permission. </span>
