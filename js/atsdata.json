@@ -8,6 +8,9 @@
 		 { "name":"Lily Yo II / USB Celestine Gate"},
 		 { "name":"Kildare V / Kildare IX / Kildare XI / USB Stormwatch"}
 	],
+	"wormholes": [
+		{"enda" : "Magna Roma", "endb": "Usho Prime", "endaname": "Transwarp Gate MR-01", "endbname": "Transwarp Gate U-02", "exitaname": "Transwarp Exit MR-01", "exitbname": "Transwarp Exit U-02"}
+	],
 	"empires": [
 {
 "name": "Cardassian",
