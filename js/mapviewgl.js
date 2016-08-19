@@ -24,6 +24,7 @@ function loadData(_callback) {
 	    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 	        jsonEmpire = JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['empires'];
 					jsonGate =  JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['gates'];
+					jsonWormhole = JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['wormholes'];
 	        _callback();
 
 	    }
@@ -110,13 +111,15 @@ for (var key in jsonEmpire) {
     l_text.material.alphaTest = 0.0;
     l_text.position.set(planet.x,planet.y,planet.z);
     l_text.scale.set(0.25,0.25,0.25);
+		l_text.name = escapeHTML(planet.name);
     scene.add(l_text);
   }
 
   // Base Generation
   for (var key in area["stations"]) {
     var base = area.stations[key];
-    s_geometry = new THREE.CylinderGeometry( 0.1, 0.5*3, 0.5*3, 4 );
+    s_geometry = new THREE.CylinderGeometry( 0.2, 0.6*3, 0.5*3, 4 );
+		s_geometry.computeBoundingSphere();
     s_material = new THREE.MeshBasicMaterial( { color: area.color, wireframe: false} );
     s_mesh = new THREE.Mesh( s_geometry, s_material );
     s_mesh.position.x=base.x;
@@ -128,6 +131,7 @@ for (var key in jsonEmpire) {
     l_text.material.alphaTest = 0.0;
     l_text.position.set(base.x,base.y+3,base.z);
 		l_text.scale.set(0.20,0.20,0.20);
+		l_text.name = escapeHTML(base.name);
     scene.add(l_text);
   }
 
@@ -210,7 +214,7 @@ function listobjects(type) {
 function zoomfocus(name) {
 
 
-			var zoomto = grabPositionByName(name);
+			var zoomto = grabPositionByName(name.split('@')[name.split('@').length-1]);
 			if (zoomto != null) {
 					controls.target.x = zoomto.x;
 				  controls.target.y = zoomto.y;
@@ -330,39 +334,74 @@ function calcBestRoute(pointa,pointb) {
 	delete route['0']; // WTF? We shouldn't need to do this. I hate JS....
 
 	// Calculate direct route.
-	route['Direct'] =  { 'stops': [{'name':pointb, 'gate': false}], 'distance': calcDist(pointa, pointb)};
+	route['Direct'] =  { 'stops': [{'name':pointb, 'gate': false, 'distance':calcDist(pointa,pointb)}], 'distance': calcDist(pointa, pointb)};
+  // Thats it! Direct is easy stuff
+
 
 	// Find route via stargate.
 	var distance_a = {};
 	var distance_b = {};
+	var viawormhole = {};
+	var distance_wb = {};
 	var near_a,near_b;
 	// Find gate closest to point a
 	jsonGate.forEach(function(name) { distance_a[name.name] = calcDist(pointa,name.name);});
 	var dist_a_sorted = Object.keys(distance_a).sort(function(a,b) {return distance_a[a]-distance_a[b]});
 	var near_a = dist_a_sorted[0];
 
-
-	// Dump out right now if A->nearest gate > direct. Save the compute cycles.
-	if(distance_a[near_a] > route['Direct'].distance || near_a == pointb) {
-		return route['Direct'];
-	}
-
 	// Find gate closest to point b
 	jsonGate.forEach(function(name) { distance_b[name.name] = calcDist(pointb,name.name) ;});
 	var dist_b_sorted = Object.keys(distance_b).sort(function(a,b) {return distance_b[a]-distance_b[b]});
 	var near_b = dist_b_sorted[0];
 
-	// Dump out right now if B->nearest gate > direct or the same fucking gate. Save the compute cycles.
-	if(distance_b[near_b] > route['Direct'].distance || near_a == near_b) {
-					return route['Direct'];
-	}
+	// Dump out right now if it's the same fucking gate.
+	if( near_a != near_b) {
 	// Assemble the gate travel plan. With our powers unite, we are shitty code!
 	gate_distance = distance_a[near_a] + distance_b[near_b];
-	route['Gate'] = {'stops': [{'name':near_a, 'gate':true} ,{'name': near_b, 'gate': true},{'name': pointb, 'gate':false}], 'distance':gate_distance}
+	route['Gate'] = {'stops': [{'name':near_a, 'gate':true, 'distance': calcDist(pointa,near_a)} ,{'name': near_b, 'gate': true, 'distance':0},{'name': pointb, 'gate':false, 'distance':calcDist(near_b,pointb)}], 'distance':gate_distance}
+
+	} // End gate work...
+
+	
+  // Calculate wormhole route
+	// Qon does this by quadrant. Frey does this by brute force. The following may be really scary.
+	jsonWormhole.forEach(function(wh) { distance_wb[wh.enda.location] = calcDist(pointb,wh.enda.location); distance_wb[wh.endb.location] = calcDist(pointb,wh.endb.location);    });
+	var dist_wb_sorted = Object.keys(distance_wb).sort(function(a,b) {return distance_wb[a]-distance_wb[b]});
+	var near_wb;
+	jsonWormhole.forEach(function(wh) {if(wh.enda.location == dist_wb_sorted[0]) { near_wb = wh.enda; } else if (wh.endb.location == dist_wb_sorted[0] ) {near_wb = wh.endb; }  })
+	//var near_wb = dist_wb_sorted[0];
+	jsonWormhole.forEach(function(wh) {if(wh.enda.location == near_wb.location || wh.endb.location == near_wb.location) { viawormhole = wh } });
+	var via_wh_dista ={}
+	via_wh_dista["enda"] = calcDist(pointa,viawormhole.enda.location);
+	via_wh_dista["endb"] = calcDist(pointa,viawormhole.endb.location);
+	var via_wh_dista_sorted = Object.keys(via_wh_dista).sort(function(a,b) {return via_wh_dista[a]-via_wh_dista[b]});
+	var near_wa = viawormhole[via_wh_dista_sorted[0]];
+	// Build Wormhole route.
+	if(near_wa.location != near_wb.location ) {
+		    var temproute_a = calcBestRoute(pointa,near_wa.location);
+				temproute_a['stops'][temproute_a['stops'].length-1]['gate'] = true;
+				temproute_a['stops'][temproute_a['stops'].length-1]['name'] = near_wa.displayname + "@" + near_wa.location;
+				temproute_a['stops'][temproute_a['stops'].length] = {'name': near_wa.oppsiteexit + "@" + near_wb.location, 'gate': true};
+				var temproute_b = calcBestRoute(near_wb.location,pointb);
+				var stops=temproute_a['stops'];
+				for (var obj in temproute_b['stops']) { stops[stops.length] = temproute_b['stops'][obj]}
+
+				stops.forEach(function(s, idx, array) {if(s.gate !=true && array[idx-1].gate !=true) { stops[idx].distance = calcDist(s.location,array[idx-1].location); }
+						else if(idx == 0)  {stops[idx].distance = calcDist(pointa,s.name.split('@')[s.name.split('@').length-1]    );  } else if(s.gate == true && array[idx-1].gate == true) {stops[idx].distance = 0;}
+						else if(stops[idx-1].name.split('@')[stops[idx-1].name.split('@').length-1] == s.name.split('@')[s.name.split('@').length-1]) {stops[idx].distance=0;}
+						else { console.log(stops[idx-1].name.split('@')[stops[idx-1].name.split('@').length-1]); console.log(s.name);  stops[idx].distance = calcDist(stops[idx-1].name.split('@')[stops[idx-1].name.split('@').length-1],s.name.split('@')[s.name.split('@').length-1]); }});
+				var wh_dist = 0;
+			  stops.forEach(function(s) { wh_dist += s.distance; });
+
+				route['Wormhole'] = {'stops': stops, 'distance':wh_dist}
+
+	}
+
+
 
 	// Sort all routes by distance traveled. Index of zero should be the fastest, in theory any way
 	var route_keys_sorted = Object.keys(route).sort(function(a,b) {return route[a].distance-route[b].distance});
-
+	console.log(route)
 	return route[route_keys_sorted[0]];
 }
 
@@ -375,7 +414,6 @@ function predictDestination(loc,heading,frame) {
 				var objFrame = new THREE.Vector3(0,0,0);
 		}
 
-		console.log(frame)
 		var adjLoc = loc.clone();
 		adjLoc = adjLoc.add(objFrame);
 		var headingvec = new THREE.Vector3(heading.x, heading.y, 300);
@@ -383,12 +421,13 @@ function predictDestination(loc,heading,frame) {
 		drawline(adjLoc,farpoint);
 		var directionvector = farpoint.sub(adjLoc);
 		var ray = new THREE.Raycaster(adjLoc, directionvector.clone().normalize());
+		ray.precision = 100;
 		scene.updateMatrixWorld();
 		var intersects = ray.intersectObjects(scene.children,false);
 		var correctedintersections=[];
 		if (intersects[0]) {
 				intersects.forEach(function(obj) {
-					if (obj.object.geometry.boundingSphere.radius != 'undefined' &&  obj.object.geometry.boundingSphere.radius < 2) {
+					if (obj.object.geometry.boundingSphere.radius != 'undefined' &&  obj.object.geometry.boundingSphere.radius < 4 ) {
 							correctedintersections.push(obj.object.name);
 					}
 				});
@@ -396,4 +435,8 @@ function predictDestination(loc,heading,frame) {
 			}
 			return "Unable to predict"
 
+}
+
+function boundingSphereGrab(name){
+	return scene.getObjectByName(name)
 }

@@ -9,8 +9,9 @@
 		 { "name":"Kildare V / Kildare IX / Kildare XI / USB Stormwatch"}
 	],
 	"wormholes": [
-		{"enda" : "Magna Roma", "endb": "Usho Prime", "endaname": "Transwarp Gate MR-01", "endbname": "Transwarp Gate U-02", "exitaname": "Transwarp Exit MR-01", "exitbname": "Transwarp Exit U-02"}
-	],
+		{"name": "Magna Roma <-> Usho Prime", "enda": {"location":  "Magna Roma", "displayname": "Transwarp Gate MR-01", "oppsiteexit": "Transwarp Exit U-02" }, "endb": {"location": "Usho Prime", "displayname": "Transwarp Gate U-02", "oppsiteexit": "Transwarp Exit M-01"}},
+		{"name": "Bajor <-> Idran X", "enda": {"location":  "Bajor/Jeraddo", "displayname": "Wormhole BQ Entrance", "oppsiteexit": "Wormhole GQ Exit" }, "endb": {"location": "Idran X", "displayname": "Wormhole GQ Entrance", "oppsiteexit": "Wormhole BQ Exit"}}
+		],
 	"empires": [
 {
 "name": "Cardassian",

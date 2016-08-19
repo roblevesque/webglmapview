@@ -162,7 +162,6 @@ function populateRoutePlan(pointa,pointb,speed) {
 			$('#cal_end').html( pointb );
 			$('#cal_speed').html( speed.speed + " " + speed.unit );
 			var route = calcBestRoute(pointa,pointb);
-			console.log(route)
 			var dist = route.distance;
 			var eta = calcETA(speed,dist);
 			$('#cal_eta').html( timeformat(eta) );
@@ -179,9 +178,9 @@ function populateRoutePlan(pointa,pointb,speed) {
 				if(waypoint.gate && lastWaypoint.gate) {routeplan += '<option>^---- Gate Exit</option>'; }
 
 				if(!waypoint.gate || (!lastWaypoint.gate && waypoint.gate)) {
-					routeplan += '<option>Distance:' + calcDist(lastWaypoint.name,waypoint.name).toFixed(2) + '</option>'
-					routeplan += '<option>ETA: ' + timeformat(calcETA(speed,calcDist(lastWaypoint.name,waypoint.name))) + '</option>';
-					drawline(grabPositionByName(lastWaypoint.name),grabPositionByName(waypoint.name));
+					routeplan += '<option>Distance:' + waypoint.distance.toFixed(2) + '</option>'
+					routeplan += '<option>ETA: ' + timeformat(calcETA(speed,waypoint.distance)) + '</option>';
+					drawline(grabPositionByName(lastWaypoint.name.split('@')[lastWaypoint.name.split('@').length-1] ),grabPositionByName(waypoint.name.split('@')[waypoint.name.split('@').length-1]    ));
 				}
 				lastWaypoint = waypoint;
 			});
