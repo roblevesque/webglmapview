@@ -389,7 +389,7 @@ function calcBestRoute(pointa,pointb) {
 				stops.forEach(function(s, idx, array) {if(s.gate !=true && array[idx-1].gate !=true) { stops[idx].distance = calcDist(s.location,array[idx-1].location); }
 						else if(idx == 0)  {stops[idx].distance = calcDist(pointa,s.name.split('@')[s.name.split('@').length-1]    );  } else if(s.gate == true && array[idx-1].gate == true) {stops[idx].distance = 0;}
 						else if(stops[idx-1].name.split('@')[stops[idx-1].name.split('@').length-1] == s.name.split('@')[s.name.split('@').length-1]) {stops[idx].distance=0;}
-						else { u stops[idx].distance = calcDist(stops[idx-1].name.split('@')[stops[idx-1].name.split('@').length-1],s.name.split('@')[s.name.split('@').length-1]); }});
+						else { stops[idx].distance = calcDist(stops[idx-1].name.split('@')[stops[idx-1].name.split('@').length-1],s.name.split('@')[s.name.split('@').length-1]); }});
 				var wh_dist = 0;
 			  stops.forEach(function(s) { wh_dist += s.distance; });
 
