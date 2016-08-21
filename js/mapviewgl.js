@@ -307,7 +307,7 @@ function calcDist(pointa, pointb) {
 		return distance;
 }
 
-function grabPositionByName(name) { return scene.getObjectByName(name).position;  }
+function grabPositionByName(name) { return scene.getObjectByName(name.split('@')[name.split('@').length-1]).position;  }
 
 
 function calcEndpointByHeading(heading,startvec = new THREE.Vector3(0,0,0)) {
