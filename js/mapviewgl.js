@@ -389,7 +389,7 @@ function calcBestRoute(pointa,pointb) {
 				stops.forEach(function(s, idx, array) {if(s.gate !=true && array[idx-1].gate !=true) { stops[idx].distance = calcDist(s.location,array[idx-1].location); }
 						else if(idx == 0)  {stops[idx].distance = calcDist(pointa,s.name.split('@')[s.name.split('@').length-1]    );  } else if(s.gate == true && array[idx-1].gate == true) {stops[idx].distance = 0;}
 						else if(stops[idx-1].name.split('@')[stops[idx-1].name.split('@').length-1] == s.name.split('@')[s.name.split('@').length-1]) {stops[idx].distance=0;}
-						else { console.log(stops[idx-1].name.split('@')[stops[idx-1].name.split('@').length-1]); console.log(s.name);  stops[idx].distance = calcDist(stops[idx-1].name.split('@')[stops[idx-1].name.split('@').length-1],s.name.split('@')[s.name.split('@').length-1]); }});
+						else { u stops[idx].distance = calcDist(stops[idx-1].name.split('@')[stops[idx-1].name.split('@').length-1],s.name.split('@')[s.name.split('@').length-1]); }});
 				var wh_dist = 0;
 			  stops.forEach(function(s) { wh_dist += s.distance; });
 
@@ -401,7 +401,7 @@ function calcBestRoute(pointa,pointb) {
 
 	// Sort all routes by distance traveled. Index of zero should be the fastest, in theory any way
 	var route_keys_sorted = Object.keys(route).sort(function(a,b) {return route[a].distance-route[b].distance});
-	console.log(route)
+
 	return route[route_keys_sorted[0]];
 }
 
