@@ -192,14 +192,14 @@ function animate() {
 
 function render () {
 		//requestAnimationFrame( render );
-  
+
     var objectlist = Object.keys(listobjects("stations"));
     objectlist.forEach (function(station) { var obj = scene.getObjectByName(escapeHTML(station + "_label")); obj.lookAt(camera.position)  }) ;
     objectlist = Object.keys(listobjects("planets"));
     objectlist.forEach (function(planet) { var obj = scene.getObjectByName(escapeHTML(planet + "_label")); obj.lookAt(camera.position)  }) ;
     objectlist = Object.keys(listobjects("borders"));
     objectlist.forEach (function(border) { var obj = scene.getObjectByName(border + "_label"); if (obj != undefined) { obj.lookAt(camera.position)}  }) ;
-    
+
     renderer.render( scene, camera );
  }
 
@@ -371,7 +371,7 @@ function calcBestRoute(pointa,pointb) {
 
 	} // End gate work...
 
-	
+
   // Calculate wormhole route
 	// Qon does this by quadrant. Frey does this by brute force. The following may be really scary.
 	jsonWormhole.forEach(function(wh) { distance_wb[wh.enda.location] = calcDist(pointb,wh.enda.location); distance_wb[wh.endb.location] = calcDist(pointb,wh.endb.location);    });
@@ -449,3 +449,35 @@ function predictDestination(loc,heading,frame) {
 function boundingSphereGrab(name){
 	return scene.getObjectByName(name)
 }
+
+function findObjectInfo(name) {
+	var object = {};
+	var types = ["stations","planets","borders"];
+	types.forEach(function(type) {
+	for (var key in jsonEmpire) {
+		area=jsonEmpire[key];
+		for (var key2 in area[type]) {
+
+				if(escapeHTML(area[type][key2].name) == name) {
+				object = area[type][key2];
+				object.parent = jsonEmpire[key];
+				switch(type) {
+					case 'planets':
+						object.type = "Planet";
+						break;
+				  case 'borders':
+						object.type = "Territory";
+						break;
+					case 'stations':
+						object.type = "Starbase/Base/Station";
+						break;
+					default:
+						object.type = "Currently Unknown"
+				}
+
+		}
+
+		}
+	}});
+	return object;
+	}
