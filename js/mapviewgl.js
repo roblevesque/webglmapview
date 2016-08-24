@@ -90,6 +90,7 @@ for (var key in jsonEmpire) {
 				l_text.material.alphaTest = 0.5;
 				l_text.position.set(border.x,border.y,border.z);
 				l_text.scale.set(0.75,0.75,0.75);
+				l_text.name = border.name + "_label";
 				scene.add(l_text);
 			}
 	}
@@ -111,7 +112,7 @@ for (var key in jsonEmpire) {
     l_text.material.alphaTest = 0.0;
     l_text.position.set(planet.x,planet.y,planet.z);
     l_text.scale.set(0.25,0.25,0.25);
-		l_text.name = escapeHTML(planet.name);
+		l_text.name = escapeHTML(planet.name + "_label");
     scene.add(l_text);
   }
 
@@ -131,7 +132,7 @@ for (var key in jsonEmpire) {
     l_text.material.alphaTest = 0.0;
     l_text.position.set(base.x,base.y+3,base.z);
 		l_text.scale.set(0.20,0.20,0.20);
-		l_text.name = escapeHTML(base.name);
+		l_text.name = escapeHTML(base.name + "_label");
     scene.add(l_text);
   }
 
@@ -191,9 +192,16 @@ function animate() {
 
 function render () {
 		//requestAnimationFrame( render );
+  
+    var objectlist = Object.keys(listobjects("stations"));
+    objectlist.forEach (function(station) { var obj = scene.getObjectByName(escapeHTML(station + "_label")); obj.lookAt(camera.position)  }) ;
+    objectlist = Object.keys(listobjects("planets"));
+    objectlist.forEach (function(planet) { var obj = scene.getObjectByName(escapeHTML(planet + "_label")); obj.lookAt(camera.position)  }) ;
+    objectlist = Object.keys(listobjects("borders"));
+    objectlist.forEach (function(border) { var obj = scene.getObjectByName(border + "_label"); if (obj != undefined) { obj.lookAt(camera.position)}  }) ;
+    
     renderer.render( scene, camera );
-
-}
+ }
 
 
 function listobjects(type) {
@@ -210,6 +218,7 @@ function listobjects(type) {
 	}
 	return objects;
 }
+
 
 function zoomfocus(name) {
 
