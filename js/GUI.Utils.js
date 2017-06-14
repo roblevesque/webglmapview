@@ -14,7 +14,7 @@ $(document).ready(function() {
 					zoomfocus(selected);
 					// Populate information area about target
 					console.log(object)
-					var objdata = "<b>Name: </b>" + object.name + "<br />"; 
+					var objdata = "<b>Name: </b>" + object.name + "<br />";
 					objdata += "<br /><b>Location (Galactic Ref.)</b><br /><b>X</b>: " + object.x + "<br/><b>Y</b>: " + object.y + "<br /><b>Z</b>: " + object.z;
 					objdata += "<br /><br /><b>Classification</b><br />" + object.type;
 					objdata += "<br /><br /><b>Owning Faction</b><br />" + object.parent.name;
@@ -62,8 +62,7 @@ $(document).ready(function() {
 				var predicted = predictDestination(new THREE.Vector3(Number($('#x').val()),Number($('#y').val()),Number($('#z').val())),new THREE.Vector2(Number($('#azmuth').val()),Number($('#inclination').val())),$('#intel_frame option:selected').val());
 				$('#intel_predicted').html(predicted);
 		});
-
-
+  
 });
 
 
