@@ -29,7 +29,7 @@ canvas { width: 75%; height: 100% ;}
   border-radius: 0;
   height: auto;
   -webkit-appearance: none;
-  background: url('/assets/select-arrow.png') no-repeat right center #333;
+  background: url('../assets/select-arrow.png') no-repeat right center #333;
   color: #67989A;
   margin: 0 auto;
 
