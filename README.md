@@ -17,7 +17,7 @@ Feel free. I am not a JS developer by any stretch so any desire to contribute or
 
 * Interface/UX Improvements
 * Additional navigation features
-* Improvement of rote selection, and ability to choose the other routes 
+* Improvement of route selection, and ability to choose the other routes 
 * Live game data / Sensor Data (Based on in game token, or something of that sort) 
 * Embeded client (Maybe??) 
 
