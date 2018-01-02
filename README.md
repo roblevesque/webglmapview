@@ -1,6 +1,6 @@
 # Mapview WebGL
-* (Link to WebGL Mapview)[https://goo.gl/7qEyYd]
-* (Link to issue tracker)[https://goo.gl/7uDYCW]
+* [Link to WebGL Mapview](https://goo.gl/7qEyYd)
+* [Link to issue tracker](https://goo.gl/7uDYCW)
 
 
 ## Introduction
