@@ -1,4 +1,0 @@
-[submodule "mapview"]
-	path = mapview
-	url = https://github.com/roblevesque/webglmapview.git
-	branch = master
