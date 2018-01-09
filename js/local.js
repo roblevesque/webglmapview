@@ -2,7 +2,7 @@
 // -grapenut
 
 var defaultHost = "ats.trekmush.org";
-var defaultPort = '1701';
+var defaultPort = '1700';
 
 // pre-define the connection object, later it will be set to
 // conn = WSClient.open('ws://host:port/wsclient')
@@ -286,9 +286,9 @@ function reconnect() {
 
   msg('%% Reconnecting to server...\r\n');
 
-  // detect whether to use SSL or not  /*  Dont Detect because GitHub is HTTP and ATS is not. Force ws:// (RL) */
-  // var proto = ((window.location.protocol == "https:") || settings.forceSSL.val) ? 'wss://' : 'ws://';
-  var proto = 'ws://';
+  // detect whether to use SSL or not
+   var proto = ((window.location.protocol == "https:") || settings.forceSSL.val) ? 'wss://' : 'ws://';
+  //var proto = 'ws://';
 
   // open a new connection to ws://host:port/wsclient
   conn = WSClient.connect(proto + settings.serverAddress.val + ":" + settings.serverPort.val + '/wsclient');
