@@ -157,11 +157,12 @@ input[type=radio]:checked + label:before {
   text-align: left;
   background-color: #111
 }
+#client { display: block; }
 .hidden { display: none; }
 #client-term-entry { width: 100%; height: 5vh; border: 0; border-top: 1px solid white; border-bottom: 1px solid white; background-color: #222; margin: 0; padding:0; resize: none; color: silver; vertical-align: middle;}
 
 @media only screen and (max-width: 1290px) { #client-tab-desc { display: none; } }
 @media only screen and (max-width: 900px) { .wvg-navbar { height: 6vh; font-size: 1.25em;}  .wvg-controls { width: 65%;}  .wvg-navbar li { padding-left: 1vw; padding-right: 2vw; padding-top: 2.0vh;} .wvg-tools span, .select-route-map {width: 95%;}
-      .menu-button { font-weight: bold; font-size:1.5em; padding-top: 0.5vh;  }   #client-tab-desc { display: none; } }
-@media only screen and (max-width: 500px) { .wvg-controls { width: 100%;}  .wvg-tablink { font-size: 0.75em; padding:0; padding-left: 2vw; padding-right: 2vw; } }
+      .menu-button { font-weight: bold; font-size:1.5em; padding-top: 0.5vh;  }   #client-tab-desc { display: none; }  #client { display: none; }}
+@media only screen and (max-width: 500px) { .wvg-controls { width: 100%;}  .wvg-tablink { font-size: 0.75em; padding:0; padding-left: 2vw; padding-right: 2vw; }   }
 @media only screen and (max-height: 575px) { .reset-container { height: 4em;} .wvg-controls { overflow-y: auto; margin-bottom: -5vh;} .wvg-tools {font-size: 0.75em;}  }
