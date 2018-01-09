@@ -62,7 +62,15 @@ $(document).ready(function() {
 				var predicted = predictDestination(new THREE.Vector3(Number($('#x').val()),Number($('#y').val()),Number($('#z').val())),new THREE.Vector2(Number($('#azmuth').val()),Number($('#inclination').val())),$('#intel_frame option:selected').val());
 				$('#intel_predicted').html(predicted);
 		});
-  
+		$('#client-bar-control').click(function() {
+			$('#client-term-container').toggleClass("hidden");
+			$('#client-ico-down').toggleClass("hidden");
+			$('#client-ico-up').toggleClass("hidden");
+		});
+		$('#client-login').click(function() { reconnect();})
+
+		startup();
+
 });
 
 
