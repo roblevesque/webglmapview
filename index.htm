@@ -13,7 +13,8 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <link href="styles/styles.css" rel="stylesheet">
       <link href="styles/ansi.css" rel="stylesheet">
-      <script src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
+      <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
       <script src="js/GUI.Utils.js"></script>
       <script>
 		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -133,7 +134,10 @@
 			      <a href="#" id="client-bar-control"><i id="client-ico-up" class="fa fa-chevron-up" aria-hidden="true"></i><i id="client-ico-down" class="fa fa-chevron-down hidden" aria-hidden="true"></i><b id="client-tab-desc">Client</b></a>
 		      </span>
 	      </div>
-        <div id="client-term-container" class="hidden">
+        <div id="client-term-container" class="hidden vertical-resize">
+          <div id="client-term-resize" class="handle ui-resizable-handle ui-resizable-n" >
+            <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+          </div>
           <form id="client-term">
             <div id="client-term-output" class="ansi-37 ansi-40"></div>
             <div id="client-term-prompt" class="ansi-37 ansi-40"></div>

@@ -68,7 +68,19 @@ $(document).ready(function() {
 			$('#client-ico-up').toggleClass("hidden");
 		});
 		$('#client-login').click(function() { reconnect();})
-
+		$(".vertical-resize").resizable({
+        handles: {
+            'n': '#client-term-resize'
+        },
+				alsoResize: "#client-term-output",
+				minWidth: "100%",
+				maxWidth: "100%",
+				stop: function(event, ui) {
+        $(this).css("width", '');
+				$('#client-term-output').css("width",'');
+				}
+		});
+		$(".client-term-container").resize(function() { width = $(this).width(); $("#client").css({'width' : '100%'});   $("#client-term-output").css({'margin-right' : '0px !important', 'padding-right' : '0 !important'})  })
 		startup();
 
 });
