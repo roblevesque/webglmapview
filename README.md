@@ -15,7 +15,7 @@ This is project is by no means official or complete. It is simply ment as a POC 
 
 Feel free. I am not a JS developer by any stretch so any desire to contribute or any desire to blast me and call me an idiot for doing X, Y or Z, go for it. Contributions can be made at any time.  Some projects I'd like to work on are:
 
-* [Interface/UX Improvements]((../../issues/1))
+* [Interface/UX Improvements](../../issues/1)
 * Additional navigation features
 * Improvement of route selection, and ability to choose the other routes
 * Live game data / Sensor Data (Based on in game token, or something of that sort)
