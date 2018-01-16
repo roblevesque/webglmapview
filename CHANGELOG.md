@@ -1,4 +1,4 @@
-#Change Log
+# Change Log
 
 **V0.6.1** *(1-16-2018)*
   * Moved CHANGELOG over to read CHANGELOG.md from project and parse the markdown in Javascript. Is it overkill? Sure. Do I care? No
