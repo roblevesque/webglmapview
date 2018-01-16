@@ -81,6 +81,19 @@ $(document).ready(function() {
 				}
 		});
 		$(".client-term-container").resize(function() { width = $(this).width(); $("#client").css({'width' : '100%'});   $("#client-term-output").css({'margin-right' : '0px !important', 'padding-right' : '0 !important'})  })
+		$.ajax({
+			url: 'CHANGELOG.md',
+			type: 'get',
+			async: 'true',
+			success: function(text) {
+				var converter = new showdown.Converter(),
+				html = converter.makeHtml(text);
+
+				$("#changelog_container").html(html);
+			}
+		});
+
+		// Websocket client startup
 		startup();
 
 });

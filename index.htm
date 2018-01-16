@@ -11,10 +11,12 @@
       <link href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway:400,700,700i" rel="stylesheet">
       <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
       <link href="styles/styles.css" rel="stylesheet">
       <link href="styles/ansi.css" rel="stylesheet">
       <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
       <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.8.6/showdown.min.js" crossorigin="anonymous"></script>
       <script src="js/GUI.Utils.js"></script>
       <script>
 		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -68,8 +70,9 @@
                 <select id="pointb" name="Point_B">
                   <!-- Options will generated in code -->
                 </select>
-                <label for="speed">Travel Speed</label>
-                <input type="text" id="speed" value="14">
+                <br />    <br />
+                <label for="speed">Travel Speed</label>    <br />
+                <input type="text" id="speed" value="14">    <br />
                 <select id="speedunit" name="Speed Unit">
                    <option value='WF'>Warp Factor</option>
                    <option value='PC/s'>PC/s</option>
@@ -113,16 +116,15 @@
 
           </div>
     			<div class="wvg-tools" id="Info">
-    				<span> This tool was designed by Frey @ ATSMUSH. It is based on MapView for ATS with data used from the Navcomp MUSHClient plugin with permission. </span>
-            <span> Change Log :<br/>
-              <p>
-                <b>1-9-2018</b>: <i> Add simple websocket based client to desktop & tablet version (for now until I can figure mobile out). Thanks to grapenut@M*U*S*H for the client code and all others on the PennMUSH dev team involved in adding websockets to the codebase. </i>
-              </p>
-              <p>
-                <b>6-14-2017</b>: <i> Improve resposiveness in design. It wasn't scaling down well, should be better now. Not glorious, but better. Also, this changelog was added.</i>
-              </p>
+            <span id="changelog_container">
+              <!-- Silly stuff gets put here on JS execution -->
             </span>
-            <span><a href="https://goo.gl/7uDYCW">Issue Tracker</a></span>
+
+            <div id="info_footer">
+              <span class="toolsep"></span>
+              <span> This tool was designed by Frey @ ATSMUSH. It is based on MapView for ATS with data used from the Navcomp MUSHClient plugin with permission. </span>
+              <span><a href="https://goo.gl/7uDYCW">Issue Tracker</a>  <i class="fa fa-ellipsis-h" aria-hidden="true"></i>  <a href="https://github.com/roblevesque/webglmapview">Project Page</a></span>
+            </div>
     			</div>
     		</div>
     		<div class="reset-container"><span class="reset-button">  Reset </span></div>

@@ -1,4 +1,7 @@
 body { margin: 0; overflow:hidden;}
+a { color: #3641a0;}
+a:visited { color: #87899b; }
+a:hover { color: #0019ff;}
 canvas { width: 75%; height: 100% ;}
 .reset-button {margin: 0; padding: 0; padding: 0.25em 0.25em; color: #AAA; font-size: 1.0em;}
 .menu-button { position: fixed; right: 0.1vw; top: 0; z-index: 5; color:white; background-color:#003133; padding: 0px; font-weight: bold; font-size:2.5vh;  }
@@ -19,7 +22,7 @@ canvas { width: 75%; height: 100% ;}
 .wvg-navbar li { width:auto; height: 100%; float: left; padding-top: 0.25vh; padding-bottom: 0.25vh; padding-left: 0.5vw; padding-right: 0.5vw; margin: 0; border: 0; text-decoration: none;}
 .wvg-tablink { height: 100%; border: 0; margin: 0; padding: 0; font-weight: bold; text-align: center; font-family: 'Raleway', sans-serif; color:#67989A; font-size: 1.0em; }
 .wvg-tab-active { background-color: #0D4A4D; color: #003133; }
-.wvg-tools { width: 100%; height: 98%; background: #333; display: none; color: #AAA; padding-top: 2vh; padding-left:1vw; padding-right: 2.5vw;}
+.wvg-tools { width: 100%; height: 98%; background: #333; display: none; color: #AAA; padding-top: 2vh; padding-left:0.1vw; padding-right: 0.25vw;}
 .wvg-tools select, .wvg-tools input {
   width: 12vw;
   padding: 5px;
@@ -35,7 +38,7 @@ canvas { width: 75%; height: 100% ;}
 
   }
 .wvg-tools input { background: #333; width: 11.4vw; }
-.wvg-tools span { text-align: center; color: #FFF; font-family: 'Raleway', sans-serif; display: block; padding-right: 3vw; font-size: 1.0em; }
+.wvg-tools span { text-align:center; color: #FFF; font-family: 'Raleway', sans-serif; display: block; font-size: 1.0em; }
 .wvg-tools span label { font-weight: bold;}
 .wvg-first {  display: block; }
 #wrapper { height: inherit; width: 100%; }
@@ -92,8 +95,8 @@ input[type=radio]:checked + label:before {
   text-decoration: none;
 }
 .tool-header { font-weight: bold; padding-top: 0.75em; display: block; }
-#route_output {font-size: 1.25vh; height: 30%; padding-top: 1vh; width: 90%;}
-.toolsep { margin-right: 1vw; padding:0;  padding-top: 1vh; padding-bottom: 2.5vh; border-bottom: 1px #AAA solid; height: 1vh; display: block; width: 64%;}
+#route_output {margin: 0 auto; font-size: 1.25vh; height: 30%; padding-top: 1vh; width: 100%; overflow: auto;}
+.toolsep { margin: 0 auto; padding:0;  padding-top: 1vh; padding-bottom: 2.5vh; border-bottom: 1px #AAA solid; height: 1vh; display: block; width: 64%;}
 .calc_data { padding-top: 2.5vh; font-size: 1.5vh;  font-family: 'Open Sans', sans-serif;}
 
 #client {
@@ -164,6 +167,11 @@ input[type=radio]:checked + label:before {
 #client-term-resize {color: lightgrey; text-align: center;  width: 100%; background-color: #333; }
 #client-term-resize i { margin: 0 auto; width: 2vw;}
 
+
+#changelog_container h1 { text-align: center; font-size: 1.0em; }
+#changelog_container { height: 80%; text-align: left; font-size: 0.75em; padding-right: 0.3vw; overflow: hidden;}
+#changelog_container::parent {text-align: left;}
+#info_footer {padding-bottom:0.9vh; font-size: 0.60em; position: fixed; bottom: 5vh;}
 
 
 @media only screen and (max-width: 1290px) { #client-tab-desc { display: none; } }
