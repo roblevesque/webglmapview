@@ -75,6 +75,7 @@ $(document).ready(function() {
 				alsoResize: "#client-term-output",
 				minWidth: "100%",
 				maxWidth: "100%",
+				maxHeight: ($(window).height() * 0.95),
 				stop: function(event, ui) {
         $(this).css("width", '');
 				$('#client-term-output').css("width",'');
@@ -93,6 +94,12 @@ $(document).ready(function() {
 			}
 		});
 
+		$(window).resize(function() {
+				$('.vertical-resize').resizable( "option", "maxHeight", ($(window).height() * 0.95) );
+				if($('.vertical-resize').height() > ($(window).height() * 0.95) ) {
+					$('.vertical-resize').height(($(window).height() * 0.95));
+				}
+		});
 		// Websocket client startup
 		startup();
 
