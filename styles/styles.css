@@ -134,7 +134,7 @@ input[type=radio]:checked + label:before {
 #client-tab-desc{ padding-left: 0.5vw;}
 
 #client-term-container {
-  height: 40vh;
+  height: 40%;
   width: 100%;
   background-color: black;
 }
@@ -154,7 +154,7 @@ input[type=radio]:checked + label:before {
   }
 #client-term-prompt {
   width: 100%;
-  height: 0.9vh;
+  height: 1em;
   overflow: hidden;
   white-space: pre-wrap;
   text-align: left;

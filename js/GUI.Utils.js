@@ -1,4 +1,16 @@
 var lastInputBox;
+$.widget("ui.resizable", $.ui.resizable, {
+resizeBy: function(newSize) {
+		this._mouseStart($.Event("mousedown", { pageX: 0, pageY: 0 }));
+		this.axis = 'se';
+		var end = $.Event("mouseup", {
+				pageX: newSize.width,
+				pageY: newSize.height
+		});
+		this._mouseDrag(end);
+		this._mouseStop(end);
+}
+});
 
 $(document).ready(function() {
                 // Controls menu hide/show
@@ -70,7 +82,7 @@ $(document).ready(function() {
 		$('#client-login').click(function() { reconnect();})
 		$(".vertical-resize").resizable({
         handles: {
-            'n': '#client-term-resize'
+            'n': '.handle'
         },
 				alsoResize: "#client-term-output",
 				minWidth: "100%",
@@ -95,9 +107,9 @@ $(document).ready(function() {
 		});
 
 		$(window).resize(function() {
-				$('.vertical-resize').resizable( "option", "maxHeight", ($(window).height() * 0.95) );
-				if($('.vertical-resize').height() > ($(window).height() * 0.95) ) {
-					$('.vertical-resize').height(($(window).height() * 0.95));
+				$('.vertical-resize').resizable( "option", "maxHeight", ($('.vertical-resize').parent().parent().height() * 0.95) );
+				if($('.vertical-resize').height() > ($('.vertical-resize').parent().parent().height() * 0.95) )  	{
+						$('.vertical-resize').resizable("resizeBy", {height: '95%', width:'100%'});
 				}
 		});
 		// Websocket client startup
