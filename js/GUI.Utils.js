@@ -39,6 +39,14 @@ $(document).ready(function() {
 			 var stop=$('#route_output :selected').parent().attr('label');
 			 zoomfocus(stop);
 		});
+		$('#swapab').click(function() {
+			var pa = "pointa";
+			var pb = "pointb";
+			$("#pointa").remove();
+			$("#pointb").remove();
+			$("#pointa").val(pb);
+			$("#pointb").val(pa);
+		});
 		$('#calctnd').click(function() {
 
 			removeEntity('arrow');
