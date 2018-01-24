@@ -4,7 +4,7 @@
   * Moved CHANGELOG over to read CHANGELOG.md from project and parse the markdown in Javascript. Is it overkill? Sure. Do I care? No
   * Some design tweaks to improve space usage throughout sidebar, and other things
   * Adjustable size on client window
-  * Add Swap button (Crisha)
+  * Add Swap button (Crisha)
 
 **V0.6** *(1-9-2018)*
 * Simple websocket client.     (Thanks to grapenut@M\*U\*S\*H )
