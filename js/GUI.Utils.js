@@ -40,12 +40,9 @@ $(document).ready(function() {
 			 zoomfocus(stop);
 		});
 		$('#swapab').click(function() {
-			var pa = $("#pointa");
-			var pb = $("#pointb");
-			$("#pointa").remove();
-			$("#pointb").remove();
-			$("#pointa").html(pb);
-			$("#pointb").html(pa);
+			var swap=$('#pointa').val();
+			$("#pointa").val($("#pointb").val());
+			$("#pointb").val(swap);
 		});
 		$('#calctnd').click(function() {
 
