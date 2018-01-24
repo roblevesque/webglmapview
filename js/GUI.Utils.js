@@ -44,8 +44,8 @@ $(document).ready(function() {
 			var pb = $("#pointb");
 			$("#pointa").remove();
 			$("#pointb").remove();
-			$("#pointa").val(pb);
-			$("#pointb").val(pa);
+			$("#pointa").html(pb);
+			$("#pointb").html(pa);
 		});
 		$('#calctnd').click(function() {
 
