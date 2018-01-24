@@ -39,6 +39,11 @@ $(document).ready(function() {
 			 var stop=$('#route_output :selected').parent().attr('label');
 			 zoomfocus(stop);
 		});
+		$('#swapab').click(function() {
+			var swap=$('#pointa').val();
+			$("#pointa").val($("#pointb").val());
+			$("#pointb").val(swap);
+		});
 		$('#calctnd').click(function() {
 
 			removeEntity('arrow');
