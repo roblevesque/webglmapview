@@ -40,8 +40,8 @@ $(document).ready(function() {
 			 zoomfocus(stop);
 		});
 		$('#swapab').click(function() {
-			var pa = "pointa";
-			var pb = "pointb";
+			var pa = $("#pointa");
+			var pb = $("#pointb");
 			$("#pointa").remove();
 			$("#pointb").remove();
 			$("#pointa").val(pb);
