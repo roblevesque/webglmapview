@@ -13,10 +13,13 @@ resizeBy: function(newSize) {
 });
 
 $(document).ready(function() {
-                // Controls menu hide/show
+
+		setInterval(update_animations, 100);
+
+		 // Controls menu hide/show
 		$('#hotdog').click(function(){
                         $('#controls').toggleClass("active");
-                        });
+    });
 
 		// Reset view
     $('.reset-container').click(function(){ reset_view();});
@@ -54,7 +57,7 @@ $(document).ready(function() {
 		});
 		$('#submitfindcoord').click(function() {
 			 cleanupFBC();
-			 execFBC( $('#fbc-x').val(), $('#fbc-y').val(), $('#fbc-z').val(), $('#fbc_frame option:selected').val());
+			 execFBC( $('#fbc-x').val(), $('#fbc-y').val(), $('#fbc-z').val(), $('#fbc_frame option:selected').val() );
 		});
 		$('#submitfbcclear').click(function() {
 					cleanupFBC();
@@ -275,10 +278,11 @@ function populateRoutePlan(pointa,pointb,speed) {
 
 function execFBC(x,y,z,frame) {
 			var optionoutput = "";
+			var zoomto = "";
 			var borderlist = listobjects("borders");
 
-			if(frame == "Unknown") {
-				// The stupid bumblefuck sitting at the chair/computer interface
+			if(frame === "Unknown") {
+				// The stupid bumblefuck located at the chair/computer interface
 				// doesn't know where it is so we gotta draw all the places!
 
 				// Galactic frame. The easiest so we do it first on account that i'm stupid
@@ -296,19 +300,17 @@ function execFBC(x,y,z,frame) {
 					}
 				}
 			}  // Borders done got chooched. End bumblefuckery
-			else if (frame == "Galactic") {
+			else if (frame === "Galactic") {
 							drawcircleindicator(new THREE.Vector3(x,y,z), "FBC_Galactic");
 							optionoutput += '<option> Galactic </option>';
-							zoomfocus("FBC_Galactic");
 			}
 			else {
 				border = borderlist[frame];
 				var inputvector = new THREE.Vector3(x,y,z);
 				var framevector = new THREE.Vector3(border.x, border.y, border.z);
 				var outputvector = framevector.sub(inputvector);
-				drawcircleindicator(outputvector,"FBC_" + border.name);
-				optionoutput += '<option>' + border.name + '</option>';
-				zoomfocus("FBC_" + border.name);
+				drawcircleindicator(outputvector,"FBC_" + frame);
+				optionoutput += '<option>' + frame + '</option>';
 			}
 
 			$('#fbc_output').html(optionoutput);
@@ -321,7 +323,17 @@ function cleanupFBC() {
 		if(borderlist[border].radius > 10) {
 				removeEntity("FBC_" + borderlist[border].name);
 				removeEntity("FBC_" + borderlist[border].name + "_label");
+				removeEntity("FBC_" + borderlist[border].name + "_light");
+				var index = misc_followers.indexOf("FBC_" + borderlist[border].name + "_label")
+				if (index > -1 ) { misc_followers.splice(index, 1);}
 		}
+		removeEntity("FBC_Galactic");
+		removeEntity("FBC_Galactic_light");
+		removeEntity("FBC_Galactic_label");
+		var index = misc_followers.indexOf("FBC_Galactic_label")
+		if (index > -1 ) { misc_followers.splice(index, 1);}
+
+
 	}
 	$('#fbc_output').html("");
 }

@@ -4,6 +4,8 @@ var camera, controls, scene, renderer;
 var clock = new THREE.Clock();
 var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2(), INTERSECTED;
+var mixers = [];
+var misc_followers = [];
 var WIDTH = window.innerWidth , HEIGHT = window.innerHeight
 
 window.onload = function() {
@@ -138,6 +140,8 @@ for (var key in jsonEmpire) {
     scene.add(l_text);
   }
 
+
+
 }
     // Set view and camera to point to initial location
 		reset_view();
@@ -185,10 +189,23 @@ function onCanvasClick( event ) {
 
 function animate() {
 				var delta = clock.getDelta();
-	        requestAnimationFrame( animate );
-	        scene.updateMatrixWorld()
-					controls.update(delta);
-	        render();
+	      requestAnimationFrame( animate );
+				update_animations();
+	      scene.updateMatrixWorld()
+				controls.update(delta);
+	      render();
+}
+
+function update_animations() {
+	var delta = clock.getDelta();
+	if ( mixers.length > 0 ) {
+		for ( var i = 0; i < mixers.length; i ++ ) {
+			mixers[ i ].update( delta );
+		}
+	}
+	// Also make any misc things follow camera
+	misc_followers.forEach (function(follower) { var obj = scene.getObjectByName(escapeHTML(follower)); obj.lookAt(camera.position)  });
+
 }
 
 
@@ -255,45 +272,45 @@ function drawline(origin,dest) {
 		arrowHelper.cone.material.opacity = 0.25;
 		arrowHelper.line.material.linewidth = 2;
 		scene.add( arrowHelper );
-
-		animate();
-
 }
 
 function drawcircleindicator(center, name="Beacon") {
 	var Text2D = THREE_Text.Text2D;
 	var SpriteText2D = THREE_Text.SpriteText2D;
 	var textAlign = THREE_Text.textAlign
-	var geometry = new THREE.TorusGeometry( 1, 0.05, 2, 12 );
-	var material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
-	var indicator = new THREE.Mesh( geometry, material );
-	var label = new Text2D(name, { align: textAlign.center,  font: '25px Arial', fillStyle: '#777' , antialias: false });
-	indicator.position.x = center.x;
-	indicator.position.y = center.y;
-	indicator.position.z = center.z;
-	indicator.name = name;
-	label.material.alphaTest = 0.7;
-	label.position.set(center.x, center.y, center.z);
-	label.scale.set(0.05,0.05,0.05);
+	var indicator
+	var label = new Text2D(name, { align: textAlign.center,  font: '12px Arial', fillStyle: '#ABABAB', antialias: false });
+  var loader = new THREE.GLTFLoader();
+
+	loader.load("/assets/indicate.gltf", function(object) {
+		var model = object.scene;
+		scene.add(object.scene);
+		object.scene;
+		object.scenes;
+		object.scene.name = name;
+		var mixer = new THREE.AnimationMixer(model);
+		mixers.push(mixer);
+		var clips = object.animations;
+    var clip = THREE.AnimationClip.findByName( clips, 'animation_0' );
+		var action = mixer.clipAction( clip );
+		action.play();
+		object.scene.scale.set(10,10,10);
+		object.scene.position.set(center.x,center.y,center.z);
+	},
+	function (xhr) { console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
+	function ( error ) {console.log( 'An error happened: ' + error );}
+	);
+	label.material.alphaTest = 0.0;
+	label.position.set(center.x, center.y+12, center.z);
+	label.scale.set(0.25,0.25,0.25);
 	label.name = name + "_label";
+	misc_followers.push(label.name);
 	scene.add( label );
-	scene.add( indicator );
-	var animation = setInterval((function intv() {
-		 	if ( indicator.scale.x > 5 ) { indicator.scale.x = 1; indicator.scale.y = 1;  indicator.scale.z = 1; }
-			else {
-				var newscale = indicator.scale.x * 5;
-				indicator.scale.x = newscale;
-				indicator.scale.y = newscale;
-				indicator.scale.z = newscale;
-		}
 
-		indicator.lookAt(camera.position);
-		label.lookAt(camera.position);
-		return intv;
-
-
-	})(), 1000);
-	
+	var light = new THREE.PointLight( 0xffffff, 1, 1000 );
+	light.position.set( center.x+50, center.y+50, center.y+50 );
+	light.name = name + "_light";
+	scene.add( light );
 }
 
 
@@ -303,7 +320,6 @@ function removeEntity(object) {
     scene.remove( selectedObject );
 	}
 
-    animate();
 }
 
 // Calculates SU/s with given warp factor
