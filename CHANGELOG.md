@@ -1,11 +1,15 @@
 # Change Log
 
+**V0.6.2** *(1-31-2018)*
+* Add Find by coordinate (Requested by Kthor)
+* Fixed performance issues relating to above
+
 **V0.6.1** *(1-16-2018)*
   * Moved CHANGELOG over to read CHANGELOG.md from project and parse the markdown in Javascript. Is it overkill? Sure. Do I care? No
   * Some design tweaks to improve space usage throughout sidebar, and other things
   * Adjustable size on client window
   * Add Swap button (Crisha)
-  * Add Find by coordinate (Requested by Kthor)
+
 
 **V0.6** *(1-9-2018)*
 * Simple websocket client.     (Thanks to grapenut@M\*U\*S\*H )
