@@ -25,19 +25,20 @@ $(document).ready(function() {
 					var object = findObjectInfo(selected);
 					zoomfocus(selected);
 					// Populate information area about target
-					console.log(object)
-					var objdata = "<b>Name: </b>" + object.name + "<br />";
+					//console.log(object)
+					var objdata = "<b>Name: </b>" + object.name;
+					objdata += "</br /><b>Classification: </b>" + object.type;
+					objdata += "<br /><b>Owning Faction:</b>" + object.parent.name;
 					objdata += "<br /><b>Location (Galactic Ref.)</b><br /><b>X</b>: " + object.x + "<br/><b>Y</b>: " + object.y + "<br /><b>Z</b>: " + object.z;
-					objdata += "<br /><br /><b>Classification</b><br />" + object.type;
-					objdata += "<br /><br /><b>Owning Faction</b><br />" + object.parent.name;
 					$('#findbydata').html(objdata)
-
-
-
 		});
 		$('#route_output').change(function() {
 			 var stop=$('#route_output :selected').parent().attr('label');
 			 zoomfocus(stop);
+		});
+		$('#fbc_output').change(function() {
+			 var beacon=$('#fbc_output :selected').val();
+			 zoomfocus("FBC_" + beacon);
 		});
 		$('#swapab').click(function() {
 			var swap=$('#pointa').val();
@@ -45,14 +46,18 @@ $(document).ready(function() {
 			$("#pointb").val(swap);
 		});
 		$('#calctnd').click(function() {
-
 			removeEntity('arrow');
 			lastInputBox = null;
 			$('#route_output').html("No route calculated");
 			var speed = {'speed': $('#speed').val(), 'unit':$('#speedunit option:selected').val() };
 			populateRoutePlan( $('#pointa  option:selected').text() , $('#pointb  option:selected').text(),speed );
-
-
+		});
+		$('#submitfindcoord').click(function() {
+			 cleanupFBC();
+			 execFBC( $('#fbc-x').val(), $('#fbc-y').val(), $('#fbc-z').val(), $('#fbc_frame option:selected').val());
+		});
+		$('#submitfbcclear').click(function() {
+					cleanupFBC();
 		});
 		$('#cbs').click(function() {populateFBSelect(); });
 		$('#cbp').click(function() {populateFBSelect(); });
@@ -155,6 +160,17 @@ function populateUserFields() {
 	}
 		$('#intel_frame').html(option);
 
+		// Poulate the frame list for find by coordinate
+		option = $('#fbc_frame').html();
+		var borderlist = listobjects("borders");
+
+		for (var border in borderlist) {
+			if(borderlist[border].radius > 10) {
+				option += '<option value="'+ escapeHTML(border) + '">' + escapeHTML(border) + '</option>';
+			}
+		}
+			$('#fbc_frame').html(option);
+
 }
 function populateFBSelect() {
 	//Populate find by select dropdown
@@ -254,4 +270,58 @@ function populateRoutePlan(pointa,pointb,speed) {
 				$('#route_output').html(routeplan);
 			//drawline(grabPositionByName($('#pointa  option:selected').text()),grabPositionByName($('#pointb  option:selected').text()));
 	}
+}
+
+
+function execFBC(x,y,z,frame) {
+			var optionoutput = "";
+			var borderlist = listobjects("borders");
+
+			if(frame == "Unknown") {
+				// The stupid bumblefuck sitting at the chair/computer interface
+				// doesn't know where it is so we gotta draw all the places!
+
+				// Galactic frame. The easiest so we do it first on account that i'm stupid
+				drawcircleindicator(new THREE.Vector3(x,y,z), "FBC_Galactic");
+				optionoutput += '<option> Galactic </option>';
+
+				// Now chooch each border/frame
+				for (var border in borderlist) {
+					if(borderlist[border].radius > 10) {
+						var inputvector = new THREE.Vector3(x,y,z);
+						var framevector = new THREE.Vector3(borderlist[border].x, borderlist[border].y, borderlist[border].z);
+						var outputvector = framevector.sub(inputvector);
+						drawcircleindicator(outputvector,"FBC_" + borderlist[border].name);
+						optionoutput += '<option>' + borderlist[border].name + '</option>';
+					}
+				}
+			}  // Borders done got chooched. End bumblefuckery
+			else if (frame == "Galactic") {
+							drawcircleindicator(new THREE.Vector3(x,y,z), "FBC_Galactic");
+							optionoutput += '<option> Galactic </option>';
+							zoomfocus("FBC_Galactic");
+			}
+			else {
+				border = borderlist[frame];
+				var inputvector = new THREE.Vector3(x,y,z);
+				var framevector = new THREE.Vector3(border.x, border.y, border.z);
+				var outputvector = framevector.sub(inputvector);
+				drawcircleindicator(outputvector,"FBC_" + border.name);
+				optionoutput += '<option>' + border.name + '</option>';
+				zoomfocus("FBC_" + border.name);
+			}
+
+			$('#fbc_output').html(optionoutput);
+}
+
+
+function cleanupFBC() {
+	var borderlist = listobjects("borders");
+	for (var border in borderlist) {
+		if(borderlist[border].radius > 10) {
+				removeEntity("FBC_" + borderlist[border].name);
+				removeEntity("FBC_" + borderlist[border].name + "_label");
+		}
+	}
+	$('#fbc_output').html("");
 }

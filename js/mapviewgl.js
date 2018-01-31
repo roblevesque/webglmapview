@@ -63,6 +63,8 @@ function init() {
 
 
 
+
+
 var Text2D = THREE_Text.Text2D;
 var SpriteText2D = THREE_Text.SpriteText2D;
 var textAlign = THREE_Text.textAlign
@@ -231,6 +233,7 @@ function zoomfocus(name) {
 					var focus = new THREE.Vector3( zoomto.x, zoomto.y, zoomto.z );
 					var vantage = new THREE.Vector3( 5, 60 , 150 );
 					focus.add(vantage);
+					console.log(focus);
 					camera.position.set(focus.x,focus.y,focus.z);
 					camera.updateProjectionMatrix();
 					render();
@@ -256,6 +259,43 @@ function drawline(origin,dest) {
 		animate();
 
 }
+
+function drawcircleindicator(center, name="Beacon") {
+	var Text2D = THREE_Text.Text2D;
+	var SpriteText2D = THREE_Text.SpriteText2D;
+	var textAlign = THREE_Text.textAlign
+	var geometry = new THREE.TorusGeometry( 1, 0.05, 2, 12 );
+	var material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
+	var indicator = new THREE.Mesh( geometry, material );
+	var label = new Text2D(name, { align: textAlign.center,  font: '25px Arial', fillStyle: '#777' , antialias: false });
+	indicator.position.x = center.x;
+	indicator.position.y = center.y;
+	indicator.position.z = center.z;
+	indicator.name = name;
+	label.material.alphaTest = 0.7;
+	label.position.set(center.x, center.y, center.z);
+	label.scale.set(0.05,0.05,0.05);
+	label.name = name + "_label";
+	scene.add( label );
+	scene.add( indicator );
+	var animation = setInterval((function intv() {
+		 	if ( indicator.scale.x > 5 ) { indicator.scale.x = 1; indicator.scale.y = 1;  indicator.scale.z = 1; }
+			else {
+				var newscale = indicator.scale.x * 5;
+				indicator.scale.x = newscale;
+				indicator.scale.y = newscale;
+				indicator.scale.z = newscale;
+		}
+
+		indicator.lookAt(camera.position);
+		label.lookAt(camera.position);
+		return intv;
+
+
+	})(), 1000);
+	
+}
+
 
 function removeEntity(object) {
 		var selectedObject;
