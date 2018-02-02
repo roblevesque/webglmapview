@@ -309,7 +309,6 @@ function execFBC(x,y,z,frame) {
 				var inputvector = new THREE.Vector3(parseFloat( x ),parseFloat( y ),parseFloat( z ));
 				var framevector = new THREE.Vector3(parseFloat( border.x ), parseFloat( border.y ), parseFloat( border.z ));
 				var outputvector = framevector.add(inputvector);
-				console.log( outputvector );
 				drawcircleindicator(outputvector,"FBC_" + frame);
 				optionoutput += '<option>' + frame + '</option>';
 			}
