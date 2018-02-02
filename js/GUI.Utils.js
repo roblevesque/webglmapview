@@ -292,9 +292,9 @@ function execFBC(x,y,z,frame) {
 				// Now chooch each border/frame
 				for (var border in borderlist) {
 					if(borderlist[border].radius > 10) {
-						var inputvector = new THREE.Vector3(x,y,z);
-						var framevector = new THREE.Vector3(borderlist[border].x, borderlist[border].y, borderlist[border].z);
-						var outputvector = framevector.sub(inputvector);
+						var inputvector = new THREE.Vector3(parseFloat( x ),parseFloat( y ),parseFloat( z ));
+						var framevector = new THREE.Vector3(parseFloat( borderlist[border].x ), parseFloat( borderlist[border].y ), parseFloat( borderlist[border].z ));
+						var outputvector = framevector.add(inputvector);
 						drawcircleindicator(outputvector,"FBC_" + borderlist[border].name);
 						optionoutput += '<option>' + borderlist[border].name + '</option>';
 					}
@@ -306,9 +306,10 @@ function execFBC(x,y,z,frame) {
 			}
 			else {
 				border = borderlist[frame];
-				var inputvector = new THREE.Vector3(x,y,z);
-				var framevector = new THREE.Vector3(border.x, border.y, border.z);
-				var outputvector = framevector.sub(inputvector);
+				var inputvector = new THREE.Vector3(parseFloat( x ),parseFloat( y ),parseFloat( z ));
+				var framevector = new THREE.Vector3(parseFloat( border.x ), parseFloat( border.y ), parseFloat( border.z ));
+				var outputvector = framevector.add(inputvector);
+				console.log( outputvector );
 				drawcircleindicator(outputvector,"FBC_" + frame);
 				optionoutput += '<option>' + frame + '</option>';
 			}
