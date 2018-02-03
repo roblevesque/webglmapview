@@ -1,14 +1,18 @@
 # Change Log
 
+**V0.6.3** *(2-3-2018)*
+* Exciting new features that shall remain secret but could lead to some other exciting things
+* Assorted tweaks
+
 **V0.6.2** *(1-31-2018)*
 * Add Find by coordinate (Requested by Kthor)
 * Fixed performance issues relating to above
 
 **V0.6.1** *(1-16-2018)*
-  * Moved CHANGELOG over to read CHANGELOG.md from project and parse the markdown in Javascript. Is it overkill? Sure. Do I care? No
-  * Some design tweaks to improve space usage throughout sidebar, and other things
-  * Adjustable size on client window
-  * Add Swap button (Crisha)
+* Moved CHANGELOG over to read CHANGELOG.md from project and parse the markdown in Javascript. Is it overkill? Sure. Do I care? No
+* Some design tweaks to improve space usage throughout sidebar, and other things
+* Adjustable size on client window
+* Add Swap button (Crisha)
 
 
 **V0.6** *(1-9-2018)*

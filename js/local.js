@@ -2,7 +2,7 @@
 // -grapenut
 
 var defaultHost = "ats.trekmush.org";
-var defaultPort = '1702';
+var defaultPort = '1701';
 
 // pre-define the connection object, later it will be set to
 // conn = WSClient.open('ws://host:port/wsclient')
