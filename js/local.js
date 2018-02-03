@@ -2,7 +2,7 @@
 // -grapenut
 
 var defaultHost = "ats.trekmush.org";
-var defaultPort = '1701';
+var defaultPort = '1702';
 
 // pre-define the connection object, later it will be set to
 // conn = WSClient.open('ws://host:port/wsclient')
@@ -325,12 +325,22 @@ function reconnect() {
   // this will parse ansi color codes, but won't render untrusted HTML
   conn.onText = function (text) {
     var reg = /^FugueEdit > /;
+    var stripansi= /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
+    var contact = /<(.+)\|(.+)> (.+)/g;
+    var netData = contact.exec( text.replace(stripansi, '') );
 
     // detect if we are capturing a FugueEdit string
     if (text.search(reg) !== -1) {
       // replace the user input with text, sans the FugueEdit bit
       entry.value = text.replace(reg, "");
-    } else {
+    }  else if ( netData !== null ) {
+        var returntext = parseSenNetData(netData, text );
+        if ( returntext !== undefined ) {
+          console.log(returntext)
+          output.appendHTML( returntext  );
+        } else { output.appendText( text ); }
+    }
+    else {
       // append text to the output window
       output.appendText(text);
     }

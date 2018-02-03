@@ -1,4 +1,5 @@
 var lastInputBox;
+var netDB;
 $.widget("ui.resizable", $.ui.resizable, {
 resizeBy: function(newSize) {
 		this._mouseStart($.Event("mousedown", { pageX: 0, pageY: 0 }));
@@ -11,7 +12,14 @@ resizeBy: function(newSize) {
 		this._mouseStop(end);
 }
 });
-
+String.prototype.replaceAll = function(target, replacement) {
+  return this.split(target).join(replacement);
+};
+function radians(degrees)
+{
+  var pi = Math.PI;
+  return degrees * (pi/180);
+}
 $(document).ready(function() {
 
 		setInterval(update_animations, 100);
@@ -336,4 +344,64 @@ function cleanupFBC() {
 
 	}
 	$('#fbc_output').html("");
+}
+
+
+function netNewContact(data,su=false){
+			var contactPos = new THREE.Vector3;
+			var deltaPos = new THREE.Vector3;
+			var detectingBase = data[2];
+			if ( su == true) { var distance = pc2su(  data[7] ); }
+			else { var distance = data[7]; }
+			detectingBase = detectingBase.replaceAll('<','[');
+			detectingBase = detectingBase.replaceAll('>',']');
+			var detectingObject = scene.getObjectByName(detectingBase);
+			var azmuth_rad = radians( data[5] );
+			var pitch_rad = radians( data[6] );
+
+			deltaPos.x = distance * Math.cos( azmuth_rad ) * Math.cos( pitch_rad );
+			deltaPos.y = distance * Math.sin( pitch_rad );
+			deltaPos.z = distance * Math.sin( azmuth_rad )  * Math.cos( pitch_rad );
+			contactPos = deltaPos.add( detectingObject.position );
+
+			drawShip(contactPos,detectingBase+"_" + data[5]);
+
+			setTimeout(function() {
+				removeEntity(detectingBase+"_" + data[5]);
+			},600000);
+			return detectingBase + "_" + data[5];
+}
+
+function parseSenNetData(data, text) {
+	var contact_1 = /<(.+)\|(.+)> (\w+) contact (\w+) \((\d+)\) B: (\d+) (\d+) @: \[(\d+.+)\]/g;
+	var contact_2 = /<(.+)\|(.+)> New contact (.+) \((\d+)\) B: (\d+) (\d+) @: \[(\d+.+)\]/g;
+	var contact_3 = /<(.+)\|(.+)> New contact (.+) \((\d+)\) B: (\d+) (\d+) @: (\d+.+)/g;
+	var contact_4 = /<(.+)\|(.+)> (\w+) contact (\w+) \((\d+)\) B: (\d+) (\d+) @: (\d+.+)/g;
+	var unkcontact = contact_1.exec( data[0] );
+	var newcontact = contact_2.exec( data[0] );
+	var newcontact_su = contact_3.exec( data[0] );
+	var unkcontact_su = contact_4.exec( data[0] );
+
+	if( newcontact !== null ) {
+		var shipobject = netNewContact( newcontact );
+		console.log( newcontact )
+	} else if ( unkcontact !== null ) {
+		var shipobject = netNewContact ( unkcontact );
+		console.log( unkcontact )
+	} else if ( newcontact !== null ){
+		var shipobject = netNewContact ( newcontact_su, true);
+		console.log( newcontact_su )
+	} else if ( unkcontact_su !== null ){
+		var shipobject = netNewContact ( unkcontact_su, true);
+		console.log( unkcontact_su )
+	}
+
+	if (  shipobject !== undefined ) {
+			console.log(data)
+			var linkElement = document.createElement('a');
+			linkElement.innerHTML = "[" + data[1] + "|" + data[2] + "] " + data[3]
+			linkElement.setAttribute('onClick','zoomfocus("' + shipobject  + '")');
+			console.log(linkElement)
+			return linkElement;
+	}
 }

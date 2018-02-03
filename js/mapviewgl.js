@@ -67,82 +67,86 @@ function init() {
 
 
 
-var Text2D = THREE_Text.Text2D;
-var SpriteText2D = THREE_Text.SpriteText2D;
-var textAlign = THREE_Text.textAlign
-var b_geometry, b_material, b_mesh, p_geometry, p_material, p_mesh, s_geometry, s_material, s_mesh, l_text;
+		var Text2D = THREE_Text.Text2D;
+		var SpriteText2D = THREE_Text.SpriteText2D;
+		var textAlign = THREE_Text.textAlign
+		var b_geometry, b_material, b_mesh, p_geometry, p_material, p_mesh, s_geometry, s_material, s_mesh, l_text;
 
 
+		// Add some Ambient lighting   (Removed for now as it is too strong and shadows are nice)
+		//lightsource = new THREE.AmbientLight( 0xffffff );
+		// Add the light to the scene
+		//scene.add( lightsource );
 
 
-for (var key in jsonEmpire) {
-  area=jsonEmpire[key];
+		for (var key in jsonEmpire) {
+		  area=jsonEmpire[key];
 
-  for (var key2 in area['borders']) {
-			var border = area['borders'][key2];
+		  for (var key2 in area['borders']) {
+					var border = area['borders'][key2];
 
-		  b_geometry = new THREE.SphereGeometry( border.radius, 10, 10 );
-		  b_material = new THREE.MeshBasicMaterial( { color: area.color, wireframe: true} );
-			b_mesh = new THREE.Mesh( b_geometry, b_material );b_mesh
-		  b_mesh.position.x = border.x;
-		  b_mesh.position.y = border.y;
-		  b_mesh.position.z = border.z;
-		  b_mesh.name = escapeHTML(border.name);
-			scene.add( b_mesh );
-			if (border.radius > 10) {
-				l_text = new Text2D(border.name, { align: textAlign.center,  font: '25px Arial', fillStyle: '#777' , antialias: false });
-				l_text.material.alphaTest = 0.5;
-				l_text.position.set(border.x,border.y,border.z);
-				l_text.scale.set(0.75,0.75,0.75);
-				l_text.name = border.name + "_label";
-				scene.add(l_text);
+				  b_geometry = new THREE.SphereGeometry( border.radius, 10, 10 );
+				  b_material = new THREE.MeshBasicMaterial( { color: area.color, wireframe: true} );
+					b_mesh = new THREE.Mesh( b_geometry, b_material );b_mesh
+				  b_mesh.position.x = border.x;
+				  b_mesh.position.y = border.y;
+				  b_mesh.position.z = border.z;
+				  b_mesh.name = escapeHTML(border.name);
+					scene.add( b_mesh );
+					if (border.radius > 10) {
+						l_text = new Text2D(border.name, { align: textAlign.center,  font: '25px Arial', fillStyle: '#777' , antialias: false });
+						l_text.material.alphaTest = 0.5;
+						l_text.position.set(border.x,border.y,border.z);
+						l_text.scale.set(0.75,0.75,0.75);
+						l_text.name = border.name + "_label";
+						scene.add(l_text);
+					}
 			}
-	}
 
 
 
-  // Planet Generation
-  for (var key in area["planets"]) {
-    var planet = area.planets[key];
-    p_geometry= new THREE.SphereGeometry( 1, 10, 10 );
-    p_material = new THREE.MeshBasicMaterial( { color: area.color, wireframe: false} );
-    p_mesh =  new THREE.Mesh( p_geometry, p_material );
-    p_mesh.position.x=planet.x;
-    p_mesh.position.y=planet.y;
-    p_mesh.position.z=planet.z;
-    p_mesh.name = escapeHTML(planet.name);
-		scene.add( p_mesh );
-    l_text = new Text2D(escapeHTML(planet.name), { align: textAlign.right,  font: '12px Arial', fillStyle: '#FFF' , antialias: false });
-    l_text.material.alphaTest = 0.0;
-    l_text.position.set(planet.x,planet.y,planet.z);
-    l_text.scale.set(0.25,0.25,0.25);
-		l_text.name = escapeHTML(planet.name + "_label");
-    scene.add(l_text);
-  }
+		  // Planet Generation
+		  for (var key in area["planets"]) {
+		    var planet = area.planets[key];
+		    p_geometry= new THREE.SphereGeometry( 1, 10, 10 );
+		    p_material = new THREE.MeshBasicMaterial( { color: area.color, wireframe: false} );
+		    p_mesh =  new THREE.Mesh( p_geometry, p_material );
+		    p_mesh.position.x=planet.x;
+		    p_mesh.position.y=planet.y;
+		    p_mesh.position.z=planet.z;
+		    p_mesh.name = escapeHTML(planet.name);
+				scene.add( p_mesh );
+		    l_text = new Text2D(escapeHTML(planet.name), { align: textAlign.right,  font: '12px Arial', fillStyle: '#FFF' , antialias: false });
+		    l_text.material.alphaTest = 0.0;
+		    l_text.position.set(planet.x,planet.y,planet.z);
+		    l_text.scale.set(0.25,0.25,0.25);
+				l_text.name = escapeHTML(planet.name + "_label");
+		    scene.add(l_text);
+		  }
 
-  // Base Generation
-  for (var key in area["stations"]) {
-    var base = area.stations[key];
-    s_geometry = new THREE.CylinderGeometry( 0.2, 0.6*3, 0.5*3, 4 );
-		s_geometry.computeBoundingSphere();
-    s_material = new THREE.MeshBasicMaterial( { color: area.color, wireframe: false} );
-    s_mesh = new THREE.Mesh( s_geometry, s_material );
-    s_mesh.position.x=base.x;
-    s_mesh.position.y=base.y;
-    s_mesh.position.z=base.z;
-		s_mesh.name = escapeHTML(base.name);
-    scene.add( s_mesh );
-  	l_text = new Text2D(escapeHTML(base.name), { align: textAlign.left,  font: '12px Arial', fillStyle: '#ABABAB' , antialias: false });
-    l_text.material.alphaTest = 0.0;
-    l_text.position.set(base.x,base.y+3,base.z);
-		l_text.scale.set(0.20,0.20,0.20);
-		l_text.name = escapeHTML(base.name + "_label");
-    scene.add(l_text);
-  }
+		  // Base Generation
+		  for (var key in area["stations"]) {
+		    var base = area.stations[key];
+		    s_geometry = new THREE.CylinderGeometry( 0.2, 0.6*3, 0.5*3, 4 );
+				s_geometry.computeBoundingSphere();
+		    s_material = new THREE.MeshBasicMaterial( { color: area.color, wireframe: false} );
+		    s_mesh = new THREE.Mesh( s_geometry, s_material );
+		    s_mesh.position.x=base.x;
+		    s_mesh.position.y=base.y;
+		    s_mesh.position.z=base.z;
+				s_mesh.name = escapeHTML(base.name);
+		    scene.add( s_mesh );
+		  	l_text = new Text2D(escapeHTML(base.name), { align: textAlign.left,  font: '12px Arial', fillStyle: '#ABABAB' , antialias: false });
+		    l_text.material.alphaTest = 0.0;
+		    l_text.position.set(base.x,base.y+3,base.z);
+				l_text.scale.set(0.20,0.20,0.20);
+				l_text.name = escapeHTML(base.name + "_label");
+		    scene.add(l_text);
+		  }
 
 
 
-}
+		}
     // Set view and camera to point to initial location
 		reset_view();
 
@@ -157,7 +161,9 @@ window.onresize = function() {
 
 				render();
 
-}
+} // End Init
+
+
 function onCanvasClick( event ) {
 
 				//event.preventDefault();
@@ -250,7 +256,6 @@ function zoomfocus(name) {
 					var focus = new THREE.Vector3( zoomto.x, zoomto.y, zoomto.z );
 					var vantage = new THREE.Vector3( 5, 60 , 150 );
 					focus.add(vantage);
-					console.log(focus);
 					camera.position.set(focus.x,focus.y,focus.z);
 					camera.updateProjectionMatrix();
 					render();
@@ -280,7 +285,7 @@ function drawcircleindicator(center, name="Beacon") {
 	var textAlign = THREE_Text.textAlign
 	var indicator
 	var label = new Text2D(name, { align: textAlign.center,  font: '12px Arial', fillStyle: '#ABABAB', antialias: false });
-  var loader = new THREE.GLTFLoader();
+	var loader = new THREE.GLTFLoader();
 
 	loader.load("/assets/indicate.gltf", function(object) {
 		var model = object.scene;
@@ -300,6 +305,7 @@ function drawcircleindicator(center, name="Beacon") {
 	function (xhr) { console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
 	function ( error ) {console.log( 'An error happened: ' + error );}
 	);
+
 	label.material.alphaTest = 0.0;
 	label.position.set(center.x, center.y+12, center.z);
 	label.scale.set(0.25,0.25,0.25);
@@ -307,12 +313,62 @@ function drawcircleindicator(center, name="Beacon") {
 	misc_followers.push(label.name);
 	scene.add( label );
 
+
+
+
 	var light = new THREE.PointLight( 0xffffff, 1, 1000 );
 	light.position.set( center.x+50, center.y+50, center.y+50 );
 	light.name = name + "_light";
 	scene.add( light );
 }
 
+
+function drawShip(center,name="PlayerShip",faction="Unknown") {  // oad Main model
+	var loader = new THREE.GLTFLoader();
+	var shipGroup = new THREE.Group();
+	if (faction == "Unknown") { var randomNumber = Math.floor(Math.random() * 4);  faction = "Unknown_" + randomNumber; }
+	loader.load("/assets/" + faction +".gltf", function(object) {
+		var model = object.scene;
+		shipGroup.add(object.scene);
+		object.scene;
+		object.scenes;
+		object.scene.name = name + "_ship";
+		object.scene.scale.set(0.5,0.5,0.5);
+		//object.scene.position.set(center.x,center.y,center.z);
+
+	},
+	function (xhr) { console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
+	function ( error ) {console.log( 'An error happened: ' + error );}
+	);
+	loader.load("/assets/spincircle.gltf", function(object) { // Load spinning circle
+		var model = object.scene;
+		shipGroup.add(object.scene);
+		object.scene;
+		object.scenes;
+		object.scene.name = name + "_circle";
+		var mixer = new THREE.AnimationMixer(model);
+		mixers.push(mixer);
+		var clips = object.animations;
+    var clip = THREE.AnimationClip.findByName( clips, 'animation_0' );
+		var action = mixer.clipAction( clip );
+		action.play();
+		object.scene.scale.set(0.5,0.5,0.5);
+	//	object.scene.position.set(center.x,center.y,center.z);
+	},
+	function (xhr) { console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
+	function ( error ) {console.log( 'An error happened: ' + error );}
+	);
+
+	var light = new THREE.PointLight( 0xffffff, 2, 1500 );
+	light.position.set( 50, 50, 50 );
+	light.name = name + "_light";
+	light.power = 15;
+	shipGroup.add( light );
+	shipGroup.name = name;
+	shipGroup.position.set(center.x,center.y,center.z);
+	scene.add( shipGroup );
+
+}
 
 function removeEntity(object) {
 		var selectedObject;
@@ -337,6 +393,10 @@ function calcSUpS(warpfactor) {
 
 function su2pc ( su ) {
 	return su / 3087467836.3256578445;
+}
+
+function pc2su ( pc ) {
+	return pc * 3087467836.3256578445;
 }
 
 // Calculates ETA for given distance and velocity.

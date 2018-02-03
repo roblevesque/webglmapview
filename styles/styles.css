@@ -96,7 +96,7 @@ input[type=radio]:checked + label:before {
 }
 .tool-header { font-weight: bold; padding-top: 0.75em; display: block; }
 #route_output {margin: 0 auto; font-size: 1.25vh; height: 30%; padding-top: 1vh; width: 100%; overflow: auto;}
-#fbc_output {margin: 0 auto; font-size: 1.25vh; height: 40vh; padding-top: 1vh; width: 100%; overflow: auto; }
+#fbc_output {margin: 0 auto; font-size: 1.25vh; height: 25vh; padding-top: 1vh; width: 100%; overflow: auto; }
 .toolsep { margin: 0 auto; padding:0;  padding-top: 0.5vh; padding-bottom: 0.5vh; border-bottom: 1px #AAA solid; display: block; width: 64%;}
 .calc_data { padding-top: 2.5vh; font-size: 1.5vh;  font-family: 'Open Sans', sans-serif;}
 
