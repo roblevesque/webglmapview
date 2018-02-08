@@ -250,17 +250,16 @@ function zoomfocus(name) {
 
 			var zoomto = grabPositionByName(name.split('@')[name.split('@').length-1]);
 			if (zoomto != null) {
-					controls.target.x = zoomto.x;
-				  controls.target.y = zoomto.y;
-				  controls.target.z = zoomto.z;
-					var focus = new THREE.Vector3( zoomto.x, zoomto.y, zoomto.z );
-					var vantage = new THREE.Vector3( 5, 60 , 150 );
-					focus.add(vantage);
-					camera.position.set(focus.x,focus.y,focus.z);
+					controls.target.x = parseFloat( zoomto.x );
+				  controls.target.y = parseFloat( zoomto.y );
+				  controls.target.z = parseFloat( zoomto.z );
+					var focus = new THREE.Vector3( parseFloat( zoomto.x ), parseFloat( zoomto.y ), parseFloat( zoomto.z ) );
+					var vantage = new THREE.Vector3( parseFloat( 5.00 ), parseFloat( 60.00 ), parseFloat( 150.00 ) );
+					vantage.add( focus );
+					camera.position.set( parseFloat( vantage.x ), parseFloat( vantage.y ), parseFloat( vantage.z ) );
+					camera.lookAt( focus );
 					camera.updateProjectionMatrix();
 					render();
-
-
 			}
 
 
