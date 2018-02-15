@@ -267,6 +267,24 @@ function zoomfocus(name) {
 }
 
 
+function zoomfocus_point(point) {
+
+	if (point.isVector3) {
+			controls.target.x = parseFloat( point.x );
+			controls.target.y = parseFloat( point.y );
+			controls.target.z = parseFloat( point.z );
+			var focus = new THREE.Vector3( parseFloat( point.x ), parseFloat( point.y ), parseFloat( point.z ) );
+			var vantage = new THREE.Vector3( parseFloat( 5.00 ), parseFloat( 60.00 ), parseFloat( 150.00 ) );
+			vantage.add( focus );
+			camera.position.set( parseFloat( vantage.x ), parseFloat( vantage.y ), parseFloat( vantage.z ) );
+			camera.lookAt( focus );
+			camera.updateProjectionMatrix();
+			render();
+	}
+
+}
+
+
 function drawline(origin,dest) {
 		var direction = dest.clone().sub(origin);
 		var length = origin.distanceTo(dest);
@@ -545,7 +563,7 @@ function predictDestination(loc,heading,frame) {
 		drawline(adjLoc,farpoint);
 		var directionvector = farpoint.sub(adjLoc);
 		var ray = new THREE.Raycaster(adjLoc, directionvector.clone().normalize());
-		ray.precision = 100;
+		ray.linePrecision = 10;
 		scene.updateMatrixWorld();
 		var intersects = ray.intersectObjects(scene.children,false);
 		var correctedintersections=[];
@@ -559,6 +577,32 @@ function predictDestination(loc,heading,frame) {
 			}
 			return "Unable to predict"
 
+}
+
+function listBorderCrossings( startVector, endVector ) {
+		var raycast = new THREE.Raycaster( startVector, endVector.clone().sub( startVector ).normalize() );
+		raycast.linePrecision = 5;
+		scene.updateMatrixWorld();
+		var intersects = raycast.intersectObjects( scene.children, false );
+		var borderCrossings = Object();
+		if( intersects  !== undefined ) {
+			intersects.forEach(function(obj) {
+				if (obj.object.geometry.boundingSphere.radius != 'undefined' &&  obj.object.geometry.boundingSphere.radius > 3 ) {
+
+					if ( Object.keys(borderCrossings).length < 1 ) {
+							// Calculate reverse border crossing to catch any outbounds from the start
+							var raycast_rev = new THREE.Raycaster( obj.point, startVector.clone().sub(obj.point).normalize() );
+							raycast_rev.linePrecision = 50;
+							scene.updateMatrixWorld();
+							var intersects_rev = raycast_rev.intersectObjects( scene.children, false );
+							if ( intersects_rev.length > 0 && intersects_rev[0].object.geometry.boundingSphere.radius > 3  ) { borderCrossings[intersects_rev[0].object.name] = intersects_rev[0].point; }
+					}
+						borderCrossings[obj.object.name]  = obj.point;
+				}
+			});
+
+			return borderCrossings;
+		}
 }
 
 function boundingSphereGrab(name){

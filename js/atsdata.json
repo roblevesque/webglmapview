@@ -144,8 +144,8 @@
 	"desc":"Describe the empire here",
 	"color": "#00AAAA",
 	"borders":[
-		{ "name":"Breen", "x": -9359.000000, "y": 213.000000, "z": -30.000000, "radius":5 },
-		{ "name":"Planet_Breen", "x": -9376.050179, "y": 203.150816, "z": -46.281517, "radius": 10 }
+		{ "name":"Breen_Space", "x": -9359.000000, "y": 213.000000, "z": -30.000000, "radius":5 },
+		{ "name":"Planet_Breen", "x": -9376.050179, "y": 203.150816, "z": -46.281517, "radius": 5 }
 	],
 	"planets":[
 		{ "name":"Breen", "x": -9376.050179, "y": 203.150816, "z": -46.281517, "cochranes":1298, "market":-1 },

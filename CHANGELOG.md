@@ -4,6 +4,7 @@
 * Exciting new features that shall remain secret but could lead to some other exciting things
 * Assorted tweaks   
 * Bug fix with floating point math (Reported by Kthor)
+* Added border crossing warning to plan mode (Requested by Lustan)
 
 **V0.6.2** *(1-31-2018)*
 * Add Find by coordinate (Requested by Kthor)

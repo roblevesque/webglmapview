@@ -272,9 +272,14 @@ function populateRoutePlan(pointa,pointb,speed) {
 				if(waypoint.gate && lastWaypoint.gate) {routeplan += '<option>^---- Gate Exit</option>'; }
 
 				if(!waypoint.gate || (!lastWaypoint.gate && waypoint.gate)) {
+					var bordercrossings = listBorderCrossings(grabPositionByName( lastWaypoint.name.split('@')[lastWaypoint.name.split('@').length-1] ),grabPositionByName(waypoint.name.split('@')[waypoint.name.split('@').length-1] ));
+					for ( var border in bordercrossings) {
+						routeplan += `<option onClick='zoomfocus_point(new THREE.Vector3(${bordercrossings[border].x},${bordercrossings[border].y} ,${bordercrossings[border].z} ));'> WARNING!: Border crossing: ${border} </option>`;
+
+					}
 					routeplan += '<option>Distance:' + waypoint.distance.toFixed(2) + '</option>'
 					routeplan += '<option>ETA: ' + timeformat(calcETA(speed,waypoint.distance)) + '</option>';
-					drawline(grabPositionByName(lastWaypoint.name.split('@')[lastWaypoint.name.split('@').length-1] ),grabPositionByName(waypoint.name.split('@')[waypoint.name.split('@').length-1]    ));
+					drawline(grabPositionByName(lastWaypoint.name.split('@')[lastWaypoint.name.split('@').length-1] ),grabPositionByName(waypoint.name.split('@')[waypoint.name.split('@').length-1]  ));
 				}
 				lastWaypoint = waypoint;
 			});
