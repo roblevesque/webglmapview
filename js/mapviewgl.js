@@ -600,7 +600,14 @@ function listBorderCrossings( startVector, endVector ) {
 						borderCrossings[obj.object.name]  = obj.point;
 				}
 			});
+			if ( Object.keys(borderCrossings).length == 0 ) { // If it found nothing, still check for reverse
+				var raycast_rev = new THREE.Raycaster( endVector, startVector.clone().sub( endVector ).normalize() );
+				raycast_rev.linePrecision = 50;
+				scene.updateMatrixWorld();
+				var intersects_rev = raycast_rev.intersectObjects( scene.children, false );
+				if ( intersects_rev.length > 0 && intersects_rev[0].object.geometry.boundingSphere.radius > 3  ) { borderCrossings[intersects_rev[0].object.name] = intersects_rev[0].point; }
 
+			}
 			return borderCrossings;
 		}
 }
