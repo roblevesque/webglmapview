@@ -76,22 +76,32 @@ $(document).ready(function() {
 			var coords = $(this).val().split(" ");
 			if ( coords.length > 1 ) {
 	 			$('#fbc-z').val( coords[2] );
-				console.log(coords[2]);
 				$('#fbc-y').val( coords[1] );
-				console.log(coords[1]);
 				$('#fbc-x').val( coords[0] );
-				console.log(coords[0]);
 			}
 		});
 		$('.intel_inputs_coord').bind('input', function() {
 			var coords = $(this).val().split(" ");
 			if ( coords.length > 1 ) {
 				$('#z').val( coords[2] );
-				console.log(coords[2]);
 				$('#y').val( coords[1] );
-				console.log(coords[1]);
 				$('#x').val( coords[0] );
-				console.log(coords[0]);
+			}
+		});
+		$('.intel_inputs_a_dpp').bind('input', function() {
+			var coords = $(this).val().split(" ");
+			if ( coords.length > 1 ) {
+				$('#dpp_a_z').val( coords[2] );
+				$('#dpp_a_y').val( coords[1] );
+				$('#dpp_a_x').val( coords[0] );
+			}
+		});
+		$('.intel_inputs_b_dpp').bind('input', function() {
+			var coords = $(this).val().split(" ");
+			if ( coords.length > 1 ) {
+				$('#dpp_b_z').val( coords[2] );
+				$('#dpp_b_y').val( coords[1] );
+				$('#dpp_b_x').val( coords[0] );
 			}
 		});
 		$('.intel_inputs_heading').bind('input', function() {
@@ -136,6 +146,18 @@ $(document).ready(function() {
 				$('#intel_predicted').html("");
 				var predicted = predictDestination(new THREE.Vector3(Number($('#x').val()),Number($('#y').val()),Number($('#z').val())),new THREE.Vector2(Number($('#azmuth').val()),Number($('#inclination').val())),$('#intel_frame option:selected').val());
 				$('#intel_predicted').html(predicted);
+		});
+		$('#dpppredict').click(function() {
+
+				var html = "<span> Projected points: </span><br />"
+				var predictions = dualPointPredict( new THREE.Vector3(Number($('#dpp_a_x').val()),Number($('#dpp_a_y').val()),Number($('#dpp_a_z').val())), $('#dpp_a_frame option:selected').val(),
+					new THREE.Vector3(Number($('#dpp_b_x').val()),Number($('#dpp_b_y').val()),Number($('#dpp_b_z').val())), $('#dpp_b_frame option:selected').val() );
+				predictions.forEach(function( o ){
+					html += `${o} <br />`;
+				});
+
+				$('#dpppredictions').html( html )
+
 		});
 		$('#client-bar-control').click(function() {
 			$('#client-term-container').toggleClass("hidden");
@@ -203,7 +225,7 @@ function populateUserFields() {
 	$('#pointb').html(option);
 
 	// Populate list of borders for intel frame selection
-	option = $('#intel_frame').html();
+	option = $('.frame_list').html();
 	var borderlist = listobjects("borders");
 
 	for (var border in borderlist) {
@@ -211,18 +233,8 @@ function populateUserFields() {
 			option += '<option value="'+ escapeHTML(border) + '">' + escapeHTML(border) + '</option>';
 		}
 	}
-		$('#intel_frame').html(option);
-
-		// Poulate the frame list for find by coordinate
-		option = $('#fbc_frame').html();
-		var borderlist = listobjects("borders");
-
-		for (var border in borderlist) {
-			if(borderlist[border].radius > 10) {
-				option += '<option value="'+ escapeHTML(border) + '">' + escapeHTML(border) + '</option>';
-			}
-		}
-			$('#fbc_frame').html(option);
+		$('.frame_list').html(option);
+		$('#fbc_frame').html("<option val=\"UNK\"> Unknown </option>" + option);
 
 }
 function populateFBSelect() {
@@ -393,6 +405,13 @@ function cleanupFBC() {
 	$('#fbc_output').html("");
 }
 
+function cleanupFollowers() {
+	misc_followers.forEach(function(obj) {
+		removeEntity(obj);
+
+	});
+
+}
 
 function netNewContact(data,su=false){
 			var contactPos = new THREE.Vector3;

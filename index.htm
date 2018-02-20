@@ -82,8 +82,8 @@
                  <input type="text" class="rpcoord plan_inputs" id="fbc-y" placeholder="y" value=""><i>x<i>
                  <input type="text" class="rpcoord plan_inputs" id="fbc-z" placeholder="z" value="">
                </span>
-               <select id="fbc_frame">
-     					       <option val="UNK"> Unknown </option>
+               <select id="fbc_frame" class="frame_list">
+
                      <option val="GALAC"> Galactic </option>
      				  </select>
               <button id="submitfindcoord" class="btn">Find</button>
@@ -143,8 +143,8 @@
                   <input type="text" class="rpcoord intel_inputs_heading" id="inclination" value="z">
                 </span>
 
-                <label for="intel_frame">Coordinate Frame</label>
-                <select id="intel_frame">
+                <label for="intel_frame">Coordinate Frame</label><br />
+                <select id="intel_frame" class="frame_list">
                   <option val="Galactic"> Galactic </option>
                 </select>
               </span>
@@ -153,6 +153,38 @@
 
                 <button id="calcpredict" class="btn">Predict</button>
               </span>
+              <span class="toolsep"></span>
+              <span class="tool-header"> Dual Point Projection </span>
+              <br />
+              <span> <label> Coordinate Set A</label> </span>
+              <span class="combined_inputs">
+                <input type="text" class="rpcoord intel_inputs_a_dpp" id="dpp_a_x" placeholder="x"><i>x</i>
+                <input type="text" class="rpcoord intel_inputs_a_dpp" id="dpp_a_y" placeholder="y"><i>x</i>
+                <input type="text" class="rpcoord intel_inputs_a_ddp" id="dpp_a_z" placeholder="z">
+              </span>
+              <span>
+                <select id="dpp_a_frame" class="frame_list">
+                <option val="Galactic"> Galactic </option>
+              </select>
+              </span>
+              <span> <label> Coordinate Set B</label> </span>
+              <span class="combined_inputs">
+                <input type="text" class="rpcoord intel_inputs_b_dpp" id="dpp_b_x" placeholder="x"><i>x</i>
+                <input type="text" class="rpcoord intel_inputs_b_dpp" id="dpp_b_y" placeholder="y"><i>x</i>
+                <input type="text" class="rpcoord intel_inputs_b_ddp" id="dpp_b_z" placeholder="z">
+              </span>
+              <span>
+                <select id="dpp_b_frame" class="frame_list">
+                  <option val="Galactic"> Galactic </option>
+                </select>
+              </span>
+              <span>
+                <button id="dpppredict" class="btn">Predict</button>
+              </span>
+              <div id="dpppredictions">
+
+              </div>
+
 
           </div>
     			<div class="wvg-tools" id="Info">

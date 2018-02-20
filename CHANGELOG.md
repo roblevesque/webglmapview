@@ -8,6 +8,7 @@
 * Unify coordinate & bearing inputs. (As requested by Spro and Kthor)
     * If you paste a space or comma separated bearing into any of the coordinate/bearing boxes it will separate it out for you
     * Additionally, if you want to type it in yourself comma, space, enter, m, and tab (as always) keys will auto advance to the next field
+* Added "Dual Point Project" feature that takes two coordinates and plots a line through both of them and lists out potential intersect planets/stations (Requested by Spro)
 
 **V0.6.2** *(1-31-2018)*
 * Add Find by coordinate (Requested by Kthor)

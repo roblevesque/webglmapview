@@ -293,6 +293,7 @@ function drawline(origin,dest) {
 		arrowHelper.cone.material.transparent = true;
 		arrowHelper.cone.material.opacity = 0.25;
 		arrowHelper.line.material.linewidth = 2;
+
 		scene.add( arrowHelper );
 }
 
@@ -500,7 +501,8 @@ function calcBestRoute(pointa,pointb) {
 	if( near_a != near_b) {
 	// Assemble the gate travel plan. With our powers unite, we are shitty code!
 	gate_distance = distance_a[near_a] + distance_b[near_b];
-	route['Gate'] = {'stops': [{'name':near_a, 'gate':true, 'distance': calcDist(pointa,near_a)} ,{'name': near_b, 'gate': true, 'distance':0},{'name': pointb, 'gate':false, 'distance':calcDist(near_b,pointb)}], 'distance':gate_distance}
+  // Shit man?! Gates got shutdown! What the fuck are we going to do!?
+	// route['Gate'] = {'stops': [{'name':near_a, 'gate':true, 'distance': calcDist(pointa,near_a)} ,{'name': near_b, 'gate': true, 'distance':0},{'name': pointb, 'gate':false, 'distance':calcDist(near_b,pointb)}], 'distance':gate_distance}
 
 	} // End gate work...
 
@@ -547,9 +549,54 @@ function calcBestRoute(pointa,pointb) {
 	return route[route_keys_sorted[0]];
 }
 
+function dualPointPredict( pointa, framea , pointb, frameb ) {
+		cleanupFBC();
+		removeEntity( "arrow" );
+
+		if(framea != "Galactic") {  // Find frame coordinates for point a
+			var aFrame = grabPositionByName( framea );
+		} else {
+				var aFrame = new THREE.Vector3( 0, 0, 0 );
+		}
+		if(frameb != "Galactic") { // Find frame coordinates for point b
+			var bFrame = grabPositionByName( frameb );
+		} else {
+				var bFrame = new THREE.Vector3( 0, 0, 0 );
+		}
+		pointa.add( aFrame );
+		pointb.add( bFrame );
+
+		var direction = pointb.clone().sub( pointa ).normalize();
+		var adjustedPointA = pointa.clone().sub( pointb ).divide(new THREE.Vector3( 2, 2, 2 )).add( pointa );
+		var adjustedPointB = pointb.clone().sub( pointa ).divide(new THREE.Vector3( 2, 2, 2 )).add( pointb );
+		var length = adjustedPointA.clone().distanceTo( adjustedPointB ) ;
+	  var arrowHelper = new THREE.ArrowHelper( direction, adjustedPointA, length, 0xffffff, 10, 5 );
+		arrowHelper.name = "arrow";
+		arrowHelper.cone.material.transparent = true;
+		arrowHelper.cone.material.opacity = 0.25;
+		arrowHelper.line.material.linewidth = 2;
+		scene.add( arrowHelper );
+
+		var directionvector = adjustedPointB.clone().sub( adjustedPointA );
+		var ray = new THREE.Raycaster( adjustedPointA, directionvector.clone().normalize() );
+		var object_intersects = [];
+		ray.linePrecision = 10;
+		scene.updateMatrixWorld();
+		var intersects = ray.intersectObjects( scene.children, false );
+		if (intersects[0]) {
+				intersects.forEach(function(obj) {
+					if (obj.object.geometry.boundingSphere.radius != 'undefined' &&  obj.object.geometry.boundingSphere.radius < 4 ) {
+							object_intersects.push(obj.object.name);
+					}
+				});
+		}
+
+
+		return object_intersects;
+}
 
 function predictDestination(loc,heading,frame) {
-		removeEntity('arrow');
+		cleanupFBC();
 		if(frame != "Galactic") {
 			var objFrame = grabPositionByName(frame);
 		} else {
