@@ -5,6 +5,9 @@
 * Assorted tweaks   
 * Bug fix with floating point math (Reported by Kthor)
 * Added border crossing warning to plan mode (Requested by Lustan)
+* Unify coordinate & bearing inputs. (As requested by Spro and Kthor)
+  * If you paste a space or comma separated bearing into any of the coordinate/bearing boxes it will separate it out for you
+  * Additionally, if you want to type it in yourself comma, space, enter, m, and tab (as always) keys will auto advance to the next field
 
 **V0.6.2** *(1-31-2018)*
 * Add Find by coordinate (Requested by Kthor)

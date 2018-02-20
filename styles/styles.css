@@ -100,6 +100,11 @@ input[type=radio]:checked + label:before {
 .toolsep { margin: 0 auto; padding:0;  padding-top: 0.5vh; padding-bottom: 0.5vh; border-bottom: 1px #AAA solid; display: block; width: 64%;}
 .calc_data { padding-top: 2.5vh; font-size: 1.5vh;  font-family: 'Open Sans', sans-serif;}
 
+.combined_inputs { border: 1px solid #67878A; display: block; width: 15vw; margin: 0 auto; }
+.combined_inputs input {border: 0 !important; width: 4vw; text-align: center; padding: 0; margin: 0.1em; padding-top: 5px; padding-bottom: 5px;   }
+.combined_inputs input:focus { outline: none;}
+.combined_inputs i { font-size: 1vh; font-weight: lighter; color: #67989A; text-align: center;}
+
 #client {
 	position: fixed;
 	bottom: 0px;

@@ -67,6 +67,48 @@ $(document).ready(function() {
 			 cleanupFBC();
 			 execFBC( $('#fbc-x').val(), $('#fbc-y').val(), $('#fbc-z').val(), $('#fbc_frame option:selected').val() );
 		});
+		$('rpcoord').keyup(function(e) {
+	    if(e.keyCode == 32 || e.keycode == 188 || e.keycode == 13 || e.keycode == 77) {
+	        $(this).next().focus();
+	    }
+		});
+		$('.plan_inputs').bind('input', function() {
+			var coords = $(this).val().split(" ");
+			if ( coords.length > 1 ) {
+	 			$('#fbc-z').val( coords[2] );
+				console.log(coords[2]);
+				$('#fbc-y').val( coords[1] );
+				console.log(coords[1]);
+				$('#fbc-x').val( coords[0] );
+				console.log(coords[0]);
+			}
+		});
+		$('.intel_inputs_coord').bind('input', function() {
+			var coords = $(this).val().split(" ");
+			if ( coords.length > 1 ) {
+				$('#z').val( coords[2] );
+				console.log(coords[2]);
+				$('#y').val( coords[1] );
+				console.log(coords[1]);
+				$('#x').val( coords[0] );
+				console.log(coords[0]);
+			}
+		});
+		$('.intel_inputs_heading').bind('input', function() {
+			var heading = $(this).val().split(" ");
+			if ( heading.length > 1 ) {
+				$('#inclination').val( heading[1] );
+				$('#azmuth').val( heading[0] );
+			} else {
+					var heading = $(this).val().split("m");
+					if ( heading.length > 1 ) {
+						$('#inclination').val( heading[1] );
+						$('#azmuth').val( heading[0] );
+					}
+			 }
+
+		});
+
 		$('#submitfbcclear').click(function() {
 					cleanupFBC();
 		});

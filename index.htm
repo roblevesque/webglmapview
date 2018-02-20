@@ -77,9 +77,11 @@
             <span class="toolsep"></span>
             <span class="tool-header"> Find by Coordinate</span>
             <span>
-               <input type="text" class="rpcoord" id="fbc-x" placeholder="x" value="" style="width:3vw;">
-               <input type="text" class="rpcoord" id="fbc-y" placeholder="y" value="" style="width:3vw;">
-               <input type="text" class="rpcoord" id="fbc-z" placeholder="z" value="" style="width:3vw;">
+              <span class="combined_inputs">
+                 <input type="text" class="rpcoord plan_inputs" id="fbc-x" placeholder="x" value=""><i>x<i>
+                 <input type="text" class="rpcoord plan_inputs" id="fbc-y" placeholder="y" value=""><i>x<i>
+                 <input type="text" class="rpcoord plan_inputs" id="fbc-z" placeholder="z" value="">
+               </span>
                <select id="fbc_frame">
      					       <option val="UNK"> Unknown </option>
                      <option val="GALAC"> Galactic </option>
@@ -131,11 +133,15 @@
           <div class="wvg-tools" id="Intel">
               <span class="tool-header"> Route Prediction </span>
               <span>
-                <input type="text" class="rpcoord" id="x" placeholder="x" style="width:3vw;">
-                <input type="text" class="rpcoord" id="y" placeholder="y" style="width:3vw;">
-                <input type="text" class="rpcoord" id="z" placeholder="z" style="width:3vw;"><br /><br />
-                <input type="text" class="rpcoord" id="azmuth" value="azmuth" style="width:3.1vw;"><label for='inclination'> mark </label>
-                <input type="text" class="rpcoord" id="inclination" value="inclination" style="width:3.5vw;"> <br /><br />
+                <span class="combined_inputs">
+                  <input type="text" class="rpcoord intel_inputs_coord" id="x" placeholder="x"><i>x</i>
+                  <input type="text" class="rpcoord intel_inputs_coord" id="y" placeholder="y"><i>x</i>
+                  <input type="text" class="rpcoord intel_inputs_coord" id="z" placeholder="z">
+                </span>
+                <span class="combined_inputs">
+                  <input type="text" class="rpcoord intel_inputs_heading" id="azmuth" value="xy"><i>mark</i>
+                  <input type="text" class="rpcoord intel_inputs_heading" id="inclination" value="z">
+                </span>
 
                 <label for="intel_frame">Coordinate Frame</label>
                 <select id="intel_frame">
