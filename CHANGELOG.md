@@ -1,4 +1,9 @@
 # Change Log
+**V0.6.4** *(2-27-2018)*
+* Fixes to client window resizing
+* Add ship location indicator ( not implemented game side yet. Bug your local Zen )
+    * Still need heading field(s) and ship owner faction to draw right ship style
+* Fixed improper draw location of sensor net driven ship indicator
 
 **V0.6.3** *(2-3-2018)*
 * Exciting new features that shall remain secret but could lead to some other exciting things

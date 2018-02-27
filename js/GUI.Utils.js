@@ -192,8 +192,8 @@ $(document).ready(function() {
 		});
 
 		$(window).resize(function() {
-				$('.vertical-resize').resizable( "option", "maxHeight", ($('.vertical-resize').parent().parent().height() * 0.95) );
-				if($('.vertical-resize').height() > ($('.vertical-resize').parent().parent().height() * 0.95) )  	{
+				$('.vertical-resize').resizable( "option", "maxHeight", ($(window).height() * 0.95) );
+				if($('.vertical-resize').height() > ($(window).height() * 0.95) )  	{
 						$('.vertical-resize').resizable("resizeBy", {height: '95%', width:'100%'});
 				}
 		});
@@ -426,15 +426,22 @@ function netNewContact(data,su=false){
 			var pitch_rad = radians( data[6] );
 
 			deltaPos.x = distance * Math.cos( azmuth_rad ) * Math.cos( pitch_rad );
-			deltaPos.y = distance * Math.sin( pitch_rad );
-			deltaPos.z = distance * Math.sin( azmuth_rad )  * Math.cos( pitch_rad );
+			deltaPos.y = distance * Math.cos( pitch_rad ) * Math.sin(azmuth_rad);
+			deltaPos.z = distance * Math.sin( pitch_rad );
 			contactPos = deltaPos.add( detectingObject.position );
 
-			drawShip(contactPos,detectingBase+"_" + data[5]);
+			if ( data[3] !== "Unknown" ) { shipName = data[3]  } else { shipName =  detectingBase+"_" + data[5] }
+			if ( scene.getObjectByName( shipName ) == undefined ) {
+				drawShip(contactPos,detectingBase+"_" + data[5]);
+			} else {
+				var ship = scene.getObjectByName( shipName );
+				ship.position.set( parseFloat( contactPos.x ), parseFloat( contactPos.y ), parseFloat( contactPos.z ) );
+				animate();
+			}
 
 			setTimeout(function() {
 				removeEntity(detectingBase+"_" + data[5]);
-			},600000);
+			},60000);
 			return detectingBase + "_" + data[5];
 }
 
@@ -450,24 +457,45 @@ function parseSenNetData(data, text) {
 
 	if( newcontact !== null ) {
 		var shipobject = netNewContact( newcontact );
-		console.log( newcontact )
+
 	} else if ( unkcontact !== null ) {
 		var shipobject = netNewContact ( unkcontact );
-		console.log( unkcontact )
+
 	} else if ( newcontact !== null ){
 		var shipobject = netNewContact ( newcontact_su, true);
-		console.log( newcontact_su )
+
 	} else if ( unkcontact_su !== null ){
 		var shipobject = netNewContact ( unkcontact_su, true);
-		console.log( unkcontact_su )
+
 	}
 
 	if (  shipobject !== undefined ) {
-			console.log(data)
 			var linkElement = document.createElement('a');
 			linkElement.innerHTML = "[" + data[1] + "|" + data[2] + "] " + data[3]
 			linkElement.setAttribute('onClick','zoomfocus("' + shipobject  + '")');
-			console.log(linkElement)
 			return linkElement;
 	}
+}
+
+function handleInboundJSON( obj ) {
+		if( obj['type'] !== undefined ) { // Placeholder to allow for specific things to get done
+			console.log(obj['type'])
+
+		} else {  // Generic ship update
+				if ( scene.getObjectByName( obj['name'] ) == undefined ) {
+						drawShip( new THREE.Vector3( obj.x, obj.y, obj.z ), obj.name, "Federation" );
+				} else {
+					var ship = scene.getObjectByName( obj.name );
+					ship.position.set( parseFloat( obj.x ), parseFloat( obj.y ), parseFloat( obj.z ) );
+					animate();
+				}
+				//var rval = `<a onClick=\"zoomfocus('${obj.name}')\">  Ship Position Updated -  Click to focus </a>`;
+				var linkElement = document.createElement('a');
+				linkElement.innerHTML = `${obj.name} position updated. - Click to focus`;
+				linkElement.setAttribute('onClick',`zoomfocus('${obj.name}')`);
+				return linkElement;
+
+
+		}
+
 }

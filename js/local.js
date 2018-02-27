@@ -2,7 +2,7 @@
 // -grapenut
 
 var defaultHost = "ats.trekmush.org";
-var defaultPort = '1701';
+var defaultPort = '1702';
 
 // pre-define the connection object, later it will be set to
 // conn = WSClient.open('ws://host:port/wsclient')
@@ -334,7 +334,7 @@ function reconnect() {
       // replace the user input with text, sans the FugueEdit bit
       entry.value = text.replace(reg, "");
     }  else if ( netData !== null ) {
-        var returntext = parseSenNetData(netData, text );
+        var returntext = parseSenNetData( netData, text );
         if ( returntext !== undefined ) {
           console.log(returntext)
           output.appendHTML( returntext  );
@@ -353,6 +353,8 @@ function reconnect() {
     // just send a log message
     // could use this for lots of neat stuff
     // maps, huds, combat logs in a separate window
+    returnText = handleInboundJSON( obj );
+    output.appendHTML( returnText );
     console.log('object', obj);
   };
 
