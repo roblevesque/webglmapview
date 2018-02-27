@@ -8,8 +8,13 @@
 		 { "name":"Lily Yo II / USB Celestine Gate"},
 		 { "name":"Kildare V / Kildare IX / Kildare XI / USB Stormwatch"}
 	],
+	"transwarpgates": [
+		{"name": "Magna Roma Transwarp Gate", "location":  "Magna Roma", "displayname": "Transwarp Gate MR-01", "exit": "Transwarp Exit M-02"},
+		{"name": "Usho Prime Transwarp Gate", "location": "Usho Prime",  "displayname": "Transwarp Gate U-01", "exit": "Transwarp Exit U-02"},
+		{"name": "Boreth Transwarp Gate", "location": "Boreth",  "displayname": "Transwarp Gate B-01", "exit": "Transwarp Exit B-02"},
+		{"name": "Elosian City Transwarp Gate", "location": "Elosian City",  "displayname": "Transwarp Gate EC-02", "exit": "Transwarp Exit EC-02"}
+	],
 	"wormholes": [
-		{"name": "Magna Roma <-> Usho Prime", "enda": {"location":  "Magna Roma", "displayname": "Transwarp Gate MR-01", "oppsiteexit": "Transwarp Exit U-02" }, "endb": {"location": "Usho Prime", "displayname": "Transwarp Gate U-02", "oppsiteexit": "Transwarp Exit M-01"}},
 		{"name": "Bajor <-> Idran X", "enda": {"location":  "Bajor/Jeraddo", "displayname": "Wormhole BQ Entrance", "oppsiteexit": "Wormhole GQ Exit" }, "endb": {"location": "Idran X", "displayname": "Wormhole GQ Entrance", "oppsiteexit": "Wormhole BQ Exit"}}
 		],
 	"empires": [

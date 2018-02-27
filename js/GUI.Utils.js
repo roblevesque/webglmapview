@@ -309,9 +309,9 @@ function populateRoutePlan(pointa,pointb,speed) {
 			$('#cal_start').html( pointa );
 			$('#cal_end').html( pointb );
 			$('#cal_speed').html( speed.speed + " " + speed.unit );
-			var route = calcBestRoute(pointa,pointb);
+			var route = calcBestRoute(pointa,pointb, speed);
 			var dist = route.distance;
-			var eta = calcETA(speed,dist);
+			var eta = route.eta
 			$('#cal_eta').html( timeformat(eta) );
 			$('#cal_dist').html( dist.toFixed(2) + " PC");
 
@@ -321,9 +321,9 @@ function populateRoutePlan(pointa,pointb,speed) {
 			route.stops.forEach(function(waypoint,index,self) {
 				routeplan += '<optgroup label="' + waypoint.name + '">';
 				if(typeof self[index+1] != 'undefined' ) {
-					if(waypoint.gate && self[index+1].gate) {routeplan += '<option>^---- Gate From</option>'; }
+					if(waypoint.gate && self[index+1].gate) {routeplan += '<option>^---- Gate From</option>'; var nextpoint = self[index+1].name;  routeplan += `<option>---> Set course for  ${nextpoint} </option>`; }
 				}
-				if(waypoint.gate && lastWaypoint.gate) {routeplan += '<option>^---- Gate Exit</option>'; }
+				if(waypoint.gate && lastWaypoint.gate) {routeplan += '<option>^---- Gate Exit</option>'; routeplan += '<option>ETA: ' +  timeformat( waypoint.eta ) + '</option>'; }
 
 				if(!waypoint.gate || (!lastWaypoint.gate && waypoint.gate)) {
 					var bordercrossings = listBorderCrossings(grabPositionByName( lastWaypoint.name.split('@')[lastWaypoint.name.split('@').length-1] ),grabPositionByName(waypoint.name.split('@')[waypoint.name.split('@').length-1] ));
@@ -332,7 +332,12 @@ function populateRoutePlan(pointa,pointb,speed) {
 
 					}
 					routeplan += '<option>Distance:' + waypoint.distance.toFixed(2) + '</option>'
-					routeplan += '<option>ETA: ' + timeformat(calcETA(speed,waypoint.distance)) + '</option>';
+					if ( waypoint.eta == undefined ) {
+						routeplan += '<option>ETA: ' + timeformat(calcETA(speed,waypoint.distance)) + '</option>';
+					} else {
+						routeplan += '<option>ETA: ' + timeformat( waypoint.eta ) + '</option>';
+					}
+
 					drawline(grabPositionByName(lastWaypoint.name.split('@')[lastWaypoint.name.split('@').length-1] ),grabPositionByName(waypoint.name.split('@')[waypoint.name.split('@').length-1]  ));
 				}
 				lastWaypoint = waypoint;

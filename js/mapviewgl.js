@@ -26,6 +26,7 @@ function loadData(_callback) {
 	    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 	        jsonEmpire = JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['empires'];
 					jsonGate =  JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['gates'];
+					jsonConduit = JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['transwarpgates'];
 					jsonWormhole = JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['wormholes'];
 	        _callback();
 
@@ -472,39 +473,66 @@ function calcEndpointByHeading(heading,startvec = new THREE.Vector3(0,0,0)) {
 		return calcvec;
 }
 
-function calcBestRoute(pointa,pointb) {
+function calcBestRoute(pointa,pointb,speed) {
 	var route = [{}];
 	delete route['0']; // WTF? We shouldn't need to do this. I hate JS....
-
 	// Calculate direct route.
-	route['Direct'] =  { 'stops': [{'name':pointb, 'gate': false, 'distance':calcDist(pointa,pointb)}], 'distance': calcDist(pointa, pointb)};
+	route['Direct'] =  { 'stops': [{'name':pointb, 'gate': false, 'distance':calcDist(pointa,pointb)}], 'distance': calcDist(pointa, pointb), 'eta': calcETA( speed, calcDist( pointa, pointb ) ) };
   // Thats it! Direct is easy stuff
 
 
-	// Find route via stargate.
-	var distance_a = {};
+	// Find route via stargate. !!! NO LONGER FUNCTIONAL BECAUSE THE ADMINS HATE THE UNITY PEOPLE   !!!
+	var distance_a = {};     // !!! This code stays though, just in case there is a change of heart !!!
 	var distance_b = {};
 	var viawormhole = {};
 	var distance_wb = {};
 	var near_a,near_b;
 	// Find gate closest to point a
-	jsonGate.forEach(function(name) { distance_a[name.name] = calcDist(pointa,name.name);});
-	var dist_a_sorted = Object.keys(distance_a).sort(function(a,b) {return distance_a[a]-distance_a[b]});
-	var near_a = dist_a_sorted[0];
+	//jsonGate.forEach(function(name) { distance_a[name.name] = calcDist(pointa,name.name);});
+	//var dist_a_sorted = Object.keys(distance_a).sort(function(a,b) {return distance_a[a]-distance_a[b]});
+	//var near_a = dist_a_sorted[0];
 
 	// Find gate closest to point b
-	jsonGate.forEach(function(name) { distance_b[name.name] = calcDist(pointb,name.name) ;});
-	var dist_b_sorted = Object.keys(distance_b).sort(function(a,b) {return distance_b[a]-distance_b[b]});
-	var near_b = dist_b_sorted[0];
+	//jsonGate.forEach(function(name) { distance_b[name.name] = calcDist(pointb,name.name) ;});
+	//var dist_b_sorted = Object.keys(distance_b).sort(function(a,b) {return distance_b[a]-distance_b[b]});
+	//var near_b = dist_b_sorted[0];
 
 	// Dump out right now if it's the same fucking gate.
-	if( near_a != near_b) {
+	//if( near_a != near_b) {
 	// Assemble the gate travel plan. With our powers unite, we are shitty code!
-	gate_distance = distance_a[near_a] + distance_b[near_b];
+	//gate_distance = distance_a[near_a] + distance_b[near_b];
   // Shit man?! Gates got shutdown! What the fuck are we going to do!?
 	// route['Gate'] = {'stops': [{'name':near_a, 'gate':true, 'distance': calcDist(pointa,near_a)} ,{'name': near_b, 'gate': true, 'distance':0},{'name': pointb, 'gate':false, 'distance':calcDist(near_b,pointb)}], 'distance':gate_distance}
 
-	} // End gate work...
+	//} // End gate work...
+
+
+	// Transwarp Conduit Gate network. New hotness
+	var distance_ca = {};
+	var distance_cb = {};
+	var near_key = {};
+	var near_a,near_b;
+  // Calculate distance to all TWC gates from point a, and from point b
+	jsonConduit.forEach(function(gate) { near_key[gate.name] = gate.location; distance_ca[gate.name] = calcDist( pointa, gate.location );});
+	jsonConduit.forEach(function(gate) { distance_cb[gate.name] = calcDist( pointb, gate.location );});
+	// Sort them by assending distance
+	var dist_a_sorted = Object.keys(distance_ca).sort(function(a,b) {return distance_ca[a]-distance_ca[b]});
+	var dist_b_sorted = Object.keys(distance_cb).sort(function(a,b) {return distance_cb[a]-distance_cb[b]});
+	// Grab the closest ones for each point a and b
+	near_ca = dist_a_sorted[0];
+	near_cb = dist_b_sorted[0];
+
+	// Check to see if the universe hates us and they are the the same god damn gates
+	if ( near_ca != near_cb ) { // Skookum as frig man! Different gates!
+		var conduit_distance = calcDist( near_key[near_ca], near_key[near_cb] );
+		var conduit_eta =  conduit_distance / ( 0.75 * 29.979246 ) ;  // 29.979246 is the lightspeed constant that I only need in two places.
+		var twc_distance = distance_ca[near_ca] + distance_cb[near_cb];
+		var total_eta = conduit_eta + calcETA( speed, calcDist( pointa, near_key[near_ca] ) )  + calcETA( speed, calcDist( pointb, near_key[near_cb] ) );
+		route['TWC'] = {'stops': [{'name':near_key[near_ca], 'gate':true, 'distance': calcDist(pointa, near_key[near_ca])} ,{'name': near_key[near_cb], 'gate': true, 'distance':conduit_distance, 'eta': conduit_eta },
+									{'name': pointb, 'gate':false, 'distance':calcDist( near_key[near_cb] ,pointb)}], 'distance':twc_distance,  'eta': total_eta}
+	}
+
+
 
 
   // Calculate wormhole route
@@ -522,11 +550,11 @@ function calcBestRoute(pointa,pointb) {
 	var near_wa = viawormhole[via_wh_dista_sorted[0]];
 	// Build Wormhole route.
 	if(near_wa.location != near_wb.location ) {
-		    var temproute_a = calcBestRoute(pointa,near_wa.location);
+		    var temproute_a = calcBestRoute(pointa,near_wa.location,speed);
 				temproute_a['stops'][temproute_a['stops'].length-1]['gate'] = true;
 				temproute_a['stops'][temproute_a['stops'].length-1]['name'] = near_wa.displayname + "@" + near_wa.location;
 				temproute_a['stops'][temproute_a['stops'].length] = {'name': near_wa.oppsiteexit + "@" + near_wb.location, 'gate': true};
-				var temproute_b = calcBestRoute(near_wb.location,pointb);
+				var temproute_b = calcBestRoute(near_wb.location,pointb, speed);
 				var stops=temproute_a['stops'];
 				for (var obj in temproute_b['stops']) { stops[stops.length] = temproute_b['stops'][obj]}
 
@@ -537,7 +565,7 @@ function calcBestRoute(pointa,pointb) {
 				var wh_dist = 0;
 			  stops.forEach(function(s) { wh_dist += s.distance; });
 
-				route['Wormhole'] = {'stops': stops, 'distance':wh_dist}
+				route['Wormhole'] = {'stops': stops, 'distance':wh_dist, 'eta': calcETA( speed, wh_dist ) }
 
 	}
 
@@ -545,7 +573,6 @@ function calcBestRoute(pointa,pointb) {
 
 	// Sort all routes by distance traveled. Index of zero should be the fastest, in theory any way
 	var route_keys_sorted = Object.keys(route).sort(function(a,b) {return route[a].distance-route[b].distance});
-
 	return route[route_keys_sorted[0]];
 }
 
