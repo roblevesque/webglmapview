@@ -724,7 +724,7 @@ var WSClient = (function (window, document, undefined) {
     if (that && that.keyCycleForward) {
       return that.keyCycleForward(key);
     } else {
-      // default key is ctrl+n
+      // default key is ctrl+right
       return (key.code === 39 && key.ctrl);
     }
   };
@@ -733,7 +733,7 @@ var WSClient = (function (window, document, undefined) {
     if (that && that.keyCycleBackward) {
       return that.keyCycleBackward(key);
     } else {
-      // default key is ctrl+p
+      // default key is ctrl+left
       return (key.code === 37 && key.ctrl);
     }
   };

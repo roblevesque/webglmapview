@@ -309,7 +309,8 @@ function populateRoutePlan(pointa,pointb,speed) {
 			$('#cal_start').html( pointa );
 			$('#cal_end').html( pointb );
 			$('#cal_speed').html( speed.speed + " " + speed.unit );
-			var route = calcBestRoute(pointa,pointb, speed);
+
+			var route = calcBestRoute(pointa,pointb, speed,  $('#directonly').is(':checked') );
 			var dist = route.distance;
 			var eta = route.eta
 			$('#cal_eta').html( timeformat(eta) );

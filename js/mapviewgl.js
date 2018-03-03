@@ -473,12 +473,14 @@ function calcEndpointByHeading(heading,startvec = new THREE.Vector3(0,0,0)) {
 		return calcvec;
 }
 
-function calcBestRoute(pointa,pointb,speed) {
+function calcBestRoute(pointa,pointb,speed,direct=false) {
 	var route = [{}];
 	delete route['0']; // WTF? We shouldn't need to do this. I hate JS....
 	// Calculate direct route.
+
 	route['Direct'] =  { 'stops': [{'name':pointb, 'gate': false, 'distance':calcDist(pointa,pointb)}], 'distance': calcDist(pointa, pointb), 'eta': calcETA( speed, calcDist( pointa, pointb ) ) };
-  // Thats it! Direct is easy stuff
+	if ( direct ) { return route['Direct']; }
+	// Thats it! Direct is easy stuff
 
 
 	// Find route via stargate. !!! NO LONGER FUNCTIONAL BECAUSE THE ADMINS HATE THE UNITY PEOPLE   !!!
@@ -573,6 +575,7 @@ function calcBestRoute(pointa,pointb,speed) {
 
 	// Sort all routes by distance traveled. Index of zero should be the fastest, in theory any way
 	var route_keys_sorted = Object.keys(route).sort(function(a,b) {return route[a].distance-route[b].distance});
+	console.log(route)
 	return route[route_keys_sorted[0]];
 }
 
