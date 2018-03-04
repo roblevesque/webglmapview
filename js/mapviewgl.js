@@ -117,7 +117,7 @@ function init() {
 		    p_mesh.position.z=planet.z;
 		    p_mesh.name = escapeHTML(planet.name);
 				scene.add( p_mesh );
-		    l_text = new Text2D(escapeHTML(planet.name), { align: textAlign.right,  font: '12px Arial', fillStyle: '#FFF' , antialias: false });
+		    l_text = new Text2D(escapeHTML(planet.name), { align: textAlign.right,  font: '12px Arial', fillStyle: '#FFFFFF' , antialias: false });
 		    l_text.material.alphaTest = 0.0;
 		    l_text.position.set(planet.x,planet.y,planet.z);
 		    l_text.scale.set(0.25,0.25,0.25);
