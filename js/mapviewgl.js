@@ -7,7 +7,7 @@ var mouse = new THREE.Vector2(), INTERSECTED;
 var mixers = [];
 var misc_followers = [];
 var WIDTH = window.innerWidth , HEIGHT = window.innerHeight
-
+// Add this commeent
 window.onload = function() {
 loadData(function() {
 init();
