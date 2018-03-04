@@ -50,7 +50,7 @@ function init() {
 				scene = new THREE.Scene();
         renderer = new THREE.WebGLRenderer();
 
-				var Text2D = THREE_Text.Text2D;
+				var Text2D = THREE_Text.MeshText2D;
 				var SpriteText2D = THREE_Text.SpriteText2D;
 				var textAlign = THREE_Text.textAlign;
 				var b_geometry, b_material, b_mesh, p_geometry, p_material, p_mesh, s_geometry, s_material, s_mesh, l_text;
