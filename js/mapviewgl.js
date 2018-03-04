@@ -49,6 +49,12 @@ function reset_view() {
 function init() {
 				scene = new THREE.Scene();
         renderer = new THREE.WebGLRenderer();
+
+				var Text2D = THREE_Text.Text2D;
+				var SpriteText2D = THREE_Text.SpriteText2D;
+				var textAlign = THREE_Text.textAlign;
+				var b_geometry, b_material, b_mesh, p_geometry, p_material, p_mesh, s_geometry, s_material, s_mesh, l_text;
+
         renderer.setSize( window.innerWidth, window.innerHeight );
         document.body.appendChild( renderer.domElement );
 				container = document.createElement( 'div' );
@@ -63,15 +69,6 @@ function init() {
 				controls.enableZoom = true;
   		  controls.addEventListener( 'change', render );
 				document.addEventListener( 'mousedown', onCanvasClick, false );
-
-
-
-
-
-		var Text2D = THREE_Text.Text2D;
-		var SpriteText2D = THREE_Text.SpriteText2D;
-		var textAlign = THREE_Text.textAlign
-		var b_geometry, b_material, b_mesh, p_geometry, p_material, p_mesh, s_geometry, s_material, s_mesh, l_text;
 
 
 		// Add some Ambient lighting   (Removed for now as it is too strong and shadows are nice)
@@ -101,6 +98,7 @@ function init() {
 						l_text.scale.set(0.75,0.75,0.75);
 						l_text.name = border.name + "_label";
 						scene.add(l_text);
+
 					}
 			}
 
@@ -117,7 +115,7 @@ function init() {
 		    p_mesh.position.z=planet.z;
 		    p_mesh.name = escapeHTML(planet.name);
 				scene.add( p_mesh );
-		    l_text = new Text2D(escapeHTML(planet.name), { align: textAlign.right,  font: '12px Arial', fillStyle: '#FFFFFF' , antialias: false });
+		  l_text = new Text2D(escapeHTML(planet.name), { align: textAlign.right,  font: '12px Arial', fillStyle: '#FFFFFF' , antialias: false });
 		    l_text.material.alphaTest = 0.0;
 		    l_text.position.set(planet.x,planet.y,planet.z);
 		    l_text.scale.set(0.25,0.25,0.25);
@@ -137,7 +135,7 @@ function init() {
 		    s_mesh.position.z=base.z;
 				s_mesh.name = escapeHTML(base.name);
 		    scene.add( s_mesh );
-		  	l_text = new Text2D(escapeHTML(base.name), { align: textAlign.left,  font: '12px Arial', fillStyle: '#ABABAB' , antialias: false });
+		 		l_text = new Text2D(escapeHTML(base.name), { align: textAlign.left,  font: '12px Arial', fillStyle: '#ABABAB' , antialias: false });
 		    l_text.material.alphaTest = 0.0;
 		    l_text.position.set(base.x,base.y+3,base.z);
 				l_text.scale.set(0.20,0.20,0.20);
@@ -284,7 +282,6 @@ function zoomfocus_point(point) {
 	}
 
 }
-
 
 function drawline(origin,dest) {
 		var direction = dest.clone().sub(origin);
