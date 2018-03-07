@@ -107,7 +107,7 @@ function init() {
 		  // Planet Generation
 		  for (var key in area["planets"]) {
 		    var planet = area.planets[key];
-		    p_geometry= new THREE.SphereGeometry( 1, 10, 10 );
+		    p_geometry= new THREE.SphereGeometry( 1.0, 10, 10 );
 		    p_material = new THREE.MeshBasicMaterial( { color: area.color, wireframe: false} );
 		    p_mesh =  new THREE.Mesh( p_geometry, p_material );
 		    p_mesh.position.x=planet.x;
@@ -624,6 +624,7 @@ function dualPointPredict( pointa, framea , pointb, frameb ) {
 
 function predictDestination(loc,heading,frame) {
 		cleanupFBC();
+		removeEntity( "arrow" );
 		if(frame != "Galactic") {
 			var objFrame = grabPositionByName(frame);
 		} else {
@@ -632,17 +633,19 @@ function predictDestination(loc,heading,frame) {
 
 		var adjLoc = loc.clone();
 		adjLoc = adjLoc.add(objFrame);
-		var headingvec = new THREE.Vector3( heading.x, heading.y, 900 );
+		var headingvec = new THREE.Vector3( heading.x, heading.y, 600 );
 		var farpoint = calcEndpointByHeading(headingvec,adjLoc);
-		drawline(adjLoc,farpoint);
-		var directionvector = farpoint.sub(adjLoc);
+		var directionvector = farpoint.clone().sub(adjLoc);
 		var ray = new THREE.Raycaster(adjLoc, directionvector.clone().normalize());
-		ray.linePrecision = 10;
+		ray.linePrecision = 0.5;
 		scene.updateMatrixWorld();
-		var intersects = ray.intersectObjects(scene.children,false);
+		var intersects = ray.intersectObjects(scene.children,true);
+		drawline(adjLoc,farpoint);
 		var correctedintersections=[];
+		console.log(intersects)
 		if (intersects[0]) {
 				intersects.forEach(function(obj) {
+
 					if (obj.object.geometry.boundingSphere.radius != 'undefined' &&  obj.object.geometry.boundingSphere.radius < 4 ) {
 							correctedintersections.push(obj.object.name);
 					}
