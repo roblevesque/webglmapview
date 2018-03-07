@@ -632,7 +632,7 @@ function predictDestination(loc,heading,frame) {
 
 		var adjLoc = loc.clone();
 		adjLoc = adjLoc.add(objFrame);
-		var headingvec = new THREE.Vector3(heading.x, heading.y, 300);
+		var headingvec = new THREE.Vector3( heading.x, heading.y, 900 );
 		var farpoint = calcEndpointByHeading(headingvec,adjLoc);
 		drawline(adjLoc,farpoint);
 		var directionvector = farpoint.sub(adjLoc);
