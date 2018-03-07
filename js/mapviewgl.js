@@ -107,6 +107,9 @@ function init() {
 		  // Planet Generation
 		  for (var key in area["planets"]) {
 		    var planet = area.planets[key];
+				var hitbox_geo = new THREE.SphereGeometry( 2.1, 10, 10);
+				var hitbox_mat = new THREE.MeshBasicMaterial( { color: "#FFF", wireframe: false, transparent: true, opacity: 0.0 } );
+				var hitbox = new THREE.Mesh( hitbox_geo, hitbox_mat );
 		    p_geometry= new THREE.SphereGeometry( 1.0, 10, 10 );
 		    p_material = new THREE.MeshBasicMaterial( { color: area.color, wireframe: false} );
 		    p_mesh =  new THREE.Mesh( p_geometry, p_material );
@@ -114,6 +117,7 @@ function init() {
 		    p_mesh.position.y=planet.y;
 		    p_mesh.position.z=planet.z;
 		    p_mesh.name = escapeHTML(planet.name);
+				p_mesh.add( hitbox );
 				scene.add( p_mesh );
 		    l_text = new Text2D(escapeHTML(planet.name), { align: textAlign.right,  font: '12px Arial', fillStyle: '#FFF' , antialias: false });
 		    l_text.material.alphaTest = 0.0;
@@ -572,7 +576,7 @@ function calcBestRoute(pointa,pointb,speed,direct=false) {
 
 	// Sort all routes by distance traveled. Index of zero should be the fastest, in theory any way
 	var route_keys_sorted = Object.keys(route).sort(function(a,b) {return route[a].distance-route[b].distance});
-	console.log(route)
+
 	return route[route_keys_sorted[0]];
 }
 
@@ -633,23 +637,28 @@ function predictDestination(loc,heading,frame) {
 
 		var adjLoc = loc.clone();
 		adjLoc = adjLoc.add(objFrame);
-		var headingvec = new THREE.Vector3( heading.x, heading.y, 600 );
+		var headingvec = new THREE.Vector3( heading.x, heading.y, 900 );
 		var farpoint = calcEndpointByHeading(headingvec,adjLoc);
 		var directionvector = farpoint.clone().sub(adjLoc);
 		var ray = new THREE.Raycaster(adjLoc, directionvector.clone().normalize());
-		ray.linePrecision = 0.5;
+		ray.linePrecision = 1;
+		ray.far = 1500;
 		scene.updateMatrixWorld();
 		var intersects = ray.intersectObjects(scene.children,true);
 		drawline(adjLoc,farpoint);
 		var correctedintersections=[];
-		console.log(intersects)
 		if (intersects[0]) {
 				intersects.forEach(function(obj) {
 
 					if (obj.object.geometry.boundingSphere.radius != 'undefined' &&  obj.object.geometry.boundingSphere.radius < 4 ) {
-							correctedintersections.push(obj.object.name);
+							if ( obj.object.name == "" ) {
+								correctedintersections.push( obj.object.parent.name );
+							} else {
+								correctedintersections.push(obj.object.name);
+							}
 					}
 				});
+
 				return correctedintersections[0];
 			}
 			return "Unable to predict"
@@ -658,7 +667,7 @@ function predictDestination(loc,heading,frame) {
 
 function listBorderCrossings( startVector, endVector ) {
 		var raycast = new THREE.Raycaster( startVector, endVector.clone().sub( startVector ).normalize() );
-		raycast.linePrecision = 5;
+		raycast.linePrecision = 1;
 		scene.updateMatrixWorld();
 		var intersects = raycast.intersectObjects( scene.children, false );
 		var borderCrossings = Object();
