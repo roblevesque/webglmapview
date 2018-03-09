@@ -1,4 +1,7 @@
 # Change Log
+**V0.6.5** *(3-9-2018)*
+* Add new preferences pane. Only preferences so far are: Default Frame and prediction distance
+
 **V0.6.4** *(2-27-2018)*
 * Fixes to client window resizing
 * Add ship location indicator ( not implemented game side yet. Bug your local Zen )
