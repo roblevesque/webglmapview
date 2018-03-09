@@ -10,6 +10,7 @@ var WIDTH = window.innerWidth , HEIGHT = window.innerHeight
 
 window.onload = function() {
 loadData(function() {
+preferences.load();
 init();
 animate();
 populateUserFields();
@@ -637,12 +638,12 @@ function predictDestination(loc,heading,frame) {
 
 		var adjLoc = loc.clone();
 		adjLoc = adjLoc.add(objFrame);
-		var headingvec = new THREE.Vector3( heading.x, heading.y, 900 );
+		var headingvec = new THREE.Vector3( heading.x, heading.y, parseFloat( preferences.get("predictDistance") ) );
 		var farpoint = calcEndpointByHeading(headingvec,adjLoc);
 		var directionvector = farpoint.clone().sub(adjLoc);
 		var ray = new THREE.Raycaster(adjLoc, directionvector.clone().normalize());
 		ray.linePrecision = 1;
-		ray.far = 1500;
+		ray.far = parseFloat( preferences.get("predictDistance") );
 		scene.updateMatrixWorld();
 		var intersects = ray.intersectObjects(scene.children,true);
 		drawline(adjLoc,farpoint);

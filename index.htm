@@ -3,12 +3,14 @@
   <head>
       <title> Map View Web Edition </title>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/89/three.min.js" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
       <script src="js/GLTFLoader.js"></script>
       <script src="js/decimal.min.js"></script>
       <script src="js/OrbitControls.js"></script>
       <script src="js/three-text2d.js"></script>
       <script src="js/Detector.js"></script>
       <script src="js/mapviewgl.js"></script>
+      <script src="js/prefs.js"></script>
       <link href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway:400,700,700i" rel="stylesheet">
       <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -57,6 +59,7 @@
     				          <li class="wvg-tablink wvg-tab-active" onclick="openTab(event,'Find');">Find</li>
                       <li class="wvg-tablink" onclick="openTab(event,'Plan');">Plan</li>
     				          <li class="wvg-tablink" onclick="openTab(event,'Intel');">Intel</li>
+                      <li class="wvg-tablink" onclick="openTab(event, 'Preferences');">Prefs</li>
                       <li class="wvg-tablink" onclick="openTab(event,'Info');">Info</li>
     			      </ul>
     		  <div class="wvg-tools wvg-first" id="Find">
@@ -199,6 +202,19 @@
               <span><a href="https://goo.gl/7uDYCW">Issue Tracker</a>  <i class="fa fa-ellipsis-h" aria-hidden="true"></i>  <a href="https://github.com/roblevesque/webglmapview">Project Page</a></span>
             </div>
     			</div>
+          <div class="wvg-tools" id="Preferences">
+            <span class="tool-header">Preferences</span>
+            <span>
+              <label for="pref_defaultFrame">Default Coordinate Frame</label><br />
+              <select id="pref_defaultFrame" class="frame_list preference_input">
+                <option val="Galactic"> Galactic </option>
+              </select>
+            </span>
+            <span>
+              <label for="pref_predictDistance">Intel Prediction Distance</label><br />
+              <input type="text" class="preference_input" id="pref_predictDistance" placeholder="">
+            </span>
+          </div>
     		</div>
     		<div class="reset-container"><span class="reset-button">  Reset </span></div>
 

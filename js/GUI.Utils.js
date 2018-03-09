@@ -178,6 +178,11 @@ $(document).ready(function() {
 				$('#client-term-output').css("width",'');
 				}
 		});
+
+		$(".preference_input").change(function() {
+				preferences.set( this.id.split("_")[1]  ,$(this).val() );
+		});
+
 		$(".client-term-container").resize(function() { width = $(this).width(); $("#client").css({'width' : '100%'});   $("#client-term-output").css({'margin-right' : '0px !important', 'padding-right' : '0 !important'})  })
 		$.ajax({
 			url: 'CHANGELOG.md',
@@ -197,6 +202,7 @@ $(document).ready(function() {
 						$('.vertical-resize').resizable("resizeBy", {height: '95%', width:'100%'});
 				}
 		});
+
 		// Websocket client startup
 		startup();
 
@@ -235,6 +241,13 @@ function populateUserFields() {
 	}
 		$('.frame_list').html(option);
 		$('#fbc_frame').html("<option val=\"UNK\"> Unknown </option>" + option);
+		$('.frame_list').val( preferences.get( "defaultFrame" ) );
+
+
+		// Populate preferences pane
+		preferences.list().forEach(function( pref ) {
+				$('#pref_' + pref).val( preferences.get( pref ) );
+		});
 
 }
 function populateFBSelect() {
