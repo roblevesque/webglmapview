@@ -6,7 +6,9 @@ var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2(), INTERSECTED;
 var mixers = [];
 var misc_followers = [];
-var WIDTH = window.innerWidth , HEIGHT = window.innerHeight
+var WIDTH = window.innerWidth , HEIGHT = window.innerHeight;
+var currentActiveShips = {};
+var drawnActiveShips = {};
 
 window.onload = function() {
 loadData(function() {
@@ -14,6 +16,7 @@ preferences.load();
 init();
 animate();
 populateUserFields();
+updateMUSHData();
 });
 }
 

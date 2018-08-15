@@ -518,3 +518,50 @@ function handleInboundJSON( obj ) {
 		}
 
 }
+
+
+function updateMUSHData() {
+
+setInterval(function() {
+// Pull active ships from MUSH direct
+	/*	$.getJSON("http://ats.trekmush.org:1701/active_ships", function( response ) {
+		      // get lat + lon from first match
+		      window.currentActiveShips = response;
+					redrawActiveShips();
+		    });
+*/
+				$.ajax({
+				    url: "http://ats.trekmush.org:1701/active_ships",
+
+					type: 'GET',
+
+		    	// Work with the response
+				    success: function( response ) {
+							window.currentActiveShips = response;
+						 redrawActiveShips();
+				    }
+				});
+
+}, 30*1000 );
+}
+
+function redrawActiveShips() {
+		if( window.drawnActiveShips.length > 0 ) {
+				for ( ship in window.drawnActiveShips ) {
+					removeEntity( ship.id );
+				}
+				window.drawnActiveShips = {};
+
+				for ( ship in window.currentActiveShips ){
+
+						drawShip( new THREE.Vector3( ship.x, ship.y, ship.z ), ship.id);
+						window.drawnActiveShips += ship;
+
+				}
+
+
+		}
+
+
+
+}
