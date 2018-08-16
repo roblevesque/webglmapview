@@ -519,49 +519,33 @@ function handleInboundJSON( obj ) {
 
 }
 
+function refreshActiveShips() {
+	$.getJSON("http://ats.trekmush.org:1701/active_ships", function( response ) {
+      window.currentActiveShips = response;
+			redrawActiveShips();
+    });
+}
 
 function updateMUSHData() {
-
-setInterval(function() {
-// Pull active ships from MUSH direct
-	/*	$.getJSON("http://ats.trekmush.org:1701/active_ships", function( response ) {
-		      // get lat + lon from first match
-		      window.currentActiveShips = response;
-					redrawActiveShips();
-		    });
-*/
-				$.ajax({
-				    url: "http://ats.trekmush.org:1701/active_ships",
-
-					type: 'GET',
-
-		    	// Work with the response
-				    success: function( response ) {
-							window.currentActiveShips = response;
-						 redrawActiveShips();
-				    }
-				});
-
-}, 30*1000 );
+	refreshActiveShips();
+	setInterval(function() {
+		// Pull active ships from MUSH direct
+    refreshActiveShips();
+	}, 60*1000 );
 }
+
 
 function redrawActiveShips() {
 		if( window.drawnActiveShips.length > 0 ) {
-				for ( ship in window.drawnActiveShips ) {
-					removeEntity( ship.id );
-				}
-				window.drawnActiveShips = {};
+			window.drawnActiveShips.forEach(function( ship ) {
+				removeEntity(`Contact:${ship.id}`);
+			});
+			window.drawnActiveShips = [];
+			}
 
-				for ( ship in window.currentActiveShips ){
-
-						drawShip( new THREE.Vector3( ship.x, ship.y, ship.z ), ship.id);
-						window.drawnActiveShips += ship;
-
-				}
-
-
-		}
-
-
+				window.currentActiveShips.slice(0,window.maxdrawnships-1).forEach(function( ship ) {
+						drawShip( new THREE.Vector3( ship.x, ship.y, ship.z  ), `Contact:${ship.id}`, "Federation");
+						window.drawnActiveShips[ship.id] = ship;
+				});
 
 }

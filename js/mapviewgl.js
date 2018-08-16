@@ -6,9 +6,11 @@ var raycaster = new THREE.Raycaster();
 var mouse = new THREE.Vector2(), INTERSECTED;
 var mixers = [];
 var misc_followers = [];
+var MeshLoader = new THREE.GLTFLoader();
 var WIDTH = window.innerWidth , HEIGHT = window.innerHeight;
-var currentActiveShips = {};
-var drawnActiveShips = {};
+window.currentActiveShips = [];
+window.drawnActiveShips = []
+window.maxdrawnships = 10
 
 window.onload = function() {
 loadData(function() {
@@ -267,6 +269,22 @@ function zoomfocus(name) {
 					camera.lookAt( focus );
 					camera.updateProjectionMatrix();
 					render();
+			} else {
+					zoomto = grabPositionByName(name);
+					if (zoomto != null) {
+							controls.target.x = parseFloat( zoomto.x );
+						  controls.target.y = parseFloat( zoomto.y );
+						  controls.target.z = parseFloat( zoomto.z );
+							var focus = new THREE.Vector3( parseFloat( zoomto.x ), parseFloat( zoomto.y ), parseFloat( zoomto.z ) );
+							var vantage = new THREE.Vector3( parseFloat( 5.00 ), parseFloat( 60.00 ), parseFloat( 150.00 ) );
+							vantage.add( focus );
+							camera.position.set( parseFloat( vantage.x ), parseFloat( vantage.y ), parseFloat( vantage.z ) );
+							camera.lookAt( focus );
+							camera.updateProjectionMatrix();
+							render();
+					}
+					else { return false; }
+
 			}
 
 
@@ -309,9 +327,9 @@ function drawcircleindicator(center, name="Beacon") {
 	var textAlign = THREE_Text.textAlign
 	var indicator
 	var label = new Text2D(name, { align: textAlign.center,  font: '12px Arial', fillStyle: '#ABABAB', antialias: false });
-	var loader = new THREE.GLTFLoader();
+	//var loader = new THREE.GLTFLoader();
 
-	loader.load("/assets/indicate.gltf", function(object) {
+	MeshLoader.load("./assets/indicate.gltf", function(object) {
 		var model = object.scene;
 		scene.add(object.scene);
 		object.scene;
@@ -347,11 +365,14 @@ function drawcircleindicator(center, name="Beacon") {
 }
 
 
-function drawShip(center,name="PlayerShip",faction="Unknown") {  // oad Main model
-	var loader = new THREE.GLTFLoader();
+function drawShip(center,name="PlayerShip",faction="Unknown",labelText=name) {  // Load Main model
+	var Text2D = THREE_Text.Text2D;
+	var SpriteText2D = THREE_Text.SpriteText2D;
+	var textAlign = THREE_Text.textAlign
+  var label = new Text2D(labelText, { align: textAlign.center,  font: '12px Arial', fillStyle: '#ABABAB', antialias: false });
 	var shipGroup = new THREE.Group();
 	if (faction == "Unknown") { var randomNumber = Math.floor(Math.random() * 4);  faction = "Unknown_" + randomNumber; }
-	loader.load("/assets/" + faction +".gltf", function(object) {
+	MeshLoader.load("./assets/" + faction +".gltf", function(object) {
 		var model = object.scene;
 		shipGroup.add(object.scene);
 		object.scene;
@@ -363,8 +384,8 @@ function drawShip(center,name="PlayerShip",faction="Unknown") {  // oad Main mod
 	},
 	function (xhr) { console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
 	function ( error ) {console.log( 'An error happened: ' + error );}
-	);
-	loader.load("/assets/spincircle.gltf", function(object) { // Load spinning circle
+);
+	MeshLoader.load("./assets/spincircle.gltf", function(object) { // Load spinning circle
 		var model = object.scene;
 		shipGroup.add(object.scene);
 		object.scene;
@@ -381,7 +402,13 @@ function drawShip(center,name="PlayerShip",faction="Unknown") {  // oad Main mod
 	},
 	function (xhr) { console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' ); },
 	function ( error ) {console.log( 'An error happened: ' + error );}
-	);
+);
+	label.material.alphaTest = 0.0;
+	label.position.set(center.x, center.y+5, center.z);
+	label.scale.set(0.20,0.20,0.20);
+	label.name = name + "_label";
+	misc_followers.push(label.name);
+	scene.add( label );
 
 	var light = new THREE.PointLight( 0xffffff, 2, 1500 );
 	light.position.set( 50, 50, 50 );
@@ -391,6 +418,7 @@ function drawShip(center,name="PlayerShip",faction="Unknown") {  // oad Main mod
 	shipGroup.name = name;
 	shipGroup.position.set(center.x,center.y,center.z);
 	scene.add( shipGroup );
+
 
 }
 
