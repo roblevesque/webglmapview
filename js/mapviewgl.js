@@ -10,7 +10,7 @@ var MeshLoader = new THREE.GLTFLoader();
 var WIDTH = window.innerWidth , HEIGHT = window.innerHeight;
 window.currentActiveShips = [];
 window.drawnActiveShips = []
-window.maxdrawnships = 10
+window.maxdrawnships = 22
 
 window.onload = function() {
 loadData(function() {
