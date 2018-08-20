@@ -1,0 +1,32 @@
+{
+  "Federation": [
+    {"file": "Federation.gltf" },
+    {"file": "Ambassador.gltf" },
+    {"file": "Federation.gltf" }
+  ],
+  "Klingon": [
+    {"file": "Klingon.gltf" }
+  ],
+  "Cardassian": [
+    {"file": "Cardassian.gltf" }
+  ],
+  "GFA": [
+    {"file": "Ferengi.gltf" }
+  ],
+  "Dominion": [
+    {"file": "Unknown_4.gltf" }
+  ],
+  "Romulan": [
+    {"file": "Romulan.gltf" }
+  ],
+  "Unknown": [
+    {"file": "Unknown_0.gltf" },
+    {"file": "Unknown_1.gltf" },
+    {"file": "Unknown_2.gltf" },
+    {"file": "Unknown_3.gltf" },
+    {"file": "Unknown_4.gltf" }
+  ],
+  "Borg": [
+    {"file": "Borg.gltf" }
+  ]
+}

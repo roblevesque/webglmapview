@@ -544,8 +544,14 @@ function redrawActiveShips() {
 			}
 
 				window.currentActiveShips.forEach(function( ship ) {
-						drawShip( new THREE.Vector3( ship.x, ship.y, ship.z  ), `Contact:${ship.id}`, "Unknown");
+						var shipModel = findPointBorder(new THREE.Vector3( ship.x, ship.y, ship.z ));
+						drawShip( new THREE.Vector3( ship.x, ship.y, ship.z ), `Contact:${ship.id}`, shipModel );
 						window.drawnActiveShips[ship.id] = ship;
 				});
 
+}
+
+
+function factionShipFile( faction="Unknown" ) {
+				return window.factionships[faction][Math.floor(Math.random() * window.factionships[faction].length)].file
 }

@@ -10,7 +10,7 @@ var MeshLoader = new THREE.GLTFLoader();
 var WIDTH = window.innerWidth , HEIGHT = window.innerHeight;
 window.currentActiveShips = [];
 window.drawnActiveShips = []
-window.maxdrawnships = 22
+window.borders = [];
 
 window.onload = function() {
 loadData(function() {
@@ -61,6 +61,11 @@ function init() {
 				var textAlign = THREE_Text.textAlign
 				var b_geometry, b_material, b_mesh, p_geometry, p_material, p_mesh, s_geometry, s_material, s_mesh, l_text;
 
+				$.getJSON( 'assets/factionships.json', function( data ) {
+						window.factionships = data;
+						console.log(data)
+				});
+
         renderer.setSize( window.innerWidth, window.innerHeight );
         document.body.appendChild( renderer.domElement );
 				container = document.createElement( 'div' );
@@ -68,7 +73,6 @@ function init() {
 
 
         camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 1e7);
-
         controls = new THREE.OrbitControls( camera, renderer.domElement );
 				controls.enableDamping = true;
 				controls.dampingFactor = 0.25;
@@ -91,7 +95,7 @@ function init() {
 
 				  b_geometry = new THREE.SphereGeometry( border.radius, 10, 10 );
 				  b_material = new THREE.MeshBasicMaterial( { color: area.color, wireframe: true} );
-					b_mesh = new THREE.Mesh( b_geometry, b_material );b_mesh
+					b_mesh = new THREE.Mesh( b_geometry, b_material );
 				  b_mesh.position.x = border.x;
 				  b_mesh.position.y = border.y;
 				  b_mesh.position.z = border.z;
@@ -104,8 +108,8 @@ function init() {
 						l_text.scale.set(0.75,0.75,0.75);
 						l_text.name = border.name + "_label";
 						scene.add(l_text);
-						placeLightSource(new THREE.Vector3(border.x,border.y,border.z ), border.name+"_light" );
-
+						window.borders.push( border.name )
+						placeLightSource(new THREE.Vector3(border.x,border.y,border.z ), border.name+"_light",border.radius*10.0 );
 					}
 			}
 
@@ -132,6 +136,7 @@ function init() {
 		    l_text.scale.set(0.25,0.25,0.25);
 				l_text.name = escapeHTML(planet.name + "_label");
 		    scene.add(l_text);
+
 		  }
 
 		  // Base Generation
@@ -366,9 +371,9 @@ function drawcircleindicator(center, name="Beacon") {
 	*/
 }
 
-function placeLightSource(center,name="ExtraLight") {
-		var light = new THREE.PointLight( 0xffffff, 1, 0 );
-		light.position.set( 50, 50, 50 );
+function placeLightSource(center,name="ExtraLight", radius=0) {
+		var light = new THREE.PointLight( 0xffffff, 1, radius );
+		light.position.set( center.x, center.y, center.z );
 		light.name = name
 		light.power = 10;
 		light.castShadow = false;
@@ -382,8 +387,8 @@ function drawShip(center,name="PlayerShip",faction="Unknown",labelText=name) {  
 	var textAlign = THREE_Text.textAlign
   var label = new Text2D(labelText, { align: textAlign.center,  font: '12px Arial', fillStyle: '#ABABAB', antialias: false });
 	var shipGroup = new THREE.Group();
-	if (faction == "Unknown") { var randomNumber = Math.floor(Math.random() * 4);  faction = "Unknown_" + randomNumber; }
-	MeshLoader.load("./assets/" + faction +".gltf", function(object) {
+	var shipMesh = "assets/" +  factionShipFile( faction );
+	MeshLoader.load(shipMesh, function(object) {
 		var model = object.scene;
 		shipGroup.add(object.scene);
 		object.scene;
@@ -782,3 +787,22 @@ function findObjectInfo(name) {
 	}});
 	return object;
 	}
+
+
+function findPointBorder( point=new THREE.Vector3(0,0,0) ) {
+	   var insideborder = "Unknown"
+		 window.borders.forEach(function(border) {
+			 				var box = scene.getObjectByName( border );
+							box.geometry.computeBoundingSphere();
+							var boxMatrixInverse = new THREE.Matrix4().getInverse(box.matrixWorld);
+							var inverseBox = box.clone();
+							var inversePoint = point.clone();
+							inverseBox.applyMatrix(boxMatrixInverse);
+							inversePoint.applyMatrix4(boxMatrixInverse);
+							var bb = new THREE.Box3().setFromObject(inverseBox);
+							var isInside = bb.containsPoint(inversePoint);
+							if( isInside ) { insideborder = border }
+
+		 });
+		 	return insideborder;
+}
