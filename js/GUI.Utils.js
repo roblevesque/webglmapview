@@ -543,8 +543,8 @@ function redrawActiveShips() {
 			window.drawnActiveShips = [];
 			}
 
-				window.currentActiveShips.slice(0,window.maxdrawnships-1).forEach(function( ship ) {
-						drawShip( new THREE.Vector3( ship.x, ship.y, ship.z  ), `Contact:${ship.id}`, "Federation");
+				window.currentActiveShips.forEach(function( ship ) {
+						drawShip( new THREE.Vector3( ship.x, ship.y, ship.z  ), `Contact:${ship.id}`, "Unknown");
 						window.drawnActiveShips[ship.id] = ship;
 				});
 

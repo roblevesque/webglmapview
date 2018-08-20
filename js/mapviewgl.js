@@ -78,9 +78,9 @@ function init() {
 
 
 		// Add some Ambient lighting   (Removed for now as it is too strong and shadows are nice)
-		//lightsource = new THREE.AmbientLight( 0xffffff );
+	//	var lightsource = new THREE.AmbientLight( 0xffffff );
 		// Add the light to the scene
-		//scene.add( lightsource );
+	//	scene.add( lightsource );
 
 
 		for (var key in jsonEmpire) {
@@ -104,6 +104,7 @@ function init() {
 						l_text.scale.set(0.75,0.75,0.75);
 						l_text.name = border.name + "_label";
 						scene.add(l_text);
+						placeLightSource(new THREE.Vector3(border.x,border.y,border.z ), border.name+"_light" );
 
 					}
 			}
@@ -357,11 +358,21 @@ function drawcircleindicator(center, name="Beacon") {
 
 
 
-
+/*
 	var light = new THREE.PointLight( 0xffffff, 1, 1000 );
 	light.position.set( center.x+50, center.y+50, center.y+50 );
 	light.name = name + "_light";
 	scene.add( light );
+	*/
+}
+
+function placeLightSource(center,name="ExtraLight") {
+		var light = new THREE.PointLight( 0xffffff, 1, 0 );
+		light.position.set( 50, 50, 50 );
+		light.name = name
+		light.power = 10;
+		light.castShadow = false;
+	  scene.add( light );
 }
 
 
@@ -410,11 +421,14 @@ function drawShip(center,name="PlayerShip",faction="Unknown",labelText=name) {  
 	misc_followers.push(label.name);
 	scene.add( label );
 
+/*
 	var light = new THREE.PointLight( 0xffffff, 2, 1500 );
 	light.position.set( 50, 50, 50 );
 	light.name = name + "_light";
 	light.power = 15;
-	shipGroup.add( light );
+	light.castShadow = false;
+		shipGroup.add( light );
+*/
 	shipGroup.name = name;
 	shipGroup.position.set(center.x,center.y,center.z);
 	scene.add( shipGroup );
@@ -427,6 +441,9 @@ function removeEntity(object) {
 		while ( selectedObject = scene.getObjectByName(object) ) {
     scene.remove( selectedObject );
 	}
+	while ( selectedObject = scene.getObjectByName(object+"_label") ) {
+	scene.remove( selectedObject );
+}
 
 }
 
