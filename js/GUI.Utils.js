@@ -520,12 +520,11 @@ function handleInboundJSON( obj ) {
 }
 
 function refreshActiveShips() {
-	/*
 	$.getJSON("http://ats.trekmush.org:1701/active_ships", function( response ) {
       window.currentActiveShips = response;
 			redrawActiveShips();
     });
-		*/  // Disable for performance until used again. 
+
 }
 
 function updateMUSHData() {

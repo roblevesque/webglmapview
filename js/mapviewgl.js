@@ -18,7 +18,7 @@ preferences.load();
 init();
 animate();
 populateUserFields();
-updateMUSHData();
+ // updateMUSHData(); // Disable this until implemented properly
 });
 }
 
