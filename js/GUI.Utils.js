@@ -529,10 +529,7 @@ function refreshActiveShips() {
 
 function updateMUSHData() {
 	refreshActiveShips();
-	setInterval(function() {
-		// Pull active ships from MUSH direct
-    refreshActiveShips();
-	}, 60*1000 );
+	setTimeout(updateMUSHData, 60*1000 );
 }
 
 

@@ -18,7 +18,7 @@ preferences.load();
 init();
 animate();
 populateUserFields();
- // updateMUSHData(); // Disable this until implemented properly
+// updateMUSHData(); // Disable this until implemented properly
 });
 }
 
@@ -63,7 +63,6 @@ function init() {
 
 				$.getJSON( 'assets/factionships.json', function( data ) {
 						window.factionships = data;
-						console.log(data)
 				});
 
         renderer.setSize( window.innerWidth, window.innerHeight );
