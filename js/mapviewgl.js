@@ -83,7 +83,7 @@ function init() {
 		// Add some Ambient lighting   (Removed for now as it is too strong and shadows are nice)
 		// 3-09-2019 : re-added because we have less ship objects than expected in play and light is needed far outside 
 		// the reaches of the large borders. 
-		var lightsource = new THREE.AmbientLight( 0xffffff );
+		var lightsource = new THREE.AmbientLight( 0x404040, 200 );
 		// Add the light to the scene
 		scene.add( lightsource );
 
