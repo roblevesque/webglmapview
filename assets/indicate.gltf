@@ -83,9 +83,15 @@
     }], 
     "materials" : [{
         "alphaMode" : "BLEND", 
-        "name" : "Material.001", 
+        "name" : "Material.001",
+        "doubleSided": true,
+        "emissiveFactor": [
+            1,
+            1,
+            1
+         ],
         "pbrMetallicRoughness" : {
-            "baseColorFactor" : [0.64, 0.64, 0.64, 0.536083], 
+            "baseColorFactor" : [0.20, 0.20, 0.64, 0.536083], 
             "metallicFactor" : 0
         }
     }], 
