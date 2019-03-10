@@ -85,7 +85,7 @@ function init() {
 		// the reaches of the large borders. 
 		var lightsource = new THREE.AmbientLight( 0x404040, 150000 );
 		// Add the light to the scene
-		scene.add( lightsource );
+		// scene.add( lightsource );
 
 
 		for (var key in jsonEmpire) {
