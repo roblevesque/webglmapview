@@ -317,7 +317,7 @@
 		{ "name":"New Risa Border", "x": -9327.944000, "y": 49.000000, "z": 17.500000, "radius":5 },
 		{ "name":"Nimbus III Border", "x": -9492.744174, "y": -49.000000, "z": -35.600000, "radius":5 },
 		{ "name":"Old Risa Border", "x": -9289.544174, "y": -86.700000, "z": -215.900000, "radius":5 },
-		{ "name":"Sherman's Planet Border", "x": -9422.644174, "y": 214.500000, "z": -100.700000, "radius":5 }
+		{ "name":"Sherman's Planet Border", "x": -9422.644174, "y": 214.500000, "z": -100.700000, "radius":5 },
 		{ "name":"Xanadu Border", "x": 11532.285, "y": -8982.5, "z": -223.602, "radius": 5 } 
 	],
 	"planets":[
@@ -333,7 +333,7 @@
 		{ "name":"New Risa / USB Lothlorien", "x": -9327.944000, "y": 49.000000, "z": 17.500000, "cochranes":1087, "market":2 },
 		{ "name":"Nimbus III", "x": -9492.744174, "y": -49.000000, "z": -35.600000, "cochranes":977, "market":2 },
 		{ "name":"Old Risa/USB Khazad-Dum", "x": -9289.544174, "y": -86.700000, "z": -215.900000, "cochranes":985, "market":2 },
-		{ "name":"Sherman's Planet / USB Galadriel", "x": -9422.644174, "y": 214.500000, "z": -100.700000, "cochranes":1520, "market":2 }
+		{ "name":"Sherman's Planet / USB Galadriel", "x": -9422.644174, "y": 214.500000, "z": -100.700000, "cochranes":1520, "market":2 },
 		{ "name":"Xanadu", "x": 11532.285, "y": -8982.5, "z": -223.602, "cochrenes": 1520, "market": 2 }
 	],
 	"stations":[
