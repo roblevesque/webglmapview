@@ -57,13 +57,13 @@
       	<div id="controls" class="wvg-controls active">
     		  	<div id="wrapper">
     	      		<ul class="wvg-navbar">
-    				          <li class="wvg-tablink wvg-tab-active" onclick="openTab(event,'Find');">Find</li>
+    				          <li class="wvg-tablink" onclick="openTab(event,'Find');">Find</li>
                       <li class="wvg-tablink" onclick="openTab(event,'Plan');">Plan</li>
     				          <li class="wvg-tablink" onclick="openTab(event,'Intel');">Intel</li>
                       <li class="wvg-tablink" onclick="openTab(event, 'Preferences');">Prefs</li>
-                      <li class="wvg-tablink" onclick="openTab(event,'Info');">Info</li>
+                      <li class="wvg-tablink wvg-tab-active" onclick="openTab(event,'Info');">Info</li>
     			      </ul>
-    		  <div class="wvg-tools wvg-first" id="Find">
+    		  <div class="wvg-tools" id="Find">
     				<span class="tool-header"> Find Object By Name </span>
     				<span>
               <select id="findbyselect">
@@ -192,7 +192,7 @@
 
 
           </div>
-    			<div class="wvg-tools" id="Info">
+    			<div class="wvg-tools wvg-first" id="Info">
             <span id="changelog_container">
               <!-- Silly stuff gets put here on JS execution -->
             </span>

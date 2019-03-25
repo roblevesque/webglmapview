@@ -177,7 +177,13 @@ input[type=radio]:checked + label:before {
 
 
 #changelog_container h1 { text-align: center; font-size: 1.0em; }
-#changelog_container { height: 80%; text-align: left; font-size: 0.75em; padding-right: 0.3vw; overflow: hidden;}
+#changelog_container { height: 80%; text-align: left; font-size: 0.75em; padding-right: 0.3vw; overflow-y: auto; box-sizing: content-box; -ms-overflow-style: none; overflow: -moz-scrollbars-none;}
+#changelog_container::-webkit-scrollbar {
+  display: none;
+}
+#changelog_container p:first-of-type { background: yellow; color: black;}
+
+}
 #changelog_container::parent {text-align: left;}
 #info_footer {padding-bottom:0.9vh; font-size: 0.60em; position: fixed; bottom: 5vh; }
 #info_footer { font-size: 0.8em; }
