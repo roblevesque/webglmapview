@@ -12,7 +12,7 @@
     * Still need heading field(s) and ship owner faction to draw right ship style
 * Fixed improper draw location of sensor net driven ship indicator
 * Add TWC to route planning. Might be buggy. Please test.
-* If you read this at all, you might be unique. Give Frey a tap, for a treat (One per person, and one person per day.)
+* If you read this at all, you might be unique. 
 
 **V0.6.3** *(2-3-2018)*
 * Exciting new features that shall remain secret but could lead to some other exciting things
