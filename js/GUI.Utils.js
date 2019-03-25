@@ -180,7 +180,11 @@ $(document).ready(function() {
 		});
 
 		$(".preference_input").change(function() {
-				preferences.set( this.id.split("_")[1]  ,$(this).val() );
+				if($(this).attr('type') == 'checkbox') {
+					preferences.set( this.id.split("_")[1]  , $(this).is(":checked")  );
+				} else {
+					preferences.set( this.id.split("_")[1]  ,$(this).val() );
+				}
 		});
 
 		$(".client-term-container").resize(function() { width = $(this).width(); $("#client").css({'width' : '100%'});   $("#client-term-output").css({'margin-right' : '0px !important', 'padding-right' : '0 !important'})  })
@@ -246,7 +250,11 @@ function populateUserFields() {
 
 		// Populate preferences pane
 		preferences.list().forEach(function( pref ) {
-				$('#pref_' + pref).val( preferences.get( pref ) );
+			  if ($('#pref_' + pref).attr('type') == "checkbox") {
+					$('#pref_' + pref).prop("checked", (preferences.get( pref )) == "true"? true:false)
+				} else  {
+					$('#pref_' + pref).val( preferences.get( pref ) );
+				}
 		});
 
 }

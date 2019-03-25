@@ -3,7 +3,8 @@ var preferences = (function() {
 /* Load preferences from cookies */
 var prefDefaults = {
   'predictDistance': 800,
-  'defaultFrame' : "Galactic"
+  'defaultFrame' : "Galactic",
+  'htmlLabels' : false
 };
 
 var loadedPreferences = {};

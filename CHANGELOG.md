@@ -1,4 +1,7 @@
 # Change Log
+**V0.6.6** *(3-25-2019)*
+* Preferences option for HTML planet and station labels. It's experimental. Feedback would be nice.
+
 **V0.6.5** *(3-9-2018)*
 * Add new preferences pane. Only preferences so far are: Default Frame and prediction distance
 
@@ -12,7 +15,7 @@
 
 **V0.6.3** *(2-3-2018)*
 * Exciting new features that shall remain secret but could lead to some other exciting things
-* Assorted tweaks   
+* Assorted tweaks
 * Bug fix with floating point math (Reported by Kthor)
 * Added border crossing warning to plan mode (Requested by Lustan)
 * Unify coordinate & bearing inputs. (As requested by Spro and Kthor)

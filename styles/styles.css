@@ -1,8 +1,9 @@
-body { margin: 0; overflow:hidden;}
+body { margin: 0; overflow:hidden; height: 100%; width: 100%;}
 a { color: #ffff00b5; font-weight: bold;}
 a:visited { color: #00ffbc87; }
 a:hover { color: #0019ff;}
 canvas { width: 75%; height: 100% ;}
+#container { width: 100%; height: 100%;  }
 .reset-button {margin: 0; padding: 0; padding: 0.25em 0.25em; color: #AAA; font-size: 1.0em;}
 .menu-button { position: fixed; right: 0.1vw; top: 0; z-index: 5; color:white; background-color:#003133; padding: 0px; font-weight: bold; font-size:2.5vh;  }
 .reset-container { margin: 0; margin-top: -4.5vh; padding-top:5vh; padding: 1vh; font-weight: bold; text-align: center; font-family: 'Open Sans', sans-serif; color:#67989A; background-color: maroon;  width: 100%; height: 1.75em; float:bottom;  }
@@ -11,6 +12,7 @@ canvas { width: 75%; height: 100% ;}
   height: 100%;
   width: 20%;
   margin: 0;
+  z-index: 2;
   display: none;
   -webkit-transition-duration: 0.5s;
   -moz-transition-duration: 0.5s;
@@ -46,7 +48,7 @@ canvas { width: 75%; height: 100% ;}
 input[type=radio], input[type=checkbox] {
   display:none;
 }
-input[type=checkbox] + label:before {
+input[type=checkbox] + label:before   {
   content: "";
   display: inline-block;
   width: 15px;
@@ -185,3 +187,26 @@ input[type=radio]:checked + label:before {
       .menu-button { font-weight: bold; font-size:1.5em; padding-top: 0.5vh;  }   #client-tab-desc { display: none; }  #client { display: none; }}
 @media only screen and (max-width: 500px) { .wvg-controls { width: 100%;}  .wvg-tablink { font-size: 0.75em; padding:0; padding-left: 2vw; padding-right: 2vw; }   }
 @media only screen and (max-height: 575px) { .reset-container { height: 4em;} .wvg-controls { overflow-y: auto; margin-bottom: -5vh;} .wvg-tools {font-size: 0.75em;}  }
+
+
+div.label-text {
+  color: #fff;
+  padding: 3px;
+  background-color: #000;
+  font-size: 0.5em;
+  border-radius: 5px;
+  border: 1px solid #FFF;
+  font-family: "Fira Mono", Monaco, "Andale Mono", "Lucida Console", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
+  margin: -5px 0 0 15px;
+  pointer-events: auto;
+  z-index: 0;
+
+}
+
+span.label-hover-text {
+  display: none;
+}
+
+div.label-text:hover span.label-hover-text {
+  display: block;
+}
