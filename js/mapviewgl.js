@@ -23,6 +23,35 @@ populateUserFields();
 });
 }
 
+function foolable() {
+	var d = new Date();
+	return (( d.getDate() == 1 && d.getMonth() == 3 ) || ( d.getDate() == 31 && d.getMonth() == 2))
+}
+
+function giveMeRick() {
+	// create the plane mesh
+var material = new THREE.MeshBasicMaterial({ wireframe: true });
+var geometry = new THREE.PlaneGeometry();
+var planeMesh= new THREE.Mesh( geometry, material );
+// add it to the WebGL scene
+scene.add(planeMesh);
+// create the dom Element
+var element = document.createElement( 'div' );
+element.innerHTML = `
+<iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+`
+// create the object3d for this element
+var cssObject = new THREE.CSS3DObject( element );
+// we reference the same position and rotation
+cssObject.position = planeMesh.position;
+cssObject.rotation = planeMesh.rotation;
+// add it to the css scene
+scene.add(cssObject);
+var cssRenderer = new THREE.CSS3DRenderer();
+cssRenderer.setSize( window.innerWidth, window.innerHeight );
+cssRenderer.domElement.style.position = 'absolute';
+cssRenderer.domElement.style.top = 0;
+}
 
 function loadData(_callback) {
 	// Load Data (hopefully) before the rest of the place loads.
@@ -95,7 +124,7 @@ function init() {
 					var border = area['borders'][key2];
 
 				  b_geometry = new THREE.SphereGeometry( border.radius, 10, 10 );
-				  b_material = new THREE.MeshBasicMaterial( { color: area.color, wireframe: true} );
+				  b_material = new THREE.MeshBasicMaterial( { color: foolable() ? "#ff69b4" : area.color, wireframe: true} );
 					b_mesh = new THREE.Mesh( b_geometry, b_material );
 				  b_mesh.position.x = border.x;
 				  b_mesh.position.y = border.y;
@@ -103,7 +132,7 @@ function init() {
 				  b_mesh.name = escapeHTML(border.name);
 					scene.add( b_mesh );
 					if (border.radius > 10) {
-						l_text = new Text2D(border.name, { align: textAlign.center,  font: '25px Arial', fillStyle: '#777' , antialias: false });
+						l_text = new Text2D(foolable() ? "Rick Astley Territory" : border.name, { align: textAlign.center,  font: '25px Arial', fillStyle: '#777' , antialias: false });
 						l_text.material.alphaTest = 0.5;
 						l_text.position.set(border.x,border.y,border.z);
 						l_text.scale.set(0.75,0.75,0.75);
@@ -123,7 +152,7 @@ function init() {
 				var hitbox_mat = new THREE.MeshBasicMaterial( { color: "#FFF", wireframe: false, transparent: true, opacity: 0.0 } );
 				var hitbox = new THREE.Mesh( hitbox_geo, hitbox_mat );
 		    p_geometry= new THREE.SphereGeometry( 1.0, 10, 10 );
-		    p_material = new THREE.MeshBasicMaterial( { color: area.color, wireframe: false} );
+		    p_material = new THREE.MeshBasicMaterial( { color: foolable() ? "#ff69b4" : area.color, wireframe: false} );
 		    p_mesh =  new THREE.Mesh( p_geometry, p_material );
 		    p_mesh.position.x=planet.x;
 		    p_mesh.position.y=planet.y;
@@ -153,7 +182,7 @@ function init() {
 		    var base = area.stations[key];
 		    s_geometry = new THREE.CylinderGeometry( 0.2, 0.6*3, 0.5*3, 4 );
 				s_geometry.computeBoundingSphere();
-		    s_material = new THREE.MeshBasicMaterial( { color: area.color, wireframe: false} );
+		    s_material = new THREE.MeshBasicMaterial( { color: foolable() ? "#ff69b4" : area.color, wireframe: false} );
 		    s_mesh = new THREE.Mesh( s_geometry, s_material );
 		    s_mesh.position.x=base.x;
 		    s_mesh.position.y=base.y;
