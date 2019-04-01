@@ -36,10 +36,10 @@ rick.element.height = 640;
 rick.element.width = 640;
 // { "name":"Federation", "x": -9197.944000, "y": 0.000000, "z": 0.000000, "radius":240 },
 rick.setParent(parent)
-rick.element.innerHTML =  `<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/rbsPu1z3ugQ?controls=0&amp;start=10;autolay=true" frameborder="0" allow="accelerometer; autoplay=true; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-`
+rick.element.innerHTML =  `<iframe width="560" height="315" id="player" src="https://www.youtube-nocookie.com/embed/rbsPu1z3ugQ?controls=0&start=10&enablejsapi=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
 textLabels.push( rick );
 container.appendChild( rick.element );
+
 
 }
 
