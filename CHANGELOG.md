@@ -1,5 +1,8 @@
 # Change Log
 
+**0.6.7** *(4-1-2019)*
+* New Theme
+
 **V0.6.6** *(3-25-2019)*
 * Preferences option for HTML planet and station labels. It's experimental. Feedback would be nice.
 
@@ -12,7 +15,7 @@
     * Still need heading field(s) and ship owner faction to draw right ship style
 * Fixed improper draw location of sensor net driven ship indicator
 * Add TWC to route planning. Might be buggy. Please test.
-* If you read this at all, you might be unique. 
+* If you read this at all, you might be unique.
 
 **V0.6.3** *(2-3-2018)*
 * Exciting new features that shall remain secret but could lead to some other exciting things
