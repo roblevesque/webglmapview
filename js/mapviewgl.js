@@ -70,6 +70,8 @@ function reset_view() {
 	controls.target.z = scene.getObjectByName("Federation").position.z;
   camera.updateProjectionMatrix();
 	render();
+	foolable() ? giveMeRick() : false;
+
 }
 
 function init() {
