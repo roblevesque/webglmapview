@@ -29,28 +29,18 @@ function foolable() {
 }
 
 function giveMeRick() {
-	// create the plane mesh
-var material = new THREE.MeshBasicMaterial({ wireframe: true });
-var geometry = new THREE.PlaneGeometry();
-var planeMesh= new THREE.Mesh( geometry, material );
-// add it to the WebGL scene
-scene.add(planeMesh);
-// create the dom Element
-var element = document.createElement( 'div' );
-element.innerHTML = `
-<iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+container = document.getElementById("container")
+var rick = drawLabel();
+parent = scene.getObjectByName('Federation')
+rick.element.height = 640;
+rick.element.width = 640;
+// { "name":"Federation", "x": -9197.944000, "y": 0.000000, "z": 0.000000, "radius":240 },
+rick.setParent(parent)
+rick.element.innerHTML =  `<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/rbsPu1z3ugQ?controls=0&amp;start=10;autolay=true" frameborder="0" allow="accelerometer; autoplay=true; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 `
-// create the object3d for this element
-var cssObject = new THREE.CSS3DObject( element );
-// we reference the same position and rotation
-cssObject.position = planeMesh.position;
-cssObject.rotation = planeMesh.rotation;
-// add it to the css scene
-scene.add(cssObject);
-var cssRenderer = new THREE.CSS3DRenderer();
-cssRenderer.setSize( window.innerWidth, window.innerHeight );
-cssRenderer.domElement.style.position = 'absolute';
-cssRenderer.domElement.style.top = 0;
+textLabels.push( rick );
+container.appendChild( rick.element );
+
 }
 
 function loadData(_callback) {
