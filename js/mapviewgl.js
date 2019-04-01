@@ -29,6 +29,7 @@ function foolable() {
 }
 
 function giveMeRick() {
+if (document.getElementById("player")) { document.getElementById("player").outerHTML="";}
 container = document.getElementById("container")
 var rick = drawLabel();
 parent = scene.getObjectByName('Federation')
