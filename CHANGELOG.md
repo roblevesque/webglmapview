@@ -1,8 +1,5 @@
 # Change Log
 
-**0.6.7** *(4-1-2019)*
-* New Theme
-
 **V0.6.6** *(3-25-2019)*
 * Preferences option for HTML planet and station labels. It's experimental. Feedback would be nice.
 
