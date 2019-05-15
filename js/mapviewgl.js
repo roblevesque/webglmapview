@@ -93,9 +93,10 @@ function init() {
 		  for (var key2 in area['borders']) {
 					var border = area['borders'][key2];
 
-				  b_geometry = new THREE.SphereGeometry( border.radius, 10, 10 );
-				  b_material = new THREE.MeshBasicMaterial( { color: area.color, wireframe: true} );
-					b_mesh = new THREE.Mesh( b_geometry, b_material );
+				  b_geometry = new THREE.EdgesGeometry(new THREE.SphereGeometry( border.radius, 10, 10 ));
+				  //b_material = new THREE.MeshBasicMaterial( { color: area.color, wireframe: true, fillStyle: area.color} );
+					b_material = new THREE.LineBasicMaterial({color: area.color, linewidth: 2 })
+					b_mesh = new THREE.LineSegments( b_geometry, b_material );
 				  b_mesh.position.x = border.x;
 				  b_mesh.position.y = border.y;
 				  b_mesh.position.z = border.z;
