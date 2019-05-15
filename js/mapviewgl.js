@@ -23,27 +23,6 @@ populateUserFields();
 });
 }
 
-function foolable() {
-	var d = new Date();
-	return (( d.getDate() == 1 && d.getMonth() == 3 ) || ( d.getDate() == 31 && d.getMonth() == 2))
-}
-
-function giveMeRick() {
-if (document.getElementById("player")) { document.getElementById("player").outerHTML="";}
-container = document.getElementById("container")
-var rick = drawLabel();
-parent = scene.getObjectByName('Federation')
-rick.element.height = 640;
-rick.element.width = 640;
-// { "name":"Federation", "x": -9197.944000, "y": 0.000000, "z": 0.000000, "radius":240 },
-rick.setParent(parent)
-rick.element.innerHTML =  `<iframe width="560" height="315" id="player" src="https://www.youtube-nocookie.com/embed/rbsPu1z3ugQ?controls=0&start=10&autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
-textLabels.push( rick );
-container.appendChild( rick.element );
-
-
-}
-
 function loadData(_callback) {
 	// Load Data (hopefully) before the rest of the place loads.
 	var xmlhttp = new XMLHttpRequest();
@@ -71,17 +50,15 @@ function reset_view() {
 	controls.target.z = scene.getObjectByName("Federation").position.z;
   camera.updateProjectionMatrix();
 	render();
-	foolable() ? giveMeRick() : false;
-
 }
 
 function init() {
 				scene = new THREE.Scene();
         renderer = new THREE.WebGLRenderer();
 
-				var Text2D = THREE_Text.Text2D;
-				var SpriteText2D = THREE_Text.SpriteText2D;
-				var textAlign = THREE_Text.textAlign
+				var Text2D = THREE_Text2D.SpriteText2D;
+				var SpriteText2D = THREE_Text2D.SpriteText2D;
+				var textAlign = THREE_Text2D.textAlign
 				var b_geometry, b_material, b_mesh, p_geometry, p_material, p_mesh, s_geometry, s_material, s_mesh, l_text;
 
 				$.getJSON( 'assets/factionships.json', function( data ) {
@@ -117,7 +94,7 @@ function init() {
 					var border = area['borders'][key2];
 
 				  b_geometry = new THREE.SphereGeometry( border.radius, 10, 10 );
-				  b_material = new THREE.MeshBasicMaterial( { color: foolable() ? "#ff69b4" : area.color, wireframe: true} );
+				  b_material = new THREE.MeshBasicMaterial( { color: area.color, wireframe: true} );
 					b_mesh = new THREE.Mesh( b_geometry, b_material );
 				  b_mesh.position.x = border.x;
 				  b_mesh.position.y = border.y;
@@ -125,10 +102,13 @@ function init() {
 				  b_mesh.name = escapeHTML(border.name);
 					scene.add( b_mesh );
 					if (border.radius > 10) {
-						l_text = new Text2D(foolable() ? "Rick Astley Territory" : border.name, { align: textAlign.center,  font: '25px Arial', fillStyle: '#777' , antialias: false });
-						l_text.material.alphaTest = 0.5;
+						l_text = new Text2D(border.name, { align: textAlign.center,  font: '75px Arial', color: '#AAA', fillStyle: 'rgba(255,255,255,0.25)', antialias: true, transparent: true});
+						l_text.material.alphaTest = 0.2;
 						l_text.position.set(border.x,border.y,border.z);
-						l_text.scale.set(0.75,0.75,0.75);
+						if (border.radius > 75) {
+							l_text.scale.set(0.50,0.50,0.50);
+						}
+						else {l_text.scale.set(0.30,0.30,0.30); }
 						l_text.name = border.name + "_label";
 						scene.add(l_text);
 						window.borders.push( border.name )
@@ -142,10 +122,10 @@ function init() {
 		  for (var key in area["planets"]) {
 		    var planet = area.planets[key];
 				var hitbox_geo = new THREE.SphereGeometry( 2.1, 10, 10);
-				var hitbox_mat = new THREE.MeshBasicMaterial( { color: "#FFF", wireframe: false, transparent: true, opacity: 0.0 } );
+				var hitbox_mat = new THREE.MeshBasicMaterial( { color: "#FFF", wireframe: false, transparent: true, opacity: 0.0, alphaTest:0.1 } );
 				var hitbox = new THREE.Mesh( hitbox_geo, hitbox_mat );
 		    p_geometry= new THREE.SphereGeometry( 1.0, 10, 10 );
-		    p_material = new THREE.MeshBasicMaterial( { color: foolable() ? "#ff69b4" : area.color, wireframe: false} );
+		    p_material = new THREE.MeshBasicMaterial( {color: area.color, wireframe: false} );
 		    p_mesh =  new THREE.Mesh( p_geometry, p_material );
 		    p_mesh.position.x=planet.x;
 		    p_mesh.position.y=planet.y;
@@ -156,15 +136,15 @@ function init() {
 				if ( preferences.get("htmlLabels") == 'true' ) {
 					l_text = drawLabel();
 					l_text.setHTML( escapeHTML(planet.name) );
-					l_text.setOffset({x:0, y:-10})
+					l_text.setOffset({x:0, y:-10});
 					l_text.setParent( p_mesh );
 					textLabels.push( l_text );
 					container.appendChild( l_text.element )
 				} else {
-			    l_text = new Text2D(escapeHTML(planet.name), { align: textAlign.right,  font: '12px Arial', fillStyle: '#FFF' , antialias: false });
-			    l_text.material.alphaTest = 0.0;
-			    l_text.position.set(planet.x,planet.y,planet.z);
-			    l_text.scale.set(0.25,0.25,0.25);
+			    l_text = new Text2D(escapeHTML(planet.name), { align: textAlign.right,  font: '10px Arial', fillStyle: '#FFF' , antialias: true });
+			    l_text.material.alphaTest = 0.1;
+			    l_text.position.set(planet.x+2, planet.y , planet.z+Math.round(Math.random() * (+3 - -3) + -3) );
+			    l_text.scale.set(0.20,0.20,0.20);
 					l_text.name = escapeHTML(planet.name + "_label");
 			    scene.add(l_text);
 				}
@@ -175,7 +155,7 @@ function init() {
 		    var base = area.stations[key];
 		    s_geometry = new THREE.CylinderGeometry( 0.2, 0.6*3, 0.5*3, 4 );
 				s_geometry.computeBoundingSphere();
-		    s_material = new THREE.MeshBasicMaterial( { color: foolable() ? "#ff69b4" : area.color, wireframe: false} );
+		    s_material = new THREE.MeshBasicMaterial( {color: area.color, wireframe: false} );
 		    s_mesh = new THREE.Mesh( s_geometry, s_material );
 		    s_mesh.position.x=base.x;
 		    s_mesh.position.y=base.y;
@@ -189,9 +169,9 @@ function init() {
 					textLabels.push( l_text );
 					container.appendChild( l_text.element )
 				} else {
-					l_text = new Text2D(escapeHTML(base.name), { align: textAlign.left,  font: '12px Arial', fillStyle: '#ABABAB' , antialias: false });
+					l_text = new Text2D(escapeHTML(base.name), { align: textAlign.left,  font: '12px Arial', fillStyle: '#FAFAFA' , antialias: true });
 					l_text.material.alphaTest = 0.0;
-					l_text.position.set(base.x,base.y+3,base.z);
+					l_text.position.set(base.x-2,base.y+Math.round(Math.random() * (+3 - -3) + -3),base.z);
 					l_text.scale.set(0.20,0.20,0.20);
 					l_text.name = escapeHTML(base.name + "_label");
 					scene.add(l_text);

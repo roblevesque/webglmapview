@@ -2,6 +2,9 @@
 
 **V0.6.6** *(3-25-2019)*
 * Preferences option for HTML planet and station labels. It's experimental. Feedback would be nice.
+* Improve sprite based labels (5/15/2019)
+* Tweak planet hitbox material
+* Removed 4-1-19 specific code
 
 **V0.6.5** *(3-9-2018)*
 * Add new preferences pane. Only preferences so far are: Default Frame and prediction distance
