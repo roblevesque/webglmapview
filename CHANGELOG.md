@@ -18,7 +18,7 @@
 * If you read this at all, you might be unique.
 
 **V0.6.3** *(2-3-2018)*
-* Exciting new features that shall remain secret but could lead to some other exciting things
+* Exciting new features that shall remain secret but could lead to some other exciting things (Narrator: They didn't)
 * Assorted tweaks
 * Bug fix with floating point math (Reported by Kthor)
 * Added border crossing warning to plan mode (Requested by Lustan)
