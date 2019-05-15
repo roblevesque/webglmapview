@@ -102,7 +102,7 @@ function init() {
 				  b_mesh.name = escapeHTML(border.name);
 					scene.add( b_mesh );
 					if (border.radius > 10) {
-						l_text = new Text2D(border.name, { align: textAlign.center,  font: '75px Arial', color: '#AAA', fillStyle: 'rgba(255,255,255,0.25)', antialias: true, transparent: true});
+						l_text = new Text2D(border.name, { align: textAlign.center,  font: '75px Arial', color: '#AAA', fillStyle: 'rgba(255,255,255,0.50)', antialias: true, transparent: true});
 						l_text.material.alphaTest = 0.2;
 						l_text.position.set(border.x,border.y,border.z);
 						if (border.radius > 75) {
