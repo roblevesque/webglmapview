@@ -58,7 +58,7 @@ function init() {
 
 				var Text2D = THREE_Text2D.SpriteText2D;
 				var SpriteText2D = THREE_Text2D.SpriteText2D;
-				var textAlign = THREE_Text2D.textAlign
+				var textAlign = THREE_Text2D.textAlign;
 				var b_geometry, b_material, b_mesh, p_geometry, p_material, p_mesh, s_geometry, s_material, s_mesh, l_text;
 
 				$.getJSON( 'assets/factionships.json', function( data ) {
@@ -95,7 +95,7 @@ function init() {
 
 				  b_geometry = new THREE.EdgesGeometry(new THREE.SphereGeometry( border.radius, 10, 10 ));
 				  //b_material = new THREE.MeshBasicMaterial( { color: area.color, wireframe: true, fillStyle: area.color} );
-					b_material = new THREE.LineBasicMaterial({color: area.color, linewidth: 2 })
+					b_material = new THREE.LineBasicMaterial({color: area.color, linewidth: 10 })
 					b_mesh = new THREE.LineSegments( b_geometry, b_material );
 				  b_mesh.position.x = border.x;
 				  b_mesh.position.y = border.y;
@@ -350,9 +350,9 @@ function drawline(origin,dest) {
 }
 
 function drawcircleindicator(center, name="Beacon") {
-	var Text2D = THREE_Text.Text2D;
-	var SpriteText2D = THREE_Text.SpriteText2D;
-	var textAlign = THREE_Text.textAlign
+	var Text2D = THREE_Text2D.SpriteText2D;
+	var SpriteText2D = THREE_Text2D.SpriteText2D;
+	var textAlign = THREE_Text2D.textAlign;
 	var indicator
 	var label = new Text2D(name, { align: textAlign.center,  font: '12px Arial', fillStyle: '#ABABAB', antialias: false });
 	//var loader = new THREE.GLTFLoader();

@@ -5,6 +5,7 @@
 * Improve sprite based labels (5/15/2019)
 * Tweak planet hitbox material
 * Removed 4-1-19 specific code
+* Fix FBC issue reported by T'Seeth (5/30/2019)
 
 **V0.6.5** *(3-9-2018)*
 * Add new preferences pane. Only preferences so far are: Default Frame and prediction distance
