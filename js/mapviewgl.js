@@ -34,6 +34,7 @@ function loadData(_callback) {
 					jsonGate =  JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['gates'];
 					jsonConduit = JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['transwarpgates'];
 					jsonWormhole = JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['wormholes'];
+					jsonNebulas = JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['nebulas'];
 	        _callback();
 
 	    }
@@ -82,9 +83,9 @@ function init() {
 
 		// Add some Ambient lighting   (Removed for now as it is too strong and shadows are nice)
 
-		// var lightsource = new THREE.AmbientLight( 0x404040, 150000 );
+		 var lightsource = new THREE.AmbientLight( 0xFFFFFF, 1500 );
 		// Add the light to the scene
-		// scene.add( lightsource );
+		 scene.add( lightsource );
 
 
 		for (var key in jsonEmpire) {
@@ -180,6 +181,47 @@ function init() {
 		  }
 
 		}
+		// Nebula Generation
+		for ( var key in jsonNebulas) {
+			var nebula = jsonNebulas[key];
+			if (nebula.radius[1] == "PC") { var radius = nebula.radius[0]; }
+			else { var radius = su2pc(nebula.radius[0]); }
+			var n_geo = new THREE.SphereGeometry( radius, 10, 10 );
+			var n_mat = new THREE.MeshPhongMaterial( {
+			color: 0xAAAAAA,
+			flatShading: true,
+			polygonOffset: true,
+			polygonOffsetFactor: 14, // positive value pushes polygon further away
+			polygonOffsetUnits: 1,
+			transparent: true,
+			opacity: 0.10
+			} );
+			var n_mesh = new THREE.Mesh( n_geo, n_mat );
+			n_mesh.name = nebula.name;
+			n_mesh.position.copy( nebula.position );
+			var n_geo_wf = new THREE.EdgesGeometry( n_mesh.geometry );
+			var n_mat_wf = new THREE.LineBasicMaterial( { color: 0xAAAAAA, linewidth: 1, transparent: true, opacity: 0.25  });
+			var n_mesh_wf = new THREE.LineSegments(n_geo_wf, n_mat_wf );
+			n_mesh.add( n_mesh_wf );
+			scene.add( n_mesh );
+			if ( preferences.get("htmlLabels") == 'true' ) {
+				l_text = drawLabel();
+				l_text.setHTML( escapeHTML(nebula.name) );
+				l_text.setParent( n_mesh );
+				textLabels.push( l_text );
+				container.appendChild( l_text.element )
+			} else {
+				l_text = new Text2D(escapeHTML(nebula.name), { align: textAlign.center,  font: '12px Arial', fillStyle: '#FAFAFA' , antialias: true });
+				l_text.material.alphaTest = 0.0;
+				l_text.position.set(nebula.position.x,nebula.position.y-5,nebula.position.z);
+				l_text.scale.set(0.15,0.15,0.15);
+				l_text.name = escapeHTML(nebula.name + "_label");
+				scene.add(l_text);
+		}
+
+
+		}
+
     // Set view and camera to point to initial location
 		reset_view();
 
@@ -382,15 +424,6 @@ function drawcircleindicator(center, name="Beacon") {
 	label.name = name + "_label";
 	misc_followers.push(label.name);
 	scene.add( label );
-
-
-
-/*
-	var light = new THREE.PointLight( 0xffffff, 1, 1000 );
-	light.position.set( center.x+50, center.y+50, center.y+50 );
-	light.name = name + "_light";
-	scene.add( light );
-	*/
 }
 
 function placeLightSource(center,name="ExtraLight", radius=0) {
@@ -448,14 +481,7 @@ function drawShip(center,name="PlayerShip",faction="Unknown",labelText=name) {  
 	misc_followers.push(label.name);
 	scene.add( label );
 
-/*
-	var light = new THREE.PointLight( 0xffffff, 2, 1500 );
-	light.position.set( 50, 50, 50 );
-	light.name = name + "_light";
-	light.power = 15;
-	light.castShadow = false;
-		shipGroup.add( light );
-*/
+
 	shipGroup.name = name;
 	shipGroup.position.set(center.x,center.y,center.z);
 	scene.add( shipGroup );

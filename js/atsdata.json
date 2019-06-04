@@ -17,6 +17,16 @@
 	"wormholes": [
 		{"name": "Bajor <-> Idran X", "enda": {"location":  "Bajor/Jeraddo", "displayname": "Wormhole BQ Entrance", "oppsiteexit": "Wormhole GQ Exit" }, "endb": {"location": "Idran X", "displayname": "Wormhole GQ Entrance", "oppsiteexit": "Wormhole BQ Exit"}}
 		],
+	"nebulas": [
+		{"name": "Nebula 91-3-2", "position":{"x": -9100.000, "y": 300.000, "z": 200.00}, "radius": [3, "PC"] },
+		{"name": "Nebula 92-3-2", "position":{"x": -9200.000, "y": 300.000, "z": 200.00}, "radius": [3, "PC"] },
+		{"name": "Nebula 92-2-2", "position":{"x": -9100.000, "y": 200.000, "z": 200.00}, "radius": [3, "PC"] },
+		{"name": "Nebula 92-2-2", "position":{"x": -9200.000, "y": 200.000, "z": 200.00}, "radius": [3, "PC"] },
+		{"name": "Nebula 91-3-1", "position":{"x": -9100.000, "y": 300.000, "z": 100.00}, "radius": [3, "PC"] },
+		{"name": "Nebula 92-3-1", "position":{"x": -9200.000, "y": 300.000, "z": 100.00}, "radius": [3, "PC"] },
+		{"name": "Nebula 91-2-1", "position":{"x": -9100.000, "y": 200.000, "z": 100.00}, "radius": [3, "PC"] },
+		{"name": "Nebula 92-2-1", "position":{"x": -9200.000, "y": 200.000, "z": 100.00}, "radius": [3, "PC"] }
+		],
 	"empires": [
 {
 "name": "Cardassian",
@@ -318,7 +328,7 @@
 		{ "name":"Nimbus III Border", "x": -9492.744174, "y": -49.000000, "z": -35.600000, "radius":5 },
 		{ "name":"Old Risa Border", "x": -9289.544174, "y": -86.700000, "z": -215.900000, "radius":5 },
 		{ "name":"Sherman's Planet Border", "x": -9422.644174, "y": 214.500000, "z": -100.700000, "radius":5 },
-		{ "name":"Xanadu Border", "x": 2334.0560000000005, "y": -8982.5, "z": -223.602, "radius": 5 } 
+		{ "name":"Xanadu Border", "x": 2334.0560000000005, "y": -8982.5, "z": -223.602, "radius": 5 }
 	],
 	"planets":[
 		{ "name":"Angela V", "x": 6125.350290, "y": 6126.116216, "z": -40.743949, "cochranes":1298, "market":-1 },
