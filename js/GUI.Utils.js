@@ -193,7 +193,9 @@ $(document).ready(function() {
 			type: 'get',
 			async: 'true',
 			success: function(text) {
-				var converter = new showdown.Converter(),
+				var converter = new showdown.Converter();
+				var options = converter.getOptions();
+				options.strikethrough = true;
 				html = converter.makeHtml(text);
 
 				$("#changelog_container").html(html);
