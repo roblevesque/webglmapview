@@ -185,6 +185,10 @@ $(document).ready(function() {
 				} else {
 					preferences.set( this.id.split("_")[1]  ,$(this).val() );
 				}
+
+				if ( this.id.split("_")[1] == "showNebulas") {
+					setNebulaVisibility(  $(this).is(":checked") );
+				}
 		});
 
 		$(".client-term-container").resize(function() { width = $(this).width(); $("#client").css({'width' : '100%'});   $("#client-term-output").css({'margin-right' : '0px !important', 'padding-right' : '0 !important'})  })
@@ -257,6 +261,10 @@ function populateUserFields() {
 				} else  {
 					$('#pref_' + pref).val( preferences.get( pref ) );
 				}
+
+				// Special cases
+				setNebulaVisibility($('#pref_showNebulas').is(":checked")? true:false)
+
 		});
 
 }

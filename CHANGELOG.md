@@ -5,9 +5,10 @@
 * Improve sprite based labels (5/15/2019)
 * Tweak planet hitbox material
 * Removed 4-1-19 specific code
-* Fix FBC issue reported by T'Seeth (5/30/2019)
+* Fix FBC issue reported by T'seeth (5/30/2019)
 * ~~Add Nebulas to display. Requested by T'seeth (6/4/2018)~~
     * Removed fom being drawn for performance reasons, but Intel should report if they intersect a nebula
+    * Allow toggling of nebula visibiltiy against my better judgement as requested by T'seeth
 
 **V0.6.5** *(3-9-2018)*
 * Add new preferences pane. Only preferences so far are: Default Frame and prediction distance

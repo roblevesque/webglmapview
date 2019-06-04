@@ -4,7 +4,8 @@ var preferences = (function() {
 var prefDefaults = {
   'predictDistance': 800,
   'defaultFrame' : "Galactic",
-  'htmlLabels' : false
+  'htmlLabels' : false,
+  'showNebulas' : false
 };
 
 var loadedPreferences = {};
