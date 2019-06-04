@@ -187,24 +187,27 @@ function init() {
 			if (nebula.radius[1] == "PC") { var radius = nebula.radius[0]; }
 			else { var radius = su2pc(nebula.radius[0]); }
 			var n_geo = new THREE.SphereGeometry( radius, 10, 10 );
-			var n_mat = new THREE.MeshPhongMaterial( {
-			color: 0xAAAAAA,
-			flatShading: true,
-			polygonOffset: true,
-			polygonOffsetFactor: 14, // positive value pushes polygon further away
-			polygonOffsetUnits: 1,
+		/*	var n_mat = new THREE.MeshPhongMaterial( {
+
+			//color: 0xAAAAAA,
+			//flatShading: true,
+			//polygonOffset: true,
+			//polygonOffsetFactor: 14, // positive value pushes polygon further away
+			//polygonOffsetUnits: 1,
 			transparent: true,
-			opacity: 0.10
-			} );
+			opacity: 0.5,
+			alphaTest: 0.10,
+		} ); */
+		var n_mat =  new THREE.MeshBasicMaterial( { color: "#FFF", wireframe: false, transparent: true, opacity: 0.0, alphaTest:0.1 } );
 			var n_mesh = new THREE.Mesh( n_geo, n_mat );
 			n_mesh.name = nebula.name;
 			n_mesh.position.copy( nebula.position );
-			var n_geo_wf = new THREE.EdgesGeometry( n_mesh.geometry );
-			var n_mat_wf = new THREE.LineBasicMaterial( { color: 0xAAAAAA, linewidth: 1, transparent: true, opacity: 0.25  });
-			var n_mesh_wf = new THREE.LineSegments(n_geo_wf, n_mat_wf );
-			n_mesh.add( n_mesh_wf );
+		//	var n_geo_wf = new THREE.EdgesGeometry( n_mesh.geometry );
+		//	var n_mat_wf = new THREE.LineBasicMaterial( { color: 0xAAAAAA, linewidth: 1, transparent: true, opacity: 0.10, alphaTest: 0.15  });
+		//	var n_mesh_wf = new THREE.LineSegments(n_geo_wf, n_mat_wf );
+		//	n_mesh.add( n_mesh_wf );
 			scene.add( n_mesh );
-			if ( preferences.get("htmlLabels") == 'true' ) {
+			/*if ( preferences.get("htmlLabels") == 'true' ) {
 				l_text = drawLabel();
 				l_text.setHTML( escapeHTML(nebula.name) );
 				l_text.setParent( n_mesh );
@@ -217,7 +220,7 @@ function init() {
 				l_text.scale.set(0.15,0.15,0.15);
 				l_text.name = escapeHTML(nebula.name + "_label");
 				scene.add(l_text);
-		}
+		} */
 
 
 		}
