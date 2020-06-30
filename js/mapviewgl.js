@@ -771,7 +771,6 @@ function listBorderCrossings( startVector, endVector ) {
 		if( intersects  !== undefined ) {
 			intersects.forEach(function(obj) {
 				if (obj.object.geometry.boundingSphere.radius != 'undefined' &&  obj.object.geometry.boundingSphere.radius > 3 ) {
-
 					if ( Object.keys(borderCrossings).length < 1 ) {
 							// Calculate reverse border crossing to catch any outbounds from the start
 							var raycast_rev = new THREE.Raycaster( obj.point, startVector.clone().sub(obj.point).normalize() );
