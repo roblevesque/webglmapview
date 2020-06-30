@@ -45,7 +45,13 @@ $(document).ready(function() {
 		});
 		$('#route_output').change(function() {
 			 var stop=$('#route_output :selected').parent().attr('label');
-			 zoomfocus(stop);
+			 var next=$('#route_output :selected').parent().data('nextpoint');
+			 if(next && (next != stop)) {
+				 zoomfocus_point(grabPositionByName( stop ), grabPositionByName( next ));
+				 console.log(here)
+			 } else {
+			 	zoomfocus(stop);
+			}
 		});
 		$('#fbc_output').change(function() {
 			 var beacon=$('#fbc_output :selected').val();
@@ -319,6 +325,7 @@ function escapeHTML(text) {
 }
 
 function timeformat(secs) {
+	if (typeof(secs) == 'undefined') { secs = 0; }
 	  var s = new Decimal(secs);
     var hours = new Decimal(secs / 3600);
 		var h = hours.floor(); //Get whole hours
@@ -350,17 +357,33 @@ function populateRoutePlan(pointa,pointb,speed) {
 			// Populate the route plan select area
 			lastWaypoint = {'name': pointa, gate:false};
 			var routeplan;
+
 			route.stops.forEach(function(waypoint,index,self) {
-				routeplan += '<optgroup label="' + waypoint.name + '">';
-				if(typeof self[index+1] != 'undefined' ) {
-					if(waypoint.gate && self[index+1].gate) {routeplan += '<option>^---- Gate From</option>'; var nextpoint = self[index+1].name;  routeplan += `<option>---> Set course for  ${nextpoint} </option>`; }
+				if ( (route.stops.length - 1) > index  ) {
+					nextWaypoint = route.stops[index+1];
 				}
-				if(waypoint.gate && lastWaypoint.gate) {routeplan += '<option>^---- Gate Exit</option>'; routeplan += '<option>ETA: ' +  timeformat( waypoint.eta ) + '</option>'; }
+				else { nextWaypoint = route.stops[ route.stops.length -1 ]; }
+				lookvectors = {}
+				lookvectors['last'] = grabPositionByName( lastWaypoint.name )
+				lookvectors['current'] = grabPositionByName( waypoint.name )
+				if ( nextWaypoint != null ) {
+					lookvectors['next'] = grabPositionByName( nextWaypoint.name )
+				} else { lookvectors['next'] = {'x': null, 'y': null, 'z': null } }
+
+				routeplan += `<optgroup label="${waypoint.name}" nextpoint="${nextWaypoint.name}">`;
+				if(typeof self[index+1] != 'undefined' ) {
+					if(waypoint.gate && self[index+1].gate) {routeplan += '<option>^---- Gate From</option>';
+					routeplan += `<option>---> Set course for  ${nextWaypoint.name} </option>`; }
+				}
+				if(waypoint.gate && lastWaypoint.gate) {
+					routeplan += `<option>^---- Gate Exit</option>`;
+					routeplan += `<option>ETA:`  +  timeformat( waypoint.eta ) + '</option>';
+				}
 
 				if(!waypoint.gate || (!lastWaypoint.gate && waypoint.gate)) {
 					var bordercrossings = listBorderCrossings(grabPositionByName( lastWaypoint.name.split('@')[lastWaypoint.name.split('@').length-1] ),grabPositionByName(waypoint.name.split('@')[waypoint.name.split('@').length-1] ));
 					for ( var border in bordercrossings) {
-						routeplan += `<option onClick='zoomfocus_point(new THREE.Vector3(${bordercrossings[border].x},${bordercrossings[border].y} ,${bordercrossings[border].z} ));'> WARNING!: Border crossing: ${border} </option>`;
+						routeplan += `<option onClick='zoomfocus_point(new THREE.Vector3(${bordercrossings[border].x},${bordercrossings[border].y} ,${bordercrossings[border].z} ), new THREE.Vector3(${lookvectors['next'].x},${lookvectors['next'].y},${lookvectors['next'].z})    );'> WARNING!: Border crossing: ${border} </option>`;
 
 					}
 					routeplan += '<option>Distance:' + waypoint.distance.toFixed(2) + '</option>'

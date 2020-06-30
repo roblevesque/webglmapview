@@ -1,9 +1,14 @@
 # Change Log
+**V0.6.7**
+* Updated ThreeJS to r118
+* Fixed some bugs related to above as well as unreported issues with border crossing detection
+* Added the beginning of feature requested by `Rawoolin` that give a POV to next waypoint from planning tool
+  * Will need some additional work to include some special but not uncommon situations. Namely POV from starting point
 **V0.6.6a**
-* Set client to hidden. ATS appears to have turned off the functionality required for this to work and I highly doubt anyone uses it.
+* Set client to hidden. ATS appears to ha ve turned off the functionality required for this to work and I highly doubt anyone uses it.
   If you do use it somehow and I have broken your world let me know. If you wanted to use it but cannot, let me know and I'll talk
   to the powers that be
- 
+
 **V0.6.6** *(3-25-2019)*
 * Preferences option for HTML planet and station labels. It's experimental. Feedback would be nice.
 * Improve sprite based labels (5/15/2019)

@@ -73,6 +73,9 @@ function init() {
 
 
         camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 1, 1e7);
+				camera.layers.enable(1);
+				camera.layers.enable(2);
+				camera.layers.enable(3);
         controls = new THREE.OrbitControls( camera, renderer.domElement );
 				controls.enableDamping = true;
 				controls.dampingFactor = 0.25;
@@ -102,6 +105,7 @@ function init() {
 				  b_mesh.position.y = border.y;
 				  b_mesh.position.z = border.z;
 				  b_mesh.name = escapeHTML(border.name);
+					b_mesh.layers.set(1)
 					scene.add( b_mesh );
 					if (border.radius > 10) {
 						l_text = new Text2D(border.name, { align: textAlign.center,  font: '75px Arial', color: '#AAA', fillStyle: 'rgba(255,255,255,0.50)', antialias: true, transparent: true});
@@ -112,6 +116,7 @@ function init() {
 						}
 						else {l_text.scale.set(0.30,0.30,0.30); }
 						l_text.name = border.name + "_label";
+						l_text.layers.set(3);
 						scene.add(l_text);
 						window.borders.push( border.name )
 						placeLightSource(new THREE.Vector3(border.x,border.y,border.z ), border.name+"_light",border.radius*10.0 );
@@ -126,9 +131,11 @@ function init() {
 				var hitbox_geo = new THREE.SphereGeometry( 2.1, 10, 10);
 				var hitbox_mat = new THREE.MeshBasicMaterial( { color: "#FFF", wireframe: false, transparent: true, opacity: 0.0, alphaTest:0.1 } );
 				var hitbox = new THREE.Mesh( hitbox_geo, hitbox_mat );
+				hitbox.layers.set(2)
 		    p_geometry= new THREE.SphereGeometry( 1.0, 10, 10 );
 		    p_material = new THREE.MeshBasicMaterial( {color: area.color, wireframe: false} );
 		    p_mesh =  new THREE.Mesh( p_geometry, p_material );
+				p_mesh.layers.set(2)
 		    p_mesh.position.x=planet.x;
 		    p_mesh.position.y=planet.y;
 		    p_mesh.position.z=planet.z;
@@ -148,6 +155,7 @@ function init() {
 			    l_text.position.set(planet.x+2, planet.y , planet.z+Math.round(Math.random() * (+3 - -3) + -3) );
 			    l_text.scale.set(0.20,0.20,0.20);
 					l_text.name = escapeHTML(planet.name + "_label");
+					l_text.layers.set(3)
 			    scene.add(l_text);
 				}
 		  }
@@ -163,6 +171,7 @@ function init() {
 		    s_mesh.position.y=base.y;
 		    s_mesh.position.z=base.z;
 				s_mesh.name = escapeHTML(base.name);
+				s_mesh.layers.set(2)
 		    scene.add( s_mesh );
 				if ( preferences.get("htmlLabels") == 'true' ) {
 					l_text = drawLabel();
@@ -176,6 +185,7 @@ function init() {
 					l_text.position.set(base.x-2,base.y+Math.round(Math.random() * (+3 - -3) + -3),base.z);
 					l_text.scale.set(0.20,0.20,0.20);
 					l_text.name = escapeHTML(base.name + "_label");
+					l_text.layers.set(3)
 					scene.add(l_text);
 			}
 		  }
@@ -357,19 +367,28 @@ function zoomfocus(name) {
 }
 
 
-function zoomfocus_point(point) {
+function zoomfocus_point(point, farpoint) {
 
-	if (point.isVector3) {
-			controls.target.x = parseFloat( point.x );
-			controls.target.y = parseFloat( point.y );
-			controls.target.z = parseFloat( point.z );
+  if (farpoint && !farpoint.x) {
+		farpoint = point
+	}
+	if (!point.isVector3 ) { render(); return; }
+	if ( !( point.equals(farpoint) ) ) {
+		if( $('#planpov').is(':checked') && farpoint.isVector3 )  {
+				controls.target.set( parseFloat( farpoint.x ), parseFloat( farpoint.y ), parseFloat( farpoint.z ) );
+				camera.position.set( parseFloat( point.x ), parseFloat( point.y ), parseFloat( point.z ));
+				camera.lookAt(new THREE.Vector3( parseFloat( farpoint.x ), parseFloat( farpoint.y ), parseFloat( farpoint.z )));
+		}
+		else {
+			controls.target.set(parseFloat( point.x ), parseFloat( point.y ), parseFloat( point.z ))
 			var focus = new THREE.Vector3( parseFloat( point.x ), parseFloat( point.y ), parseFloat( point.z ) );
 			var vantage = new THREE.Vector3( parseFloat( 5.00 ), parseFloat( 60.00 ), parseFloat( 150.00 ) );
 			vantage.add( focus );
 			camera.position.set( parseFloat( vantage.x ), parseFloat( vantage.y ), parseFloat( vantage.z ) );
 			camera.lookAt( focus );
-			camera.updateProjectionMatrix();
-			render();
+		}
+		camera.updateProjectionMatrix();
+		render();
 	}
 
 }
@@ -763,28 +782,37 @@ function predictDestination(loc,heading,frame) {
 }
 
 function listBorderCrossings( startVector, endVector ) {
-		var raycast = new THREE.Raycaster( startVector, endVector.clone().sub( startVector ).normalize() );
-		raycast.linePrecision = 1;
+		var raycast = new THREE.Raycaster( startVector, endVector.clone().sub( startVector ).normalize(), 0, startVector.distanceTo(endVector) );
+		raycast.distance = startVector.distanceTo(endVector)
+		raycast.params.Line.threshold = 5	;
+		raycast.camera = camera
+		raycast.layers.enable(1)
 		scene.updateMatrixWorld();
+		console.log(raycast)
 		var intersects = raycast.intersectObjects( scene.children, false );
 		var borderCrossings = Object();
 		if( intersects  !== undefined ) {
 			intersects.forEach(function(obj) {
-				if (obj.object.geometry.boundingSphere.radius != 'undefined' &&  obj.object.geometry.boundingSphere.radius > 3 ) {
+				if ( obj.object.geometry.boundingSphere &&  ( obj.object.geometry.boundingSphere.radius > 3 ) ) {
 					if ( Object.keys(borderCrossings).length < 1 ) {
 							// Calculate reverse border crossing to catch any outbounds from the start
-							var raycast_rev = new THREE.Raycaster( obj.point, startVector.clone().sub(obj.point).normalize() );
-							raycast_rev.linePrecision = 50;
+							var raycast_rev = new THREE.Raycaster( obj.point, startVector.clone().sub(obj.point).normalize(), 0, startVector.distanceTo(endVector));
+							raycast_rev.params.Line.threshold = 5;
+							raycast_rev.camera = camera
+							raycast_rev.layers.enable(1)
 							scene.updateMatrixWorld();
 							var intersects_rev = raycast_rev.intersectObjects( scene.children, false );
 							if ( intersects_rev.length > 0 && intersects_rev[0].object.geometry.boundingSphere.radius > 3  ) { borderCrossings[intersects_rev[0].object.name] = intersects_rev[0].point; }
 					}
+						console.log(obj)
 						borderCrossings[obj.object.name]  = obj.point;
 				}
 			});
 			if ( Object.keys(borderCrossings).length == 0 ) { // If it found nothing, still check for reverse
-				var raycast_rev = new THREE.Raycaster( endVector, startVector.clone().sub( endVector ).normalize() );
-				raycast_rev.linePrecision = 50;
+				var raycast_rev = new THREE.Raycaster( endVector, startVector.clone().sub( endVector ).normalize(),0, startVector.distanceTo(endVector) );
+				raycast_rev.params.Line.threshold = 5;
+				raycast_rev.camera = camera
+				raycast_rev.layers.enable(1)
 				scene.updateMatrixWorld();
 				var intersects_rev = raycast_rev.intersectObjects( scene.children, false );
 				if ( intersects_rev.length > 0 && intersects_rev[0].object.geometry.boundingSphere.radius > 3  ) { borderCrossings[intersects_rev[0].object.name] = intersects_rev[0].point; }

@@ -2,7 +2,8 @@
 <html>
   <head>
       <title> Map View Web Edition </title>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/95/three.min.js" crossorigin="anonymous"></script>
+      <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/95/three.min.js" crossorigin="anonymous"></script> -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r118/three.min.js" integrity="sha256-gW5irX8eJDssNOACYO++fwHFhgQKORiLq9kX7yzyqyc=" crossorigin="anonymous"></script>
       <script src="js/CSS3DRenderer.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
       <script src="js/GLTFLoader.js"></script>
@@ -128,6 +129,7 @@
             <select multiple="multiple" id="route_output" class="select-route-map">
               <option> No route calculated </option>
             </select>
+            <input type="checkbox" id="planpov" value="false" name="planpov"><label for="planpov"> POV Click View </label>
 
             <span class="calc_data"><br />
               From: <b id="cal_start">Empty</b> <br />
