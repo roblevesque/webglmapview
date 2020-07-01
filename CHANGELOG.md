@@ -1,10 +1,13 @@
 # Change Log
+
 **V0.6.7**
 * Updated ThreeJS to r118
 * Fixed some bugs related to above as well as unreported issues with border crossing detection
+    * There are still some border crossings that are not detected but I'll be damned if I can find why
 * Added the beginning of feature requested by `Rawoolin` that give a POV to next waypoint from planning tool
-  * Will need some additional work to include some special but not uncommon situations. Namely POV from starting point
-  * Likely *very* buggy at this point. I'm not even sure it's the right POV. 
+    * Will need some additional work to include some special but not uncommon situations. Namely POV from starting point
+    * Likely *very* buggy at this point. I'm not even sure it's the right POV.
+
 **V0.6.6a**
 * Set client to hidden. ATS appears to ha ve turned off the functionality required for this to work and I highly doubt anyone uses it.
   If you do use it somehow and I have broken your world let me know. If you wanted to use it but cannot, let me know and I'll talk
@@ -15,8 +18,8 @@
 * Improve sprite based labels (5/15/2019)
 * Tweak planet hitbox material
 * Removed 4-1-19 specific code
-* Fix FBC issue reported by T'seeth (5/30/2019)
-* ~~Add Nebulas to display. Requested by T'seeth (6/4/2018)~~
+* Fix FBC issue reported by `T'seeth` (5/30/2019)
+* ~~Add Nebulas to display. Requested by `T'seeth` (6/4/2018)~~
     * Removed fom being drawn for performance reasons, but Intel should report if they intersect a nebula
     * Allow toggling of nebula visibiltiy against my better judgement as requested by T'seeth
 
@@ -25,7 +28,7 @@
 
 **V0.6.4** *(2-27-2018)*
 * Fixes to client window resizing
-* Add ship location indicator ( not implemented game side yet. Bug your local Zen )
+* Add ship location indicator ( not implemented game side yet. Bug your local `Zen` )
     * Still need heading field(s) and ship owner faction to draw right ship style
 * Fixed improper draw location of sensor net driven ship indicator
 * Add TWC to route planning. Might be buggy. Please test.
@@ -34,22 +37,22 @@
 **V0.6.3** *(2-3-2018)*
 * Exciting new features that shall remain secret but could lead to some other exciting things (Narrator: They didn't)
 * Assorted tweaks
-* Bug fix with floating point math (Reported by Kthor)
-* Added border crossing warning to plan mode (Requested by Lustan)
-* Unify coordinate & bearing inputs. (As requested by Spro and Kthor)
+* Bug fix with floating point math (Reported by `Kthor`)
+* Added border crossing warning to plan mode (Requested by `Lustan`)
+* Unify coordinate & bearing inputs. (As requested by `Spro` and `Kthor`)
     * If you paste a space or comma separated bearing into any of the coordinate/bearing boxes it will separate it out for you
     * Additionally, if you want to type it in yourself comma, space, enter, m, and tab (as always) keys will auto advance to the next field
-* Added "Dual Point Project" feature that takes two coordinates and plots a line through both of them and lists out potential intersect planets/stations (Requested by Spro)
+* Added "Dual Point Project" feature that takes two coordinates and plots a line through both of them and lists out potential intersect planets/stations (Requested by `Spro`)
 
 **V0.6.2** *(1-31-2018)*
-* Add Find by coordinate (Requested by Kthor)
+* Add Find by coordinate (Requested by `Kthor`)
 * Fixed performance issues relating to above
 
 **V0.6.1** *(1-16-2018)*
 * Moved CHANGELOG over to read CHANGELOG.md from project and parse the markdown in Javascript. Is it overkill? Sure. Do I care? No
 * Some design tweaks to improve space usage throughout sidebar, and other things
 * Adjustable size on client window
-* Add Swap button (Crisha)
+* Add Swap button (`Crisha`)
 
 
 **V0.6** *(1-9-2018)*

@@ -46,9 +46,9 @@ $(document).ready(function() {
 		$('#route_output').change(function() {
 			 var stop=$('#route_output :selected').parent().attr('label');
 			 var next=$('#route_output :selected').parent().data('nextpoint');
+
 			 if(next && (next != stop)) {
 				 zoomfocus_point(grabPositionByName( stop ), grabPositionByName( next ));
-				 console.log(here)
 			 } else {
 			 	zoomfocus(stop);
 			}
@@ -349,6 +349,7 @@ function populateRoutePlan(pointa,pointb,speed) {
 			$('#cal_speed').html( speed.speed + " " + speed.unit );
 
 			var route = calcBestRoute(pointa,pointb, speed,  $('#directonly').is(':checked') );
+			route.stops.unshift({'name': pointa, 'gate': false, 'distance': 0});
 			var dist = route.distance;
 			var eta = route.eta
 			$('#cal_eta').html( timeformat(eta) );
@@ -370,7 +371,7 @@ function populateRoutePlan(pointa,pointb,speed) {
 					lookvectors['next'] = grabPositionByName( nextWaypoint.name )
 				} else { lookvectors['next'] = {'x': null, 'y': null, 'z': null } }
 
-				routeplan += `<optgroup label="${waypoint.name}" nextpoint="${nextWaypoint.name}">`;
+				routeplan += `<optgroup label="${waypoint.name}" data-nextpoint="${nextWaypoint.name}">`;
 				if(typeof self[index+1] != 'undefined' ) {
 					if(waypoint.gate && self[index+1].gate) {routeplan += '<option>^---- Gate From</option>';
 					routeplan += `<option>---> Set course for  ${nextWaypoint.name} </option>`; }
@@ -381,7 +382,7 @@ function populateRoutePlan(pointa,pointb,speed) {
 				}
 
 				if(!waypoint.gate || (!lastWaypoint.gate && waypoint.gate)) {
-					var bordercrossings = listBorderCrossings(grabPositionByName( lastWaypoint.name.split('@')[lastWaypoint.name.split('@').length-1] ),grabPositionByName(waypoint.name.split('@')[waypoint.name.split('@').length-1] ));
+					var bordercrossings = listBorderCrossings(grabPositionByName( lastWaypoint.name ), grabPositionByName( waypoint.name ));
 					for ( var border in bordercrossings) {
 						routeplan += `<option onClick='zoomfocus_point(new THREE.Vector3(${bordercrossings[border].x},${bordercrossings[border].y} ,${bordercrossings[border].z} ), new THREE.Vector3(${lookvectors['next'].x},${lookvectors['next'].y},${lookvectors['next'].z})    );'> WARNING!: Border crossing: ${border} </option>`;
 

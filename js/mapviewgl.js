@@ -99,7 +99,8 @@ function init() {
 
 				  b_geometry = new THREE.EdgesGeometry(new THREE.SphereGeometry( border.radius, 10, 10 ));
 				  //b_material = new THREE.MeshBasicMaterial( { color: area.color, wireframe: true, fillStyle: area.color} );
-					b_material = new THREE.LineBasicMaterial({color: area.color, linewidth: 1 })
+					b_material = new THREE.LineBasicMaterial({color: area.color, linewidth: 1, side: THREE.DoubleSide})
+					b_material.side = THREE.DoubleSide;
 					b_mesh = new THREE.LineSegments( b_geometry, b_material );
 				  b_mesh.position.x = border.x;
 				  b_mesh.position.y = border.y;
@@ -368,7 +369,6 @@ function zoomfocus(name) {
 
 
 function zoomfocus_point(point, farpoint) {
-
   if (farpoint && !farpoint.x) {
 		farpoint = point
 	}
@@ -401,6 +401,7 @@ function drawline(origin,dest) {
 		arrowHelper.cone.material.transparent = true;
 		arrowHelper.cone.material.opacity = 0.25;
 		arrowHelper.line.material.linewidth = 2;
+		arrowHelper.layers.set(3)
 
 		scene.add( arrowHelper );
 }
@@ -563,7 +564,6 @@ function calcETA(velocity,distance) {
 function calcDist(pointa, pointb) {
 		var obj_A = scene.getObjectByName(pointa);
 		var obj_B = scene.getObjectByName(pointb);
-
 		var distance =  obj_A.position.distanceTo(obj_B.position);
 		return distance;
 }
@@ -676,8 +676,7 @@ function calcBestRoute(pointa,pointb,speed,direct=false) {
 				var temproute_b = calcBestRoute(near_wb.location,pointb, speed);
 				var stops=temproute_a['stops'];
 				for (var obj in temproute_b['stops']) { stops[stops.length] = temproute_b['stops'][obj]}
-
-				stops.forEach(function(s, idx, array) {if(s.gate !=true && array[idx-1].gate !=true) { stops[idx].distance = calcDist(s.location,array[idx-1].location); }
+				stops.forEach(function(s, idx, array) {if(s && s.gate !=true && stops[idx-1] != undefined && stops[idx-1].gate !=true) { stops[idx].distance = calcDist(s.location,stops[idx-1].location); }
 						else if(idx == 0)  {stops[idx].distance = calcDist(pointa,s.name.split('@')[s.name.split('@').length-1]    );  } else if(s.gate == true && array[idx-1].gate == true) {stops[idx].distance = 0;}
 						else if(stops[idx-1].name.split('@')[stops[idx-1].name.split('@').length-1] == s.name.split('@')[s.name.split('@').length-1]) {stops[idx].distance=0;}
 						else { stops[idx].distance = calcDist(stops[idx-1].name.split('@')[stops[idx-1].name.split('@').length-1],s.name.split('@')[s.name.split('@').length-1]); }});
@@ -722,6 +721,7 @@ function dualPointPredict( pointa, framea , pointb, frameb ) {
 		arrowHelper.cone.material.transparent = true;
 		arrowHelper.cone.material.opacity = 0.25;
 		arrowHelper.line.material.linewidth = 2;
+		arrowHelper.layers.set(3)
 		scene.add( arrowHelper );
 
 		var directionvector = adjustedPointB.clone().sub( adjustedPointA );
@@ -782,43 +782,48 @@ function predictDestination(loc,heading,frame) {
 }
 
 function listBorderCrossings( startVector, endVector ) {
-		var raycast = new THREE.Raycaster( startVector, endVector.clone().sub( startVector ).normalize(), 0, startVector.distanceTo(endVector) );
+		var raycast = new THREE.Raycaster( startVector, endVector.clone().sub( startVector ).normalize());
 		raycast.distance = startVector.distanceTo(endVector)
-		raycast.params.Line.threshold = 5	;
+		raycast.params.Line.threshold = 6;
+		raycast.params.Mesh.threshold = 5;
+		raycast.params.Points.threshold = 5;
 		raycast.camera = camera
 		raycast.layers.enable(1)
 		scene.updateMatrixWorld();
-		console.log(raycast)
-		var intersects = raycast.intersectObjects( scene.children, false );
+		var intersects = raycast.intersectObjects( scene.children, true );
 		var borderCrossings = Object();
 		if( intersects  !== undefined ) {
 			intersects.forEach(function(obj) {
 				if ( obj.object.geometry.boundingSphere &&  ( obj.object.geometry.boundingSphere.radius > 3 ) ) {
 					if ( Object.keys(borderCrossings).length < 1 ) {
 							// Calculate reverse border crossing to catch any outbounds from the start
-							var raycast_rev = new THREE.Raycaster( obj.point, startVector.clone().sub(obj.point).normalize(), 0, startVector.distanceTo(endVector));
-							raycast_rev.params.Line.threshold = 5;
+							var raycast_rev = new THREE.Raycaster( obj.point, startVector.clone().sub(obj.point).normalize());
+							raycast_rev.params.Line.threshold = 6;
+							raycast_rev.params.Mesh.threshold = 5;
+							raycast_rev.params.Points.threshold = 5;
 							raycast_rev.camera = camera
 							raycast_rev.layers.enable(1)
 							scene.updateMatrixWorld();
-							var intersects_rev = raycast_rev.intersectObjects( scene.children, false );
+							var intersects_rev = raycast_rev.intersectObjects( scene.children, true );
 							if ( intersects_rev.length > 0 && intersects_rev[0].object.geometry.boundingSphere.radius > 3  ) { borderCrossings[intersects_rev[0].object.name] = intersects_rev[0].point; }
 					}
-						console.log(obj)
 						borderCrossings[obj.object.name]  = obj.point;
 				}
 			});
 			if ( Object.keys(borderCrossings).length == 0 ) { // If it found nothing, still check for reverse
-				var raycast_rev = new THREE.Raycaster( endVector, startVector.clone().sub( endVector ).normalize(),0, startVector.distanceTo(endVector) );
-				raycast_rev.params.Line.threshold = 5;
+				var raycast_rev = new THREE.Raycaster( endVector, startVector.clone().sub( endVector ).normalize() );
+				raycast_rev.params.Line.threshold = 6;
+				raycast_rev.params.Mesh.threshold = 5;
+				raycast_rev.params.Points.threshold = 5;
 				raycast_rev.camera = camera
 				raycast_rev.layers.enable(1)
 				scene.updateMatrixWorld();
-				var intersects_rev = raycast_rev.intersectObjects( scene.children, false );
+				var intersects_rev = raycast_rev.intersectObjects( scene.children, true );
 				if ( intersects_rev.length > 0 && intersects_rev[0].object.geometry.boundingSphere.radius > 3  ) { borderCrossings[intersects_rev[0].object.name] = intersects_rev[0].point; }
 
 			}
 			return borderCrossings;
+
 		}
 }
 
