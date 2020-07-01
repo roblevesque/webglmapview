@@ -84,10 +84,8 @@ function init() {
 				document.addEventListener( 'mousedown', onCanvasClick, false );
 
 
-		// Add some Ambient lighting   (Removed for now as it is too strong and shadows are nice)
-
 		 var lightsource = new THREE.AmbientLight( 0xFFFFFF, 1500 );
-		// Add the light to the scene
+	   // Add the light to the scene
 		 scene.add( lightsource );
 
 
