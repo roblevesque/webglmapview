@@ -724,6 +724,9 @@ function dualPointPredict( pointa, framea , pointb, frameb ) {
 
 		var directionvector = adjustedPointB.clone().sub( adjustedPointA );
 		var ray = new THREE.Raycaster( adjustedPointA, directionvector.clone().normalize() );
+		ray.layers.enable(1);
+		ray.layers.enable(2);
+		ray.camera = camera; 
 		var object_intersects = [];
 		ray.linePrecision = 10;
 		scene.updateMatrixWorld();
