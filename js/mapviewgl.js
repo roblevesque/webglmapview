@@ -755,7 +755,10 @@ function predictDestination(loc,heading,frame) {
 		var farpoint = calcEndpointByHeading(headingvec,adjLoc);
 		var directionvector = farpoint.clone().sub(adjLoc);
 		var ray = new THREE.Raycaster(adjLoc, directionvector.clone().normalize());
-		ray.linePrecision = 1;
+		ray.camera = camera
+		ray.layers.enable(1);
+		ray.layers.enable(2);
+		ray.params.Line.threshold = 1;
 		ray.far = parseFloat( preferences.get("predictDistance") );
 		scene.updateMatrixWorld();
 		var intersects = ray.intersectObjects(scene.children,true);
