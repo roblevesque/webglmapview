@@ -430,7 +430,6 @@
         { "name":"RSB Ael'Theirr", "x": -9430, "y": -147, "z": -8, "cochranes": 1298, "market":-1 },
         { "name":"RSB Cas'idine", "x": -9507, "y": -128, "z": -19, "cochranes": 1298, "market":-1 },
         { "name":"RSB Avrrhinul", "x": -9497, "y": -150, "z": -10, "cochranes": 1298, "market":-1 },
-        { "name":"GSO Flagrante Bello", "x": 7312.568, "y": -5203.543, "z": 11.594, "cochranes": 1521.202, "market":-1 }
 	]},
 {
     "name": "GFA",
@@ -496,7 +495,7 @@
 		{ "name":"Kaos", "x": 6330.000000, "y": 6337.100000, "z": 15.600000, "cochranes":1298, "market":-1 },
 		{ "name":"Kareel Prime", "x": 6694.500000, "y": 6519.400000, "z": 73.600000, "cochranes":1298, "market":1 },
 		{ "name":"Karemma", "x": 6330.200000, "y": 6336.900000, "z": 15.300000, "cochranes":1298, "market":1 },
-		{ "name":"Kryseis", "x": 6643.900000, "y": 6642.400000, "z": 17.200000, "cochranes":1298, "market":1 },
+		{ "name":"Kryseis", "x": 6643.900000, "y": 6642.400000, "z": 17.200000, "cochranes":1298, "maarket":1 },
 		{ "name":"Omaria", "x": 6500.000000, "y": 6500.000000, "z": 0.000000, "cochranes":1298, "market":-1 },
 		{ "name":"Sumn'Kapta", "x": 6506.100000, "y": 6670.700000, "z": 20.200000, "cochranes":1298, "market":1 },
 		{ "name":"Vegan", "x": 6384.300000, "y": 6439.800000, "z": 101.700000, "cochranes":1298, "market":1 },
