@@ -12,7 +12,8 @@
 		{"name": "Magna Roma Transwarp Gate", "location":  "Magna Roma", "displayname": "Transwarp Gate MR-01", "exit": "Transwarp Exit M-02"},
 		{"name": "Usho Prime Transwarp Gate", "location": "Usho Prime",  "displayname": "Transwarp Gate U-01", "exit": "Transwarp Exit U-02"},
 		{"name": "Boreth Transwarp Gate", "location": "Boreth",  "displayname": "Transwarp Gate B-01", "exit": "Transwarp Exit B-02"},
-		{"name": "Elosian City Transwarp Gate", "location": "Elosian City",  "displayname": "Transwarp Gate EC-02", "exit": "Transwarp Exit EC-02"}
+		{"name": "Elosian City Transwarp Gate", "location": "Elosian City",  "displayname": "Transwarp Gate EC-02", "exit": "Transwarp Exit EC-02"},
+		{"name": "Transwarp Gate T-08", "location": "RSB Uerrho'lhiet", "displayname": "Transwarp Gate T-08", "exit": "Transwarp Gate T-08"}
 	],
 	"wormholes": [
 		{"name": "Bajor <-> Idran X", "enda": {"location":  "Bajor/Jeraddo", "displayname": "Wormhole BQ Entrance", "oppsiteexit": "Wormhole GQ Exit" }, "endb": {"location": "Idran X", "displayname": "Wormhole GQ Entrance", "oppsiteexit": "Wormhole BQ Exit"}}
@@ -430,10 +431,7 @@
         { "name":"RSB Ael'Theirr", "x": -9430, "y": -147, "z": -8, "cochranes": 1298, "market":-1 },
         { "name":"RSB Cas'idine", "x": -9507, "y": -128, "z": -19, "cochranes": 1298, "market":-1 },
         { "name":"RSB Avrrhinul", "x": -9497, "y": -150, "z": -10, "cochranes": 1298, "market":-1 }
-	],
-	"transwarpgates":[
-		{ "name": "Transwarp Gate T-08", "x": -9433.944174, "y": -246, "z": -26, "cochranes": 1419.666134, "market": -1 },
-	]}
+	]},
 {
     "name": "GFA",
     "desc":"The Galactic Ferengi Alliance is a sparse cluster of planets, centered around Ferenganor, which is colonized by the Ferengi and governed by the Ferengi Commerce Authority (or FCA). As an intensely capitalist society, the alliance is inclusive of most races which are capable of turning a profit. ",
