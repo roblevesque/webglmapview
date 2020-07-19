@@ -430,10 +430,10 @@
         { "name":"RSB Ael'Theirr", "x": -9430, "y": -147, "z": -8, "cochranes": 1298, "market":-1 },
         { "name":"RSB Cas'idine", "x": -9507, "y": -128, "z": -19, "cochranes": 1298, "market":-1 },
         { "name":"RSB Avrrhinul", "x": -9497, "y": -150, "z": -10, "cochranes": 1298, "market":-1 }
-	]},
-	"transwarpgates": [
-		{ "name": "Transwarp Gate T-08", "x": -9433.944174, "y": -246, "z": -26, "cochranes": 1419.666134, "market": -1 },
 	],
+	"transwarpgates":[
+		{ "name": "Transwarp Gate T-08", "x": -9433.944174, "y": -246, "z": -26, "cochranes": 1419.666134, "market": -1 },
+	]}
 {
     "name": "GFA",
     "desc":"The Galactic Ferengi Alliance is a sparse cluster of planets, centered around Ferenganor, which is colonized by the Ferengi and governed by the Ferengi Commerce Authority (or FCA). As an intensely capitalist society, the alliance is inclusive of most races which are capable of turning a profit. ",
