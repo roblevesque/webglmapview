@@ -811,7 +811,6 @@ function listBorderCrossings( startVector, endVector ) {
 		var intersects = raycast.intersectObjects( scene.children, true );
 		var borderCrossings = Object();
 		if( intersects  !== undefined ) {
-			console.log(intersects)
 			intersects.forEach(function(obj) {
 				if ( obj.object.geometry.boundingSphere &&  ( obj.object.geometry.boundingSphere.radius > 3 ) ) {
 					if ( Object.keys(borderCrossings).length < 1 ) {
@@ -825,7 +824,6 @@ function listBorderCrossings( startVector, endVector ) {
 							raycast_rev.layers.set(4)
 							scene.updateMatrixWorld();
 							var intersects_rev = raycast_rev.intersectObjects( scene.children, true );
-							console.log(intersects_rev)
 							if ( intersects_rev.length > 0 && intersects_rev[0].object.geometry.boundingSphere.radius > 3  ) { borderCrossings[intersects_rev[0].object.name] = intersects_rev[0].point; }
 					}
 						borderCrossings[obj.object.name]  = obj.point;
@@ -841,7 +839,6 @@ function listBorderCrossings( startVector, endVector ) {
 				raycast_rev.layers.set(4)
 				scene.updateMatrixWorld();
 				var intersects_rev = raycast_rev.intersectObjects( scene.children, true );
-				console.log(intersects_rev)
 				if ( intersects_rev.length > 0 &&  intersects_rev[0].object.geometry.boundingSphere  && intersects_rev[0].object.geometry.boundingSphere.radius > 3  ) { borderCrossings[intersects_rev[0].object.name] = intersects_rev[0].point; }
 
 			}
