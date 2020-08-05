@@ -801,10 +801,10 @@ function predictDestination(loc,heading,frame) {
 
 function listBorderCrossings( startVector, endVector ) {
 		var raycast = new THREE.Raycaster( startVector, endVector.clone().sub( startVector ).normalize());
-		raycast.distance = startVector.distanceTo(endVector)
-		raycast.params.Line.threshold = 2;
-		raycast.params.Mesh.threshold = 2;
-		raycast.params.Points.threshold = 2;
+		raycast.far = startVector.distanceTo(endVector)
+		raycast.params.Line.threshold = 1;
+		raycast.params.Mesh.threshold = 1;
+		raycast.params.Points.threshold = 1;
 		raycast.camera = camera
 		raycast.layers.set(4)
 		scene.updateMatrixWorld();
@@ -816,11 +816,11 @@ function listBorderCrossings( startVector, endVector ) {
 				if ( obj.object.geometry.boundingSphere &&  ( obj.object.geometry.boundingSphere.radius > 3 ) ) {
 					if ( Object.keys(borderCrossings).length < 1 ) {
 							// Calculate reverse border crossing to catch any outbounds from the start
-							var raycast_rev = new THREE.Raycaster( obj.point, startVector.clone().sub(obj.point).normalize());
-							raycast_rev.distance = obj.point.distanceTo(startVector)
-							raycast_rev.params.Line.threshold = 2;
-							raycast_rev.params.Mesh.threshold = 2;
-							raycast_rev.params.Points.threshold = 2;
+							var raycast_rev = new THREE.Raycaster( obj.point, startVector.clone().sub(obj.point).normalize() );
+							raycast_rev.far = obj.point.distanceTo(startVector)
+							raycast_rev.params.Line.threshold = 1;
+							raycast_rev.params.Mesh.threshold = 1;
+							raycast_rev.params.Points.threshold = 1;
 							raycast_rev.camera = camera
 							raycast_rev.layers.set(4)
 							scene.updateMatrixWorld();
@@ -833,10 +833,10 @@ function listBorderCrossings( startVector, endVector ) {
 			});
 			if ( Object.keys(borderCrossings).length == 0 ) { // If it found nothing, still check for reverse
 				var raycast_rev = new THREE.Raycaster( endVector, startVector.clone().sub( endVector ).normalize() );
-				raycast_rev.distance = endVector.distanceTo(startVector)
-				raycast_rev.params.Line.threshold = 2;
-				raycast_rev.params.Mesh.threshold = 2;
-				raycast_rev.params.Points.threshold = 2;
+				raycast_rev.far = endVector.distanceTo(startVector)
+				raycast_rev.params.Line.threshold = 1;
+				raycast_rev.params.Mesh.threshold = 1;
+				raycast_rev.params.Points.threshold = 1;
 				raycast_rev.camera = camera
 				raycast_rev.layers.set(4)
 				scene.updateMatrixWorld();
