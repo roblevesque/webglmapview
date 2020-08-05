@@ -1,5 +1,10 @@
 # Change Log
 
+**V0.6.7a**
+* Fixed two border crossing bugs.
+    *   Sometimes border crossing generation caused entire direction function to dump (reported by Rawoolin)
+    *   Borders weren't properly being detected due to a geometry/material change a bit back. 
+
 **V0.6.7**
 * Updated ThreeJS to r118
 * Fixed some bugs related to above as well as unreported issues with border crossing detection
