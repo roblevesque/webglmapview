@@ -43,16 +43,32 @@ $(document).ready(function() {
 					objdata += "<br /><b>Location (Galactic Ref.)</b><br /><b>X</b>: " + object.x + "<br/><b>Y</b>: " + object.y + "<br /><b>Z</b>: " + object.z;
 					$('#findbydata').html(objdata)
 		});
-		$('#route_output').change(function() {
-			 var stop=$('#route_output :selected').parent().attr('label');
-			 var next=$('#route_output :selected').parent().data('nextpoint');
+		//  $('#route_output').change(function() {
+		// 	 var stop=$('#route_output :selected').parent().attr('label');
+		// 	 var next=$('#route_output :selected').parent().data('nextpoint');
+		//
+		// 	 if(next && (next != stop)) {
+		// 		 zoomfocus_point(grabPositionByName( stop ), grabPositionByName( next ));
+		// 	 } else {
+		// 	 	zoomfocus(stop);
+		// 	}
+		// });
 
-			 if(next && (next != stop)) {
-				 zoomfocus_point(grabPositionByName( stop ), grabPositionByName( next ));
-			 } else {
-			 	zoomfocus(stop);
+		$('#route_container').selectable({
+			selected: function() {
+				$( ".ui-selected", this ).each(function() {
+				stop = $(this).attr('label')
+				next = $(this).data('nextpoint')
+				});
+
+				if(next && (next != stop)) {
+		 		 		zoomfocus_point(grabPositionByName( stop ), grabPositionByName( next ));
+				 	 } else {
+				 	 	zoomfocus(stop);
 			}
-		});
+			}
+
+		})
 		$('#fbc_output').change(function() {
 			 var beacon=$('#fbc_output :selected').val();
 			 zoomfocus("FBC_" + beacon);
@@ -65,7 +81,7 @@ $(document).ready(function() {
 		$('#calctnd').click(function() {
 			removeEntity('arrow');
 			lastInputBox = null;
-			$('#route_output').html("No route calculated");
+			$('#route_container').html("No route calculated");
 			var speed = {'speed': $('#speed').val(), 'unit':$('#speedunit option:selected').val() };
 			populateRoutePlan( $('#pointa  option:selected').text() , $('#pointb  option:selected').text(),speed );
 		});
@@ -357,7 +373,7 @@ function populateRoutePlan(pointa,pointb,speed) {
 
 			// Populate the route plan select area
 			lastWaypoint = {'name': pointa, gate:false};
-			var routeplan;
+			var routeplan ="";
 
 			route.stops.forEach(function(waypoint,index,self) {
 				if ( (route.stops.length - 1) > index  ) {
@@ -371,34 +387,41 @@ function populateRoutePlan(pointa,pointb,speed) {
 					lookvectors['next'] = grabPositionByName( nextWaypoint.name )
 				} else { lookvectors['next'] = {'x': null, 'y': null, 'z': null } }
 
-				routeplan += `<optgroup label="${waypoint.name}" data-nextpoint="${nextWaypoint.name}">`;
+				routeplan += `<li label="${waypoint.name}" data-nextpoint="${nextWaypoint.name}">`;
+				if (index == 0) {
+					routeplan += `<span class="p-target"> Start :	 ${waypoint.name} </span>`;
+				} else {
+					routeplan += `<span class="p-target"> ${index} :	 ${waypoint.name} </span>`;
+				}
+				routeplan += '<span class="p-dist">' + waypoint.distance.toFixed(2) + '</span>'
+				routeplan += '<span class="p-eta"> '  + timeformat( waypoint.eta ) + '</span>';
 				if(typeof self[index+1] != 'undefined' ) {
-					if(waypoint.gate && self[index+1].gate) {routeplan += '<option>^---- Gate From</option>';
-					routeplan += `<option>---> Set course for  ${nextWaypoint.name} </option>`; }
+					if(waypoint.gate && self[index+1].gate) {routeplan += '<span class="p-info fas fa-anchor"> Gate From Here</span>';
+					routeplan += `<span class="p-info fas fa-plane-departure"> Set course for  ${nextWaypoint.name} </span>`; }
 				}
 				if(waypoint.gate && lastWaypoint.gate) {
-					routeplan += `<option>^---- Gate Exit</option>`;
-					routeplan += `<option>ETA:`  +  timeformat( waypoint.eta ) + '</option>';
+					routeplan += `<span class="p-info fas fa-anchor"> Exit Gate From Here</span>`;
 				}
 
 				if(!waypoint.gate || (!lastWaypoint.gate && waypoint.gate)) {
 					var bordercrossings = listBorderCrossings(grabPositionByName( lastWaypoint.name ), grabPositionByName( waypoint.name ));
 					for ( var border in bordercrossings) {
-						routeplan += `<option onClick='zoomfocus_point(new THREE.Vector3(${bordercrossings[border].x},${bordercrossings[border].y} ,${bordercrossings[border].z} ), new THREE.Vector3(${lookvectors['next'].x},${lookvectors['next'].y},${lookvectors['next'].z})    );'> WARNING!: Border crossing: ${border} </option>`;
+						routeplan += `<span class="p-warn fas fa-exclamation-triangle" onClick='zoomfocus_point(new THREE.Vector3(${bordercrossings[border].x},${bordercrossings[border].y} ,${bordercrossings[border].z} ), new THREE.Vector3(${lookvectors['next'].x},${lookvectors['next'].y},${lookvectors['next'].z})    );'> WARNING!: Border crossing: ${border} </span>`;
 
 					}
-					routeplan += '<option>Distance:' + waypoint.distance.toFixed(2) + '</option>'
-					if ( waypoint.eta == undefined ) {
-						routeplan += '<option>ETA: ' + timeformat(calcETA(speed,waypoint.distance)) + '</option>';
-					} else {
-						routeplan += '<option>ETA: ' + timeformat( waypoint.eta ) + '</option>';
-					}
+					routeplan += "</li>"
+					// routeplan += '<option>Distance:' + waypoint.distance.toFixed(2) + '</option>'
+					// if ( waypoint.eta == undefined ) {
+					// 	routeplan += '<option>ETA: ' + timeformat(calcETA(speed,waypoint.distance)) + '</option>';
+					// } else {
+					// 	routeplan += '<option>ETA: ' + timeformat( waypoint.eta ) + '</option>';
+					// }
 
 					drawline(grabPositionByName(lastWaypoint.name.split('@')[lastWaypoint.name.split('@').length-1] ),grabPositionByName(waypoint.name.split('@')[waypoint.name.split('@').length-1]  ));
 				}
 				lastWaypoint = waypoint;
 			});
-				$('#route_output').html(routeplan);
+				$('#route_container').html(routeplan);
 			//drawline(grabPositionByName($('#pointa  option:selected').text()),grabPositionByName($('#pointb  option:selected').text()));
 	}
 }

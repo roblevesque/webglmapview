@@ -40,7 +40,7 @@ canvas { width: 75%; height: 100% ;}
 
   }
 .wvg-tools input { background: #292933; width: 11.4vw; }
-.wvg-tools span { text-align:center; color: #FFF; font-family: 'Raleway', sans-serif; display: block; font-size: 1.0em; }
+.wvg-tools span { text-align:center; color: #FFF; display: block; font-size: 1.0em; }
 .wvg-tools span label { font-weight: bold; }
 .wvg-first {  display: block; }
 #wrapper { height: inherit; width: 100%; }
@@ -97,10 +97,10 @@ input[type=radio]:checked + label:before {
   text-decoration: none;
 }
 .tool-header { font-weight: bold; padding-top: 0.75em; display: block; }
-#route_output {margin: 0 auto; font-size: 1.25vh; height: 30%; padding-top: 1vh; width: 100%; overflow: auto;}
+#route_output {margin: 0 auto; font-size: 1.25vh; height: 45%; padding-top: 1vh; width: 100%; overflow-x: hidden; overflow-y: auto;}
 #fbc_output {margin: 0 auto; font-size: 1.25vh; height: 25vh; padding-top: 1vh; width: 100%; overflow: auto; }
 .toolsep { margin: 0 auto; padding:0;  padding-top: 0.5vh; padding-bottom: 0.5vh; border-bottom: 1px #AAA solid; display: block; width: 64%;}
-.calc_data { padding-top: 2.5vh; font-size: 1.5vh;  font-family: 'Open Sans', sans-serif;}
+.calc_data { padding-top: 0;  font-size: 0.75em !important;  font-family: 'Open Sans', sans-serif;}
 
 .combined_inputs { border: 1px solid #67878A; display: block; width: 15vw; margin: 0 auto; }
 .combined_inputs input {border: 0 !important; width: 4vw; text-align: center; padding: 0; margin: 0.1em; padding-top: 5px; padding-bottom: 5px;   }
@@ -215,4 +215,107 @@ span.label-hover-text {
 
 div.label-text:hover span.label-hover-text {
   display: block;
+}
+
+
+
+#route_container {
+  padding: 0;
+  list-style-type: none;
+  width: fit-content;
+  background-color: #0d4a4d ;
+  text-align: center !important;
+  font-size: 1em !important;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+#route_container li {
+  border-bottom: 5px solid #292933;
+  height: auto;
+  width: 100%;
+  display: inline-block !important;
+  color: white;
+}
+#route_container  li:last-child {
+  border-bottom: 0;
+}
+
+#route_container li:hover {
+  background-color: #7a7a7a;
+}
+
+#route_container .ui-selecting { background: #0d4a4d; }
+#route_container .ui-selected { background: #67989A;}
+
+
+.p-target {
+  padding: 0.5vh;
+  width: 100%;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2em !important;
+  display: block !important;
+  float: left;
+}
+.p-dist {
+  width: 50%;
+  float: left;
+  display: block !important;
+  font-size: 0.95vh;
+  padding-bottom: 0.1vh;
+
+}
+.p-dist:before {
+  content: "Distance: ";
+  font-weight: bold;
+}
+
+.p-eta {
+  width: 50%;
+  float: right;
+  font-size: 0.75vh;
+  display: inline-block;
+  padding-bottom: 0.1vh;
+}
+.p-eta:before {
+   content: "ETA: ";
+   font-weight: bold;
+
+}
+
+.p-warn {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  background: rgb(255,255,201) !important;
+  color: black !important;
+  font-weight: bold;
+ background: repeating-linear-gradient(45deg, rgba(255,255,201,1), rgba(255,255,201,1) 5px, #EEE 5px, #EEE 10px) !important;
+  width: 100% !important;
+  display: inline-block !important;
+  font-size: 1vh;
+}
+
+
+.p-info {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  background-color: #ddffff;
+  color: black !important;
+  font-weight: bold;
+  background: repeating-linear-gradient(45deg, #ddffff, #ddffff 5px, #EEE 5px, #EEE 10px);
+  width: 100%;
+  display: inline-block !important;
+  font-size: 1vh;
+}
+
+#route_container [class*="fa-"]::before  {
+  float: left;
+  /* font-family: initial; */
+  font-size: 1em ;
 }

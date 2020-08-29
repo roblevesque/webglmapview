@@ -15,8 +15,8 @@
       <script src="js/prefs.js"></script>
       <link href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway:400,700,700i" rel="stylesheet">
       <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+      <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+      <script src="https://kit.fontawesome.com/28038d439d.js" crossorigin="anonymous"></script>
 
       <link href="styles/styles.css" rel="stylesheet">
       <link href="styles/ansi.css" rel="stylesheet">
@@ -124,14 +124,16 @@
                 <input type="checkbox" id="directonly" value="false" name="directonly"><label for="directonly"> Direct Only </label>
                 <button id="calctnd" class="btn">Calculate</button>
             </span>
-            <br />
-            <br />
-            <select multiple="multiple" id="route_output" class="select-route-map">
-              <option> No route calculated </option>
-            </select>
+            
+            <div id="route_output">
+              <ul class="selectable" id="route_container">
+                <!-- This element has been intentionally left blank -->
+              </ul>
+            </div>
+
             <input type="checkbox" id="planpov" value="false" name="planpov"><label for="planpov"> POV Click View </label>
 
-            <span class="calc_data"><br />
+            <span class="calc_data">
               From: <b id="cal_start">Empty</b> <br />
               To: <b id="cal_end">Empty</b><br />
               Distance: <b id="cal_dist">Unknown</b><br />
