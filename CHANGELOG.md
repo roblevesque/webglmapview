@@ -1,9 +1,12 @@
 # Change Log
 
+**V0.6.8**
+* Moved route listing from select box to a select-able list. Input would be nice on layout and usability.  
+
 **V0.6.7a**
 * Fixed two border crossing bugs.
     *   Sometimes border crossing generation caused entire direction function to dump (reported by Rawoolin)
-    *   Borders weren't properly being detected due to a geometry/material change a bit back. 
+    *   Borders weren't properly being detected due to a geometry/material change a bit back.
 
 **V0.6.7**
 * Updated ThreeJS to r118
