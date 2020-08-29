@@ -394,7 +394,15 @@ function populateRoutePlan(pointa,pointb,speed) {
 					routeplan += `<span class="p-target"> ${index} :	 ${waypoint.name} </span>`;
 				}
 				routeplan += '<span class="p-dist">' + waypoint.distance.toFixed(2) + '</span>'
-				routeplan += '<span class="p-eta"> '  + timeformat( waypoint.eta ) + '</span>';
+
+				if (waypoint.eta != undefined) {
+					routeplan += '<span class="p-eta"> '  + timeformat( waypoint.eta ) + '</span>';
+				}
+				else {
+					routeplan += '<span class="p-eta"> '  + timeformat(calcETA(speed,waypoint.distance)) + '</span>';
+				}
+
+
 				if(typeof self[index+1] != 'undefined' ) {
 					if(waypoint.gate && self[index+1].gate) {routeplan += '<span class="p-info fas fa-anchor"> Gate From Here</span>';
 					routeplan += `<span class="p-info fas fa-plane-departure"> Set course for  ${nextWaypoint.name} </span>`; }
