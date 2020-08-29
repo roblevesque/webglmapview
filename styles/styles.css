@@ -237,6 +237,7 @@ div.label-text:hover span.label-hover-text {
 }
 #route_container li {
   border-bottom: 5px solid #292933;
+  padding-bottom: 5px;
   height: auto;
   width: 100%;
   display: inline-block !important;
