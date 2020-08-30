@@ -81,7 +81,8 @@ $(document).ready(function() {
 		$('#calctnd').click(function() {
 			removeEntity('arrow');
 			lastInputBox = null;
-			$('#route_container').html("No route calculated");
+
+			$('#route_container').html(`<li label="none" data-nextpoint="none"> <span class="p-target">  No Target Available </span><span class="p-dist">N/A</span> <span class="p-eta">N/A</span> <span class="p-warn fas fa-exclamation-triangle"> No Route Calculated </span></li><li label="none" data-nextpoint="none"> <span class="p-target">  No Target Available </span><span class="p-dist">N/A</span> <span class="p-eta">N/A</span> <span class="p-warn fas fa-exclamation-triangle"> Please enter two different locations above </span></li>`);
 			var speed = {'speed': $('#speed').val(), 'unit':$('#speedunit option:selected').val() };
 			populateRoutePlan( $('#pointa  option:selected').text() , $('#pointb  option:selected').text(),speed );
 		});

@@ -124,21 +124,27 @@
                 <input type="checkbox" id="directonly" value="false" name="directonly"><label for="directonly"> Direct Only </label>
                 <button id="calctnd" class="btn">Calculate</button>
             </span>
-            
+
             <div id="route_output">
               <ul class="selectable" id="route_container">
                 <!-- This element has been intentionally left blank -->
               </ul>
             </div>
 
-            <input type="checkbox" id="planpov" value="false" name="planpov"><label for="planpov"> POV Click View </label>
 
-            <span class="calc_data">
-              From: <b id="cal_start">Empty</b> <br />
-              To: <b id="cal_end">Empty</b><br />
-              Distance: <b id="cal_dist">Unknown</b><br />
-              ETA @ <b id="cal_speed">Unknown</b> : <b id="cal_eta">Unknown</b>
-            </span>
+            <div class="calc_data">
+              <span><label> Trip Overview </label></span>
+              <span id="block_loc">
+                <b id="cal_start">Empty</b>
+                <b id="cal_end">Empty</b>
+              </span>
+              <span id="block_disteta">
+                <b id="cal_dist">Unknown</b>
+                <div id="block_eta"><b id="cal_speed">Unknown</b> For <b id="cal_eta">Unknown</b></div>
+              </span>
+
+            </div>
+            <input type="checkbox" id="planpov" value="false" name="planpov"><label for="planpov"> POV Click View </label>
           </div>
           <div class="wvg-tools" id="Intel">
               <span class="tool-header"> Route Prediction </span>

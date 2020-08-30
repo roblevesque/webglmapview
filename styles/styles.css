@@ -41,7 +41,7 @@ canvas { width: 75%; height: 100% ;}
   }
 .wvg-tools input { background: #292933; width: 11.4vw; }
 .wvg-tools span { text-align:center; color: #FFF; display: block; font-size: 1.0em; }
-.wvg-tools span label { font-weight: bold; }
+.wvg-tools span label { font-weight: bold;  width: 100%;}
 .wvg-first {  display: block; }
 #wrapper { height: inherit; width: 100%; }
 .active { display: block; }
@@ -100,7 +100,7 @@ input[type=radio]:checked + label:before {
 #route_output {margin: 0 auto; font-size: 1.25vh; height: 45%; padding-top: 1vh; width: 100%; overflow-x: hidden; overflow-y: auto;}
 #fbc_output {margin: 0 auto; font-size: 1.25vh; height: 25vh; padding-top: 1vh; width: 100%; overflow: auto; }
 .toolsep { margin: 0 auto; padding:0;  padding-top: 0.5vh; padding-bottom: 0.5vh; border-bottom: 1px #AAA solid; display: block; width: 64%;}
-.calc_data { padding-top: 0;  font-size: 0.75em !important;  font-family: 'Open Sans', sans-serif;}
+.calc_data { padding-top: 0;  font-size: 0.75em;  font-family: 'Open Sans', sans-serif;}
 
 .combined_inputs { border: 1px solid #67878A; display: block; width: 15vw; margin: 0 auto; }
 .combined_inputs input {border: 0 !important; width: 4vw; text-align: center; padding: 0; margin: 0.1em; padding-top: 5px; padding-bottom: 5px;   }
@@ -245,6 +245,7 @@ div.label-text:hover span.label-hover-text {
 }
 #route_container  li:last-child {
   border-bottom: 0;
+  width: 100%;
 }
 
 #route_container li:hover {
@@ -294,12 +295,13 @@ div.label-text:hover span.label-hover-text {
   padding-top: 3px;
   padding-bottom: 3px;
   background: rgb(255,255,201) !important;
-  color: black !important;
+  color: white !important;
   font-weight: bold;
- background: repeating-linear-gradient(45deg, rgba(255,255,201,1), rgba(255,255,201,1) 5px, #EEE 5px, #EEE 10px) !important;
+ background: repeating-linear-gradient(45deg, #8e0303, #8e0303 5px, #504e4e 5px, #504e4e 10px) !important;
   width: 100% !important;
   display: inline-block !important;
-  font-size: 1vh;
+  font-size: 1.5vh !important;
+  -webkit-text-stroke: 1px #0000002e;
 }
 
 
@@ -307,16 +309,79 @@ div.label-text:hover span.label-hover-text {
   padding-top: 3px;
   padding-bottom: 3px;
   background-color: #ddffff;
-  color: black !important;
+  color: white !important;
   font-weight: bold;
-  background: repeating-linear-gradient(45deg, #ddffff, #ddffff 5px, #EEE 5px, #EEE 10px);
+  background: repeating-linear-gradient(45deg, #41509c, #41509c 5px, #504e4e 5px, #504e4e 10px);
   width: 100%;
   display: inline-block !important;
-  font-size: 1vh;
+  font-size: 1.5vh !important;
+  -webkit-text-stroke: 1px #0000002e;
 }
 
 #route_container [class*="fa-"]::before  {
   float: left;
   /* font-family: initial; */
   font-size: 1em ;
+}
+
+#cal_start {
+    font-size: 1.0em;
+    display: inline-block;
+    float: left;
+    color: #67878A;
+}
+#cal_start:before {
+  content: 'From : ';
+  font-size: 1.2em !important;
+  color: white;
+
+}
+#cal_end {
+  font-size: 1.0em;
+  display: inline-block;
+  float:right;
+  color: #67878A;
+
+}
+#cal_end:before {
+  content: 'To : ';
+  font-size: 1.2em !important;
+  color: white;
+
+}
+
+#cal_dist {
+  font-size: 1em;
+  display: inline-block;
+  float: left;
+  color: #67878A;
+}
+#cal_dist:before {
+  content: 'Distance : ';
+  font-size: 1.2em !important;
+  color: white;
+}
+
+#block_eta {
+  float: right;
+  font-size: 1em;
+  display: inline-block;
+  color: #67878A;
+}
+#block_eta:before {
+  content: 'ETA : ';
+  font-size: 1.2em !important;
+  color: white;
+  font-weight: bold;
+}
+
+
+#block_loc {
+  width:95%;
+  display: inline-block;
+}
+
+#block_disteta {
+  width:95%;
+  display: inline-block;
 }
