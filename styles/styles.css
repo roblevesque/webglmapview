@@ -195,30 +195,6 @@ input[type=radio]:checked + label:before {
 @media only screen and (max-height: 575px) { .reset-container { height: 4em;} .wvg-controls { overflow-y: auto; margin-bottom: -5vh;} .wvg-tools {font-size: 0.75em;}  }
 
 
-div.label-text {
-  color: #fff;
-  padding: 3px;
-  background-color: #000;
-  font-size: 0.5em;
-  border-radius: 5px;
-  border: 1px solid #FFF;
-  font-family: "Fira Mono", Monaco, "Andale Mono", "Lucida Console", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
-  margin: -5px 0 0 15px;
-  pointer-events: auto;
-  z-index: 0;
-
-}
-
-span.label-hover-text {
-  display: none;
-}
-
-div.label-text:hover span.label-hover-text {
-  display: block;
-}
-
-
-
 #route_container {
   padding: 0;
   list-style-type: none;

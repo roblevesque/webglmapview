@@ -14,33 +14,48 @@ window.drawnActiveShips = []
 window.borders = [];
 
 window.onload = function() {
-loadData(function() {
-preferences.load();
-init();
-animate();
-populateUserFields();
+	loadData(async function() {
+		preferences.load();
+		init();
+		populateUserFields();
+		setTimeout(animate,50);
 // updateMUSHData(); // Disable this until implemented properly
 });
 }
 
-function loadData(_callback) {
+async function loadData(_callback) {
 	// Load Data (hopefully) before the rest of the place loads.
-	var xmlhttp = new XMLHttpRequest();
+	//var xmlhttp = new XMLHttpRequest();
 	var url = "js/atsdata.json";
+	//
+	// xmlhttp.onreadystatechange = function() {
+	//     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+	//         jsonEmpire = JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['empires'];
+	// 				jsonGate =  JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['gates'];
+	// 				jsonConduit = JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['transwarpgates'];
+	// 				jsonWormhole = JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['wormholes'];
+	// 				jsonNebulas = JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['nebulas'];
+	//         _callback();
+	//
+	//     }
+	//	};
+	// xmlhttp.open("GET", url, true);
+	// xmlhttp.send();
 
-	xmlhttp.onreadystatechange = function() {
-	    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-	        jsonEmpire = JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['empires'];
-					jsonGate =  JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['gates'];
-					jsonConduit = JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['transwarpgates'];
-					jsonWormhole = JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['wormholes'];
-					jsonNebulas = JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['nebulas'];
-	        _callback();
 
-	    }
-	};
-	xmlhttp.open("GET", url, true);
-	xmlhttp.send();
+	$.ajax({
+		type: "GET",
+		url: url,
+		dataType: "json",
+		success: function(data) {
+			jsonEmpire = data['ATS_Navcomp_DB']['empires']
+			jsonGate = data['ATS_Navcomp_DB']['gates']
+			jsonConduit = data['ATS_Navcomp_DB']['transwarpgates']
+			jsonWormhole = data['ATS_Navcomp_DB']['wormholes']
+			jsonNebulas = data['ATS_Navcomp_DB']['nebulas']
+			_callback()
+		}
+	});
 
 }
 
@@ -53,7 +68,7 @@ function reset_view() {
 	render();
 }
 
-function init() {
+async function init() {
 				scene = new THREE.Scene();
         renderer = new THREE.WebGLRenderer();
 
@@ -155,22 +170,16 @@ function init() {
 		    p_mesh.name = escapeHTML(planet.name);
 				p_mesh.add( hitbox );
 				scene.add( p_mesh );
-				if ( preferences.get("htmlLabels") == 'true' ) {
-					l_text = drawLabel();
-					l_text.setHTML( escapeHTML(planet.name) );
-					l_text.setOffset({x:0, y:-10});
-					l_text.setParent( p_mesh );
-					textLabels.push( l_text );
-					container.appendChild( l_text.element )
-				} else {
-			    l_text = new Text2D(escapeHTML(planet.name), { align: textAlign.right,  font: '10px Arial', fillStyle: '#FFF' , antialias: true });
-			    l_text.material.alphaTest = 0.1;
-			    l_text.position.set(planet.x+2, planet.y , planet.z+Math.round(Math.random() * (+3 - -3) + -3) );
-			    l_text.scale.set(0.20,0.20,0.20);
-					l_text.name = escapeHTML(planet.name + "_label");
-					l_text.layers.set(3)
-			    scene.add(l_text);
-				}
+
+				/* Draw labels */
+		    l_text = new Text2D(escapeHTML(planet.name), { align: textAlign.right,  font: '10px Arial', fillStyle: '#FFF' , antialias: true });
+		    l_text.material.alphaTest = 0.1;
+		    l_text.position.set(planet.x+2, planet.y , planet.z+Math.round(Math.random() * (+3 - -3) + -3) );
+		    l_text.scale.set(0.20,0.20,0.20);
+				l_text.name = escapeHTML(planet.name + "_label");
+				l_text.layers.set(3)
+		    scene.add(l_text);
+
 		  }
 
 		  // Base Generation
@@ -186,21 +195,16 @@ function init() {
 				s_mesh.name = escapeHTML(base.name);
 				s_mesh.layers.set(2)
 		    scene.add( s_mesh );
-				if ( preferences.get("htmlLabels") == 'true' ) {
-					l_text = drawLabel();
-					l_text.setHTML( escapeHTML(base.name) );
-					l_text.setParent( s_mesh );
-					textLabels.push( l_text );
-					container.appendChild( l_text.element )
-				} else {
-					l_text = new Text2D(escapeHTML(base.name), { align: textAlign.left,  font: '12px Arial', fillStyle: '#FAFAFA' , antialias: true });
-					l_text.material.alphaTest = 0.0;
-					l_text.position.set(base.x-2,base.y+Math.round(Math.random() * (+3 - -3) + -3),base.z);
-					l_text.scale.set(0.20,0.20,0.20);
-					l_text.name = escapeHTML(base.name + "_label");
-					l_text.layers.enable(3)
-					scene.add(l_text);
-			}
+
+				/* Draw Labels */
+				l_text = new Text2D(escapeHTML(base.name), { align: textAlign.left,  font: '12px Arial', fillStyle: '#FAFAFA' , antialias: true });
+				l_text.material.alphaTest = 0.0;
+				l_text.position.set(base.x-2,base.y+Math.round(Math.random() * (+3 - -3) + -3),base.z);
+				l_text.scale.set(0.20,0.20,0.20);
+				l_text.name = escapeHTML(base.name + "_label");
+				l_text.layers.enable(3)
+				scene.add(l_text);
+
 		  }
 
 		}
@@ -311,12 +315,12 @@ function update_animations() {
 function render() {
 		//requestAnimationFrame( render );
 
-    if (preferences.get('htmlLabels') == "false") {
-			var objectlist = Object.keys(listobjects("stations"));
-			objectlist.forEach (function(station) { var obj = scene.getObjectByName(escapeHTML(station + "_label")); obj.lookAt(camera.position)  }) ;
-    	objectlist = Object.keys(listobjects("planets"));
-    	objectlist.forEach (function(planet) { var obj = scene.getObjectByName(escapeHTML(planet + "_label")); obj.lookAt(camera.position)  }) ;
-		}
+
+		var objectlist = Object.keys(listobjects("stations"));
+		objectlist.forEach (function(station) { var obj = scene.getObjectByName(escapeHTML(station + "_label")); obj.lookAt(camera.position)  }) ;
+  	objectlist = Object.keys(listobjects("planets"));
+  	objectlist.forEach (function(planet) { var obj = scene.getObjectByName(escapeHTML(planet + "_label")); obj.lookAt(camera.position)  }) ;
+
     objectlist = Object.keys(listobjects("borders"));
     objectlist.forEach (function(border) { var obj = scene.getObjectByName(border + "_label"); if (obj != undefined) { obj.lookAt(camera.position)}  }) ;
 		for(var i=0; i<textLabels.length; i++) {
@@ -920,113 +924,3 @@ function findPointBorder( point=new THREE.Vector3(0,0,0) ) {
 		 });
 		 	return insideborder;
 }
-
-
-
-var drawLabel = function() {
-	var div = document.createElement('div');
-	var visibleText = document.createElement('span');
-	var hoverText = document.createElement('span');
-	var offset = {x:10,y:15};
-	hoverText.className = "label-hover-text";
-	div.className = 'label-text';
-	div.style.position = 'fixed';
-	div.style.width = 100;
-	div.style.height = 100;
-	div.innerHTML = "";
-	div.style.top = -1000;
-	div.style.left = -1000;
-
-	var _this = this;
-
-	div.appendChild( visibleText );
-	div.appendChild( hoverText )
-
-	return {
-		element: div,
-		hover: hoverText,
-		visible: visibleText,
-		parent: false,
-		position: new THREE.Vector3(0,0,0),
-		setHTML: function(html) {
-			this.visible.innerHTML = html;
-		},
-		setHover: function(html) {
-			this.hover.innerHTML = html;
-		},
-		setParent: function(threejsobj) {
-			this.parent = threejsobj;
-		},
-		setOffset: function(given_offset){
-			offset = given_offset;
-		},
-		updatePosition: function() {
-			if(parent) {
-				this.position.copy(this.parent.position);
-			}
-
-			var coords2d = this.get2DCoords(this.position, camera);
-			//var coords2d = _this.toScreenXY(this.position,camera,container)
-			//var coords2d = this.getScreenPosition(this.parent, camera);
-			this.element.style.left = coords2d.x + 'px';
-			this.element.style.top = coords2d.y + 'px';
-
-			this.updateVisibility(); // Don't display outside of the radar box
-		},
-		updateVisibility: function() {
-			var containerloc = container.getBoundingClientRect();
-			var radarLoc = this.element.getBoundingClientRect();
-			var top = radarLoc.top;
-			var bottom = radarLoc.bottom;
-			var left = radarLoc.left;
-			var right = radarLoc.right;
-
-
-			var distance = camera.position.distanceTo(this.parent.position)
-			if((top < containerloc.top || bottom > containerloc.bottom || left < containerloc.left || right > containerloc.right) ) {
-				this.element.style.zIndex = "-100"
-			} else {
-				this.element.style.zIndex = "1"
-				var size = Math.min(1.0, Math.max(0.5 ,(600/distance)));
-				this.element.style.fontSize = `${size}em`;
-
-				}
-		}, /* End updateVisibility */
-		get2DCoords: function(position, fcamera) {
-			//  var vector = position.project( fcamera );
-			//  vector.x = (vector.x + 1)/2 * container.clientWidth;
-			//  vector.y = -(vector.y - 1)/2 * container.clientHeight;
-			var vector = new THREE.Vector3();
-			vector = vector.setFromMatrixPosition( this.parent.matrixWorld );
-			vector.project( fcamera );
-			var widthHalf = WIDTH / 2;
-			var heightHalf = HEIGHT / 2;
-			var containerloc = container.getBoundingClientRect();
-			vector.x = ( (vector.x * widthHalf) + widthHalf )  + containerloc.left - offset.x ;
-			vector.y =  ( - (vector.y * heightHalf) + heightHalf ) + containerloc.top - offset.y;
-
-			return vector;
-		}, /* End get2DCoord */
-		getScreenPosition: function(obj, camera)    {
-			var vector = new THREE.Vector3();
-
-			var widthHalf = 0.5*renderer.context.canvas.width;
-			var heightHalf = 0.5*renderer.context.canvas.height;
-
-			obj.updateMatrixWorld();
-			vector.setFromMatrixPosition(obj.matrixWorld);
-			vector.project(camera);
-
-			vector.x = ( vector.x * widthHalf ) + widthHalf;
-			vector.y = - ( vector.y * heightHalf ) + heightHalf;
-
-			return {
-					x: vector.x,
-					y: vector.y
-			};
-
-		},
-	};
-
-
-} /* End drawLabel */

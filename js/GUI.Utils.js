@@ -20,229 +20,238 @@ function radians(degrees)
   var pi = Math.PI;
   return degrees * (pi/180);
 }
-$(document).ready(function() {
 
-		setInterval(update_animations, 100);
+async function populateChangelog() {
+	$.ajax({
+		url: 'CHANGELOG.md',
+		type: 'get',
+		async: 'true',
+		success: function(text) {
+			var converter = new showdown.Converter();
+			var options = converter.getOptions();
+			options.strikethrough = true;
+			html = converter.makeHtml(text);
 
-		 // Controls menu hide/show
-		$('#hotdog').click(function(){
-                        $('#controls').toggleClass("active");
-    });
+			$("#changelog_container").html(html);
+		}
+	});
+}
 
-		// Reset view
-    $('.reset-container').click(function(){ reset_view();});
-		$('#submitfindbyname').click(function() {
-		      var selected = $('#findbyselect option:selected').text();
-					var object = findObjectInfo(selected);
-					zoomfocus(selected);
-					// Populate information area about target
-					//console.log(object)
-					var objdata = "<b>Name: </b>" + object.name;
-					objdata += "</br /><b>Classification: </b>" + object.type;
-					objdata += "<br /><b>Owning Faction:</b>" + object.parent.name;
-					objdata += "<br /><b>Location (Galactic Ref.)</b><br /><b>X</b>: " + object.x + "<br/><b>Y</b>: " + object.y + "<br /><b>Z</b>: " + object.z;
-					$('#findbydata').html(objdata)
-		});
-		//  $('#route_output').change(function() {
-		// 	 var stop=$('#route_output :selected').parent().attr('label');
-		// 	 var next=$('#route_output :selected').parent().data('nextpoint');
-		//
-		// 	 if(next && (next != stop)) {
-		// 		 zoomfocus_point(grabPositionByName( stop ), grabPositionByName( next ));
-		// 	 } else {
-		// 	 	zoomfocus(stop);
-		// 	}
-		// });
+async function loadUIEventHandlers() {
+	$('#hotdog').click(function(){
+											$('#controls').toggleClass("active");
+	});
 
-		$('#route_container').selectable({
-			selected: function() {
-				$( ".ui-selected", this ).each(function() {
-				stop = $(this).attr('label')
-				next = $(this).data('nextpoint')
-				});
+	// Reset view
+	$('.reset-container').click(function(){ reset_view();});
+	$('#submitfindbyname').click(function() {
+				var selected = $('#findbyselect option:selected').text();
+				var object = findObjectInfo(selected);
+				zoomfocus(selected);
+				// Populate information area about target
+				//console.log(object)
+				var objdata = "<b>Name: </b>" + object.name;
+				objdata += "</br /><b>Classification: </b>" + object.type;
+				objdata += "<br /><b>Owning Faction:</b>" + object.parent.name;
+				objdata += "<br /><b>Location (Galactic Ref.)</b><br /><b>X</b>: " + object.x + "<br/><b>Y</b>: " + object.y + "<br /><b>Z</b>: " + object.z;
+				$('#findbydata').html(objdata)
+	});
 
-				if(next && (next != stop)) {
-		 		 		zoomfocus_point(grabPositionByName( stop ), grabPositionByName( next ));
-				 	 } else {
-				 	 	zoomfocus(stop);
+
+	$('#route_container').selectable({
+		selected: function() {
+			$( ".ui-selected", this ).each(function() {
+			stop = $(this).attr('label')
+			next = $(this).data('nextpoint')
+			});
+
+			if(next && (next != stop)) {
+					zoomfocus_point(grabPositionByName( stop ), grabPositionByName( next ));
+				 } else {
+					zoomfocus(stop);
+		}
+		}
+
+	})
+	$('#fbc_output').change(function() {
+		 var beacon=$('#fbc_output :selected').val();
+		 zoomfocus("FBC_" + beacon);
+	});
+	$('#swapab').click(function() {
+		var swap=$('#pointa').val();
+		$("#pointa").val($("#pointb").val());
+		$("#pointb").val(swap);
+	});
+	$('#calctnd').click(function() {
+		removeEntity('arrow');
+		lastInputBox = null;
+
+		$('#route_container').html(`<li label="none" data-nextpoint="none"> <span class="p-target">  No Target Available </span><span class="p-dist">N/A</span> <span class="p-eta">N/A</span> <span class="p-warn fas fa-exclamation-triangle"> No Route Calculated </span></li><li label="none" data-nextpoint="none"> <span class="p-target">  No Target Available </span><span class="p-dist">N/A</span> <span class="p-eta">N/A</span> <span class="p-warn fas fa-exclamation-triangle"> Please enter two different locations above </span></li>`);
+		var speed = {'speed': $('#speed').val(), 'unit':$('#speedunit option:selected').val() };
+		populateRoutePlan( $('#pointa  option:selected').text() , $('#pointb  option:selected').text(),speed );
+	});
+
+	$('#submitfindcoord').click(function() {
+		 cleanupFBC();
+		 execFBC( $('#fbc-x').val(), $('#fbc-y').val(), $('#fbc-z').val(), $('#fbc_frame option:selected').val() );
+	});
+	$('rpcoord').keyup(function(e) {
+		if(e.keyCode == 32 || e.keycode == 188 || e.keycode == 13 || e.keycode == 77) {
+				$(this).next().focus();
+		}
+	});
+	$('.plan_inputs').bind('input', function() {
+		var coords = $(this).val().split(" ");
+		if ( coords.length > 1 ) {
+			$('#fbc-z').val( coords[2] );
+			$('#fbc-y').val( coords[1] );
+			$('#fbc-x').val( coords[0] );
+		}
+	});
+	$('.intel_inputs_coord').bind('input', function() {
+		var coords = $(this).val().split(" ");
+		if ( coords.length > 1 ) {
+			$('#z').val( coords[2] );
+			$('#y').val( coords[1] );
+			$('#x').val( coords[0] );
+		}
+	});
+	$('.intel_inputs_a_dpp').bind('input', function() {
+		var coords = $(this).val().split(" ");
+		if ( coords.length > 1 ) {
+			$('#dpp_a_z').val( coords[2] );
+			$('#dpp_a_y').val( coords[1] );
+			$('#dpp_a_x').val( coords[0] );
+		}
+	});
+	$('.intel_inputs_b_dpp').bind('input', function() {
+		var coords = $(this).val().split(" ");
+		if ( coords.length > 1 ) {
+			$('#dpp_b_z').val( coords[2] );
+			$('#dpp_b_y').val( coords[1] );
+			$('#dpp_b_x').val( coords[0] );
+		}
+	});
+	$('.intel_inputs_heading').bind('input', function() {
+		var heading = $(this).val().split(" ");
+		if ( heading.length > 1 ) {
+			$('#inclination').val( heading[1] );
+			$('#azmuth').val( heading[0] );
+		} else {
+				var heading = $(this).val().split("m");
+				if ( heading.length > 1 ) {
+					$('#inclination').val( heading[1] );
+					$('#azmuth').val( heading[0] );
+				}
+		 }
+
+	});
+
+	$('#submitfbcclear').click(function() {
+				cleanupFBC();
+	});
+
+	$("#pointa").focus(function() {
+		lastInputBox = "pointa";
+	//	console.log('Updating last touched box to : ' + lastInputBox)
+	});
+
+	$("#pointb").focus(function() {
+		lastInputBox = "pointb";
+	//	console.log('Updating last touched box to : ' + lastInputBox)
+	});
+	$("#pointb").focus(function() {
+		lastInputBox = "pointb";
+	//	console.log('Updating last touched box to : ' + lastInputBox)
+	});
+
+	$('.rpcoord').blur(function() {
+		 if(!$(this).val()) { $(this).val( $(this).attr("id") ) }
+
+	});
+	$('.rpcoord').focus(function() {
+		if($(this).val() == $(this).attr("id")) { $(this).val("") }
+	});
+	$('#calcpredict').click(function() {
+			$('#intel_predicted').html("");
+			var predicted = predictDestination(new THREE.Vector3(Number($('#x').val()),Number($('#y').val()),Number($('#z').val())),new THREE.Vector2(Number($('#azmuth').val()),Number($('#inclination').val())),$('#intel_frame option:selected').val());
+			$('#intel_predicted').html(predicted);
+	});
+	$('#dpppredict').click(function() {
+
+			var html = "<span> Projected points: </span><br />"
+			var predictions = dualPointPredict( new THREE.Vector3(Number($('#dpp_a_x').val()),Number($('#dpp_a_y').val()),Number($('#dpp_a_z').val())), $('#dpp_a_frame option:selected').val(),
+				new THREE.Vector3(Number($('#dpp_b_x').val()),Number($('#dpp_b_y').val()),Number($('#dpp_b_z').val())), $('#dpp_b_frame option:selected').val() );
+			predictions.forEach(function( o ){
+				html += `${o} <br />`;
+			});
+
+			$('#dpppredictions').html( html )
+
+	});
+
+	$('#client-bar-control').click(function() {
+		$('#client-term-container').toggleClass("hidden");
+		$('#client-ico-down').toggleClass("hidden");
+		$('#client-ico-up').toggleClass("hidden");
+	});
+	$('#client-login').click(function() { reconnect();})
+	$(".vertical-resize").resizable({
+			handles: {
+					'n': '.handle'
+			},
+			alsoResize: "#client-term-output",
+			minWidth: "100%",
+			maxWidth: "100%",
+			maxHeight: ($(window).height() * 0.95),
+			stop: function(event, ui) {
+			$(this).css("width", '');
+			$('#client-term-output').css("width",'');
 			}
-			}
+	});
 
-		})
-		$('#fbc_output').change(function() {
-			 var beacon=$('#fbc_output :selected').val();
-			 zoomfocus("FBC_" + beacon);
-		});
-		$('#swapab').click(function() {
-			var swap=$('#pointa').val();
-			$("#pointa").val($("#pointb").val());
-			$("#pointb").val(swap);
-		});
-		$('#calctnd').click(function() {
-			removeEntity('arrow');
-			lastInputBox = null;
-
-			$('#route_container').html(`<li label="none" data-nextpoint="none"> <span class="p-target">  No Target Available </span><span class="p-dist">N/A</span> <span class="p-eta">N/A</span> <span class="p-warn fas fa-exclamation-triangle"> No Route Calculated </span></li><li label="none" data-nextpoint="none"> <span class="p-target">  No Target Available </span><span class="p-dist">N/A</span> <span class="p-eta">N/A</span> <span class="p-warn fas fa-exclamation-triangle"> Please enter two different locations above </span></li>`);
-			var speed = {'speed': $('#speed').val(), 'unit':$('#speedunit option:selected').val() };
-			populateRoutePlan( $('#pointa  option:selected').text() , $('#pointb  option:selected').text(),speed );
-		});
-		$('#submitfindcoord').click(function() {
-			 cleanupFBC();
-			 execFBC( $('#fbc-x').val(), $('#fbc-y').val(), $('#fbc-z').val(), $('#fbc_frame option:selected').val() );
-		});
-		$('rpcoord').keyup(function(e) {
-	    if(e.keyCode == 32 || e.keycode == 188 || e.keycode == 13 || e.keycode == 77) {
-	        $(this).next().focus();
-	    }
-		});
-		$('.plan_inputs').bind('input', function() {
-			var coords = $(this).val().split(" ");
-			if ( coords.length > 1 ) {
-	 			$('#fbc-z').val( coords[2] );
-				$('#fbc-y').val( coords[1] );
-				$('#fbc-x').val( coords[0] );
-			}
-		});
-		$('.intel_inputs_coord').bind('input', function() {
-			var coords = $(this).val().split(" ");
-			if ( coords.length > 1 ) {
-				$('#z').val( coords[2] );
-				$('#y').val( coords[1] );
-				$('#x').val( coords[0] );
-			}
-		});
-		$('.intel_inputs_a_dpp').bind('input', function() {
-			var coords = $(this).val().split(" ");
-			if ( coords.length > 1 ) {
-				$('#dpp_a_z').val( coords[2] );
-				$('#dpp_a_y').val( coords[1] );
-				$('#dpp_a_x').val( coords[0] );
-			}
-		});
-		$('.intel_inputs_b_dpp').bind('input', function() {
-			var coords = $(this).val().split(" ");
-			if ( coords.length > 1 ) {
-				$('#dpp_b_z').val( coords[2] );
-				$('#dpp_b_y').val( coords[1] );
-				$('#dpp_b_x').val( coords[0] );
-			}
-		});
-		$('.intel_inputs_heading').bind('input', function() {
-			var heading = $(this).val().split(" ");
-			if ( heading.length > 1 ) {
-				$('#inclination').val( heading[1] );
-				$('#azmuth').val( heading[0] );
+	$(".preference_input").change(function() {
+			if($(this).attr('type') == 'checkbox') {
+				preferences.set( this.id.split("_")[1]  , $(this).is(":checked")  );
 			} else {
-					var heading = $(this).val().split("m");
-					if ( heading.length > 1 ) {
-						$('#inclination').val( heading[1] );
-						$('#azmuth').val( heading[0] );
-					}
-			 }
-
-		});
-
-		$('#submitfbcclear').click(function() {
-					cleanupFBC();
-		});
-		$('#cbs').click(function() {populateFBSelect(); });
-		$('#cbp').click(function() {populateFBSelect(); });
-		$("#pointa").focus(function() {
-			lastInputBox = "pointa";
-		//	console.log('Updating last touched box to : ' + lastInputBox)
-		});
-		$("#pointb").focus(function() {
-			lastInputBox = "pointb";
-		//	console.log('Updating last touched box to : ' + lastInputBox)
-		});
-		String.prototype.capitalize = function(lower) {
-    return (lower ? this.toLowerCase() : this).replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
-		};
-		$('.rpcoord').blur(function() {
-			 if(!$(this).val()) { $(this).val( $(this).attr("id") ) }
-
-		});
-		$('.rpcoord').focus(function() {
-			if($(this).val() == $(this).attr("id")) { $(this).val("") }
-		});
-		$('#calcpredict').click(function() {
-				$('#intel_predicted').html("");
-				var predicted = predictDestination(new THREE.Vector3(Number($('#x').val()),Number($('#y').val()),Number($('#z').val())),new THREE.Vector2(Number($('#azmuth').val()),Number($('#inclination').val())),$('#intel_frame option:selected').val());
-				$('#intel_predicted').html(predicted);
-		});
-		$('#dpppredict').click(function() {
-
-				var html = "<span> Projected points: </span><br />"
-				var predictions = dualPointPredict( new THREE.Vector3(Number($('#dpp_a_x').val()),Number($('#dpp_a_y').val()),Number($('#dpp_a_z').val())), $('#dpp_a_frame option:selected').val(),
-					new THREE.Vector3(Number($('#dpp_b_x').val()),Number($('#dpp_b_y').val()),Number($('#dpp_b_z').val())), $('#dpp_b_frame option:selected').val() );
-				predictions.forEach(function( o ){
-					html += `${o} <br />`;
-				});
-
-				$('#dpppredictions').html( html )
-
-		});
-		$('#client-bar-control').click(function() {
-			$('#client-term-container').toggleClass("hidden");
-			$('#client-ico-down').toggleClass("hidden");
-			$('#client-ico-up').toggleClass("hidden");
-		});
-		$('#client-login').click(function() { reconnect();})
-		$(".vertical-resize").resizable({
-        handles: {
-            'n': '.handle'
-        },
-				alsoResize: "#client-term-output",
-				minWidth: "100%",
-				maxWidth: "100%",
-				maxHeight: ($(window).height() * 0.95),
-				stop: function(event, ui) {
-        $(this).css("width", '');
-				$('#client-term-output').css("width",'');
-				}
-		});
-
-		$(".preference_input").change(function() {
-				if($(this).attr('type') == 'checkbox') {
-					preferences.set( this.id.split("_")[1]  , $(this).is(":checked")  );
-				} else {
-					preferences.set( this.id.split("_")[1]  ,$(this).val() );
-				}
-
-				if ( this.id.split("_")[1] == "showNebulas") {
-					setNebulaVisibility(  $(this).is(":checked") );
-				}
-		});
-
-		$(".client-term-container").resize(function() { width = $(this).width(); $("#client").css({'width' : '100%'});   $("#client-term-output").css({'margin-right' : '0px !important', 'padding-right' : '0 !important'})  })
-		$.ajax({
-			url: 'CHANGELOG.md',
-			type: 'get',
-			async: 'true',
-			success: function(text) {
-				var converter = new showdown.Converter();
-				var options = converter.getOptions();
-				options.strikethrough = true;
-				html = converter.makeHtml(text);
-
-				$("#changelog_container").html(html);
+				preferences.set( this.id.split("_")[1]  ,$(this).val() );
 			}
-		});
 
-		$(window).resize(function() {
-				$('.vertical-resize').resizable( "option", "maxHeight", ($(window).height() * 0.95) );
-				if($('.vertical-resize').height() > ($(window).height() * 0.95) )  	{
-						$('.vertical-resize').resizable("resizeBy", {height: '95%', width:'100%'});
-				}
-		});
+			if ( this.id.split("_")[1] == "showNebulas") {
+				setNebulaVisibility(  $(this).is(":checked") );
+			}
+	});
 
-		// Websocket client startup
-		startup();
+	$(".client-term-container").resize(function() { width = $(this).width(); $("#client").css({'width' : '100%'});   $("#client-term-output").css({'margin-right' : '0px !important', 'padding-right' : '0 !important'})  })
 
+	$(window).resize(function() {
+			$('.vertical-resize').resizable( "option", "maxHeight", ($(window).height() * 0.95) );
+			if($('.vertical-resize').height() > ($(window).height() * 0.95) )  	{
+					$('.vertical-resize').resizable("resizeBy", {height: '95%', width:'100%'});
+			}
+	});
+
+	$('#cbs').click(function() {populateFBSelect(); });
+	$('#cbp').click(function() {populateFBSelect(); });
+
+} /* End loadUIEventHandlers */
+
+
+$(document).ready(async function() {
+
+	String.prototype.capitalize = function(lower) {
+		return (lower ? this.toLowerCase() : this).replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+	};
+
+	loadUIEventHandlers();
+	populateChangelog();
+
+	setInterval(update_animations, 100);
 });
 
 
-function populateUserFields() {
+
+async function populateUserFields() {
 	// Populate findby box
 	populateFBSelect();
   // Populate pointa and pointb dropdowns

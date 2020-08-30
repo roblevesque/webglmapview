@@ -4,13 +4,12 @@ var preferences = (function() {
 var prefDefaults = {
   'predictDistance': 800,
   'defaultFrame' : "Galactic",
-  'htmlLabels' : false,
   'showNebulas' : false
 };
 
 var loadedPreferences = {};
 return {
-  load:function(){
+  load: async function(){
     Object.keys( prefDefaults ).forEach(function( pref ) {
         if( Cookies.get( pref ) !== undefined ) {
             loadedPreferences[ pref ] = Cookies.get( pref );
