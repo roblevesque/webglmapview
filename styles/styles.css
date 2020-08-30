@@ -28,7 +28,7 @@ canvas { width: 75%; height: 100% ;}
 .wvg-tools select, .wvg-tools input {
   width: 12vw;
   padding: 5px;
-  font-size: 16px;
+  font-size: 0.95em;
   line-height: 1;
   border: 1px solid #67878A;
   border-radius: 0;
@@ -40,7 +40,7 @@ canvas { width: 75%; height: 100% ;}
 
   }
 .wvg-tools input { background: #292933; width: 11.4vw; }
-.wvg-tools span { text-align:center; color: #FFF; display: block; font-size: 1.0em; }
+.wvg-tools span { text-align:center; color: #FFF; display: block; font-size: 1.0em;  padding-top: 5px;}
 .wvg-tools span label { font-weight: bold;  width: 100%;}
 .wvg-first {  display: block; }
 #wrapper { height: inherit; width: 100%; }
@@ -189,8 +189,8 @@ input[type=radio]:checked + label:before {
 #info_footer { font-size: 0.8em; }
 
 @media only screen and (max-width: 1290px) { #client-tab-desc { display: none; } }
-@media only screen and (max-width: 900px) { .wvg-navbar { height: 6vh; font-size: 1.25em;}  .wvg-controls { width: 65%;}  .wvg-navbar li { padding-left: 1vw; padding-right: 2vw; padding-top: 2.0vh;} .wvg-tools span, .select-fbc-output, .select-route-map {width: 95%;}
-      .menu-button { font-weight: bold; font-size:1.5em; padding-top: 0.5vh;  }   #client-tab-desc { display: none; }  #client { display: none; }}
+@media only screen and (max-width: 900px) { .wvg-navbar { height: 5vh; font-size: 1.25em;}  .wvg-controls { width: 40%;}  .wvg-navbar li { padding-left: 1vw; padding-right: 2vw; padding-top: 2.0vh;} .wvg-tools span, .select-fbc-output, .select-route-map {width: 95%;}
+      .menu-button { font-weight: bold; font-size:1.5em; padding-top: 0.5vh;  }   #client-tab-desc { display: none; }  #client { display: none;  } wvg-tools select { width: 16vw; }}
 @media only screen and (max-width: 500px) { .wvg-controls { width: 100%;}  .wvg-tablink { font-size: 0.75em; padding:0; padding-left: 2vw; padding-right: 2vw; }   }
 @media only screen and (max-height: 575px) { .reset-container { height: 4em;} .wvg-controls { overflow-y: auto; margin-bottom: -5vh;} .wvg-tools {font-size: 0.75em;}  }
 
@@ -385,3 +385,36 @@ div.label-text:hover span.label-hover-text {
   width:95%;
   display: inline-block;
 }
+
+
+#route_points {
+  width: 100%;
+
+}
+#route_points span {
+  width: 90%;
+  float: left;
+  padding-bottom: 1vh;
+}
+#swapbutton {
+  vertical-align: middle;
+  float: left;
+  height: 100%;
+  text-align: left;
+  margin-top: -10px;
+  margin-left: -5px;
+  font-size: 1em;
+  color:  #67989A;
+  -webkit-text-stroke: 1px #ffffff42;
+}
+#speedblock input {
+  width: 50%;
+
+}
+
+#speedblock select {
+  width: 15%;
+  text-align: center;
+}
+
+.area-label { padding-top: 10px;}

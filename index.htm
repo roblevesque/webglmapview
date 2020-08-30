@@ -102,25 +102,35 @@
           <div class="wvg-tools" id="Plan">
             <span class="tool-header"> Route Planner </span>
             <span>
+              <div id="route_points">
+                <span>
                 <label for="pointa">Point A</label>
                 <select id="pointa" name="Point_A">
                   <!-- Options will generated in code -->
                 </select>
-                <br />
+              </span>
+                <span>
                 <label for="pointb"> Point B </label>
-                <select id="pointb" name="Point_B">
-                  <!-- Options will generated in code -->
-                </select>
-                <button id="swapab" class="btn">Swap</button>
-                <br />    <br />
-                <label for="speed">Travel Speed</label>    <br />
-                <input type="text" id="speed" value="14">    <br />
-                <select id="speedunit" name="Speed Unit">
-                   <option value='WF'>Warp Factor</option>
-                   <option value='PC/s'>PC/s</option>
-                   <option value='SU/s'>SU/s</option>
-                </select>
-                <br />
+                  <select id="pointb" name="Point_B">
+                    <!-- Options will generated in code -->
+                  </select>
+                </span>
+                <div id="swapbutton">
+                  <b id="swapab" class="fas fa-retweet" title="Swap A & B"></b>
+                </div>
+                </div>
+
+
+                <span class="area-label"> <label for="speed">Travel Speed</label> </span>
+                <span id="speedblock">
+                  <input type="text" id="speed" value="14" width="5">
+                  <select id="speedunit" name="Speed Unit">
+                     <option value='WF'>WF</option>
+                     <option value='PC/s'>PC/s</option>
+                     <option value='SU/s'>SU/s</option>
+                  </select>
+                </span>
+                <span class="area-label"> <label for="speed">Route Options</label> </span>
                 <input type="checkbox" id="directonly" value="false" name="directonly"><label for="directonly"> Direct Only </label>
                 <button id="calctnd" class="btn">Calculate</button>
             </span>
@@ -133,7 +143,7 @@
 
 
             <div class="calc_data">
-              <span><label> Trip Overview </label></span>
+              <span class="area-label"><label> Trip Overview </label></span>
               <span id="block_loc">
                 <b id="cal_start">Empty</b>
                 <b id="cal_end">Empty</b>
