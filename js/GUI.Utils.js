@@ -343,12 +343,12 @@ function escapeHTML(text) {
 
 function timeformat(secs) {
 	if (typeof(secs) == 'undefined') { secs = 0; }
-	  var s = new Decimal(secs);
-    var hours = new Decimal(secs / 3600);
-		var h = hours.floor(); //Get whole hours
+	  var s = secs;
+    var hours = secs / 3600;
+		var h = Math.floor(hours); //Get whole hours
 		s = s - (h * 3600);
-		var m = new Decimal(s / 60); //Get remaining minutes
-		m = m.floor();
+		var m = s / 60; //Get remaining minutes
+		m = Math.floor(m);
     s = s - (m * 60 );
 		s = Math.round(s,0)
 	//	console.log("Hours :"+ h);
