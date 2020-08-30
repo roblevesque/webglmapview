@@ -556,10 +556,10 @@ function calcETA(velocity,distance) {
 			var seconds;
 			switch (unit) {
 					case 'SU/s':
-						seconds = new Decimal(  distance / su2pc(speed)  );
+						seconds =   distance / su2pc(speed)  ;
 						break;
 					case 'PC/s':
-						seconds = new Decimal( distance /  speed  );
+						seconds =  distance /  speed  ;
 						break;
 					case 'WF':
 						seconds = distance / su2pc(calcSUpS(speed));
