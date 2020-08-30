@@ -24,28 +24,9 @@ window.onload = function() {
 }
 
 async function loadData(_callback) {
-	// Load Data (hopefully) before the rest of the place loads.
-	//var xmlhttp = new XMLHttpRequest();
-	var url = "js/atsdata.json";
-	//
-	// xmlhttp.onreadystatechange = function() {
-	//     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-	//         jsonEmpire = JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['empires'];
-	// 				jsonGate =  JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['gates'];
-	// 				jsonConduit = JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['transwarpgates'];
-	// 				jsonWormhole = JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['wormholes'];
-	// 				jsonNebulas = JSON.parse(xmlhttp.responseText)['ATS_Navcomp_DB']['nebulas'];
-	//         _callback();
-	//
-	//     }
-	//	};
-	// xmlhttp.open("GET", url, true);
-	// xmlhttp.send();
-
-
 	$.ajax({
 		type: "GET",
-		url: url,
+		url: "js/atsdata.json",
 		dataType: "json",
 		success: function(data) {
 			jsonEmpire = data['ATS_Navcomp_DB']['empires']
@@ -64,8 +45,7 @@ function reset_view() {
 	controls.target.x = scene.getObjectByName("Federation").position.x;
 	controls.target.y = scene.getObjectByName("Federation").position.y;
 	controls.target.z = scene.getObjectByName("Federation").position.z;
-  camera.updateProjectionMatrix();
-	render();
+
 }
 
 async function init() {
@@ -104,150 +84,26 @@ async function init() {
 		 scene.add( lightsource );
 
 
-		for (var key in jsonEmpire) {
-		  area=jsonEmpire[key];
-
-		  for (var key2 in area['borders']) {
-					var border = area['borders'][key2];
-
-				  b_geometry = new THREE.EdgesGeometry(new THREE.SphereGeometry( border.radius, 10, 10 ));
-				  //b_material = new THREE.MeshBasicMaterial( { color: area.color, wireframe: true, fillStyle: area.color} );
-					b_material = new THREE.LineBasicMaterial({color: area.color, linewidth: 1, side: THREE.DoubleSide})
-					b_material.side = THREE.DoubleSide;
-					b_mesh = new THREE.LineSegments( b_geometry, b_material );
-				  b_mesh.position.x = border.x;
-				  b_mesh.position.y = border.y;
-				  b_mesh.position.z = border.z;
-				  b_mesh.name = escapeHTML(border.name);
-					b_mesh.layers.set(1)
-					scene.add( b_mesh );
-
-					// Border detection hack
-					b_box_mat = new THREE.MeshBasicMaterial( { color: "#FFF", wireframe: false, transparent: true, opacity: 0.0, alphaTest:0.1 } );
-					b_box_mat.side = THREE.DoubleSide;
-					b_box_geo = new THREE.SphereGeometry( border.radius, 10, 10);
-					b_box_mesh = new THREE.Mesh( b_box_geo, b_box_mat );
-					b_box_mesh.layers.set(4)
-					b_box_mesh.name = escapeHTML(border.name) + " Border"
-					b_box_mesh.position.x = border.x;
-					b_box_mesh.position.y = border.y;
-					b_box_mesh.position.z = border.z;
-					scene.add( b_box_mesh )
-
-
-					if (border.radius > 10) {
-						l_text = new Text2D(border.name, { align: textAlign.center,  font: '75px Arial', color: '#AAA', fillStyle: 'rgba(255,255,255,0.50)', antialias: true, transparent: true});
-						l_text.material.alphaTest = 0.2;
-						l_text.position.set(border.x,border.y,border.z);
-						if (border.radius > 75) {
-							l_text.scale.set(0.50,0.50,0.50);
-						}
-						else {l_text.scale.set(0.30,0.30,0.30); }
-						l_text.name = border.name + "_label";
-						l_text.layers.set(3);
-						scene.add(l_text);
-						window.borders.push( border.name )
-						placeLightSource(new THREE.Vector3(border.x,border.y,border.z ), border.name+"_light",border.radius*10.0 );
-					}
-			}
 
 
 
-		  // Planet Generation
-		  for (var key in area["planets"]) {
-		    var planet = area.planets[key];
-				var hitbox_geo = new THREE.SphereGeometry( 2.1, 10, 10);
-				var hitbox_mat = new THREE.MeshBasicMaterial( { color: "#FFF", wireframe: false, transparent: true, opacity: 0.0, alphaTest:0.1 } );
-				var hitbox = new THREE.Mesh( hitbox_geo, hitbox_mat );
-				hitbox.layers.set(2)
-		    p_geometry= new THREE.SphereGeometry( 1.0, 10, 10 );
-		    p_material = new THREE.MeshBasicMaterial( {color: area.color, wireframe: false} );
-		    p_mesh =  new THREE.Mesh( p_geometry, p_material );
-				p_mesh.layers.enable(2)
-		    p_mesh.position.x=planet.x;
-		    p_mesh.position.y=planet.y;
-		    p_mesh.position.z=planet.z;
-		    p_mesh.name = escapeHTML(planet.name);
-				p_mesh.add( hitbox );
-				scene.add( p_mesh );
 
-				/* Draw labels */
-		    l_text = new Text2D(escapeHTML(planet.name), { align: textAlign.right,  font: '10px Arial', fillStyle: '#FFF' , antialias: true });
-		    l_text.material.alphaTest = 0.1;
-		    l_text.position.set(planet.x+2, planet.y , planet.z+Math.round(Math.random() * (+3 - -3) + -3) );
-		    l_text.scale.set(0.20,0.20,0.20);
-				l_text.name = escapeHTML(planet.name + "_label");
-				l_text.layers.set(3)
-		    scene.add(l_text);
 
-		  }
 
-		  // Base Generation
-		  for (var key in area["stations"]) {
-		    var base = area.stations[key];
-		    s_geometry = new THREE.CylinderGeometry( 0.2, 0.6*3, 0.5*3, 4 );
-				s_geometry.computeBoundingSphere();
-		    s_material = new THREE.MeshBasicMaterial( {color: area.color, wireframe: false} );
-		    s_mesh = new THREE.Mesh( s_geometry, s_material );
-		    s_mesh.position.x=base.x;
-		    s_mesh.position.y=base.y;
-		    s_mesh.position.z=base.z;
-				s_mesh.name = escapeHTML(base.name);
-				s_mesh.layers.set(2)
-		    scene.add( s_mesh );
+	asyncForEach(jsonEmpire, async (area) => {
+		  //area = jsonEmpire[key];
 
-				/* Draw Labels */
-				l_text = new Text2D(escapeHTML(base.name), { align: textAlign.left,  font: '12px Arial', fillStyle: '#FAFAFA' , antialias: true });
-				l_text.material.alphaTest = 0.0;
-				l_text.position.set(base.x-2,base.y+Math.round(Math.random() * (+3 - -3) + -3),base.z);
-				l_text.scale.set(0.20,0.20,0.20);
-				l_text.name = escapeHTML(base.name + "_label");
-				l_text.layers.enable(3)
-				scene.add(l_text);
 
-		  }
 
-		}
-		// Nebula Generation
-		for ( var key in jsonNebulas) {
-			var nebula = jsonNebulas[key];
-			if (nebula.radius[1] == "PC") { var radius = nebula.radius[0]; }
-			else { var radius = su2pc(nebula.radius[0]); }
-			var n_geo = new THREE.SphereGeometry( radius, 10, 10 );
-		  var n_mat = new THREE.MeshPhongMaterial( {
-				color: 0xAAAAAA,
-				flatShading: true,
-				polygonOffset: true,
-				polygonOffsetFactor: 14, // positive value pushes polygon further away
-				polygonOffsetUnits: 1,
-				transparent: true,
-				opacity: 0.20,
-				alphaTest: 0.10,
-			} );
-		  // var n_mat =  new THREE.MeshBasicMaterial( { color: "#FFF", wireframe: false, transparent: true, opacity: 0.0, alphaTest:0.1 } );
-			var n_mesh = new THREE.Mesh( n_geo, n_mat );
-			n_mesh.name = nebula.name;
-			n_mesh.position.copy( nebula.position );
-			var n_geo_wf = new THREE.EdgesGeometry( n_mesh.geometry );
-			var n_mat_wf = new THREE.LineBasicMaterial( { color: 0xAAAAAA, linewidth: 1, transparent: true, opacity: 0.20, alphaTest: 0.10  });
-			var n_mesh_wf = new THREE.LineSegments(n_geo_wf, n_mat_wf );
-			n_mesh.visible = false;
-			n_mesh.add( n_mesh_wf );
-			scene.add( n_mesh );
+		  // Call above helpers
+			buildBorders(area)
+			buildPlanets(area)
+			buildStations(area)
+			buildNebulas()
+	    // Set view and camera to point to initial location
+			reset_view();
 
-			l_text = new Text2D(escapeHTML(nebula.name), { align: textAlign.center,  font: '12px Arial', fillStyle: '#FAFAFA' , antialias: true });
-			l_text.material.alphaTest = 0.0;
-			l_text.position.set(nebula.position.x,nebula.position.y-5,nebula.position.z);
-			l_text.scale.set(0.15,0.15,0.15);
-			l_text.name = escapeHTML(nebula.name + "_label");
-			l_text.visible = false;
-			scene.add(l_text);
-		}
-
-    // Set view and camera to point to initial location
-		reset_view();
-
-}
+		})
 
 window.onresize = function() {
 
@@ -857,21 +713,12 @@ function boundingSphereGrab(name){
 
 
 function setNebulaVisibility(visible) {
-	for ( var key in jsonNebulas) {
-			var neb_name = jsonNebulas[key].name;
-			var neb_ob = scene.getObjectByName( neb_name );
-			var neb_label = scene.getObjectByName( neb_name + "_label" );
-
-			if(visible) {
-				neb_ob.visible = true;
-				neb_label.visible = true;
+		if (visible) {
+				camera.layers.enable(10);
 			}
 			else {
-				neb_ob.visible = false;
-				neb_label.visible = false;
+				camera.layers.disable(10)
 			}
-
-	}
 }
 
 function findObjectInfo(name) {
@@ -923,4 +770,158 @@ function findPointBorder( point=new THREE.Vector3(0,0,0) ) {
 
 		 });
 		 	return insideborder;
+}
+
+
+
+async function buildBorders(area) {
+	asyncForEach(area['borders'] , async (border) => {
+			// var border = area['borders'][key2];
+
+			b_geometry = new THREE.EdgesGeometry(new THREE.SphereGeometry( border.radius, 10, 10 ));
+			//b_material = new THREE.MeshBasicMaterial( { color: area.color, wireframe: true, fillStyle: area.color} );
+			b_material = new THREE.LineBasicMaterial({color: area.color, linewidth: 1, side: THREE.DoubleSide})
+			b_mesh = new THREE.LineSegments( b_geometry, b_material );
+			b_mesh.position.x = border.x;
+			b_mesh.position.y = border.y;
+			b_mesh.position.z = border.z;
+			b_mesh.name = escapeHTML(border.name);
+			b_mesh.layers.set(2)
+			scene.add( b_mesh );
+
+			// Border detection hack
+			b_box_mat = new THREE.MeshBasicMaterial( { color: "#FFF", wireframe: false, transparent: true, opacity: 0.0, alphaTest:0.1 } );
+			b_box_mat.side = THREE.DoubleSide;
+			b_box_geo = new THREE.SphereGeometry( border.radius, 10, 10);
+			b_box_mesh = new THREE.Mesh( b_box_geo, b_box_mat );
+			b_box_mesh.layers.set(4)
+			b_box_mesh.visible = false
+			b_box_mesh.name = escapeHTML(border.name) + " Border"
+			b_box_mesh.position.x = border.x;
+			b_box_mesh.position.y = border.y;
+			b_box_mesh.position.z = border.z;
+			scene.add( b_box_mesh )
+
+
+			if (border.radius > 10) {
+				l_text = new Text2D(border.name, { align: textAlign.center,  font: '75px Arial', color: '#AAA', fillStyle: 'rgba(255,255,255,0.50)', antialias: true, transparent: true});
+				l_text.material.alphaTest = 0.2;
+				l_text.position.set(border.x,border.y,border.z);
+				if (border.radius > 75) {
+					l_text.scale.set(0.50,0.50,0.50);
+				}
+				else {l_text.scale.set(0.30,0.30,0.30); }
+				l_text.name = border.name + "_label";
+				l_text.layers.set(3);
+				scene.add(l_text);
+				window.borders.push( border.name )
+				placeLightSource(new THREE.Vector3(border.x,border.y,border.z ), border.name+"_light",border.radius*10.0 );
+			}
+
+})
+}
+
+
+async function buildPlanets(area) {
+		// Planet Generation
+		asyncForEach(area["planets"], async (planet) => {
+		 // var planet = area.planets[key];
+			var hitbox_geo = new THREE.SphereGeometry( 2.1, 10, 10);
+			var hitbox_mat = new THREE.MeshBasicMaterial( { color: "#FFF", wireframe: false, transparent: true, opacity: 0.0, alphaTest:0.1 } );
+			var hitbox = new THREE.Mesh( hitbox_geo, hitbox_mat );
+			hitbox.layers.set(2)
+			p_geometry= new THREE.SphereGeometry( 1.0, 10, 10 );
+			p_material = new THREE.MeshBasicMaterial( {color: area.color, wireframe: false} );
+			p_mesh =  new THREE.Mesh( p_geometry, p_material );
+			p_mesh.layers.enable(2)
+			p_mesh.position.x=planet.x;
+			p_mesh.position.y=planet.y;
+			p_mesh.position.z=planet.z;
+			p_mesh.name = escapeHTML(planet.name);
+			p_mesh.add( hitbox );
+			scene.add( p_mesh );
+
+			/* Draw labels */
+			l_text = new Text2D(escapeHTML(planet.name), { align: textAlign.right,  font: '10px Arial', fillStyle: '#FFF' , antialias: true });
+			l_text.material.alphaTest = 0.1;
+			l_text.position.set(planet.x+2, planet.y , planet.z+Math.round(Math.random() * (+3 - -3) + -3) );
+			l_text.scale.set(0.20,0.20,0.20);
+			l_text.name = escapeHTML(planet.name + "_label");
+			l_text.layers.set(3)
+			scene.add(l_text);
+
+		})
+	}
+
+
+async function buildStations(area) {
+	// Base Generation
+	if (area["stations"] != undefined) {
+		asyncForEach(area["stations"], async ( base ) => {
+			//var base = area.stations[key];
+			s_geometry = new THREE.CylinderGeometry( 0.2, 0.6*3, 0.5*3, 4 );
+			s_geometry.computeBoundingSphere();
+			s_material = new THREE.MeshBasicMaterial( {color: area.color, wireframe: false} );
+			s_mesh = new THREE.Mesh( s_geometry, s_material );
+			s_mesh.position.x=base.x;
+			s_mesh.position.y=base.y;
+			s_mesh.position.z=base.z;
+			s_mesh.name = escapeHTML(base.name);
+			s_mesh.layers.set(2)
+			scene.add( s_mesh );
+
+			/* Draw Labels */
+			l_text = new Text2D(escapeHTML(base.name), { align: textAlign.left,  font: '12px Arial', fillStyle: '#FAFAFA' , antialias: true });
+			l_text.material.alphaTest = 0.0;
+			l_text.position.set(base.x-2,base.y+Math.round(Math.random() * (+3 - -3) + -3),base.z);
+			l_text.scale.set(0.20,0.20,0.20);
+			l_text.name = escapeHTML(base.name + "_label");
+			l_text.layers.enable(3)
+			scene.add(l_text);
+
+		})
+}
+}
+
+async function buildNebulas() {
+		// Nebula Generation
+		asyncForEach(jsonNebulas, async (nebula) => {
+		//var nebula = jsonNebulas[key];
+		if (nebula.radius[1] == "PC") { var radius = nebula.radius[0]; }
+		else { var radius = su2pc(nebula.radius[0]); }
+		var n_geo = new THREE.SphereGeometry( radius, 10, 10 );
+		var n_mat = new THREE.MeshPhongMaterial( {
+			color: 0xAAAAAA,
+			flatShading: true,
+			polygonOffset: true,
+			polygonOffsetFactor: 14, // positive value pushes polygon further away
+			polygonOffsetUnits: 1,
+			transparent: true,
+			opacity: 0.20,
+			alphaTest: 0.10,
+		} );
+		// var n_mat =  new THREE.MeshBasicMaterial( { color: "#FFF", wireframe: false, transparent: true, opacity: 0.0, alphaTest:0.1 } );
+		var n_mesh = new THREE.Mesh( n_geo, n_mat );
+		n_mesh.name = nebula.name;
+		n_mesh.position.copy( nebula.position );
+		var n_geo_wf = new THREE.EdgesGeometry( n_mesh.geometry );
+		var n_mat_wf = new THREE.LineBasicMaterial( { color: 0xAAAAAA, linewidth: 1, transparent: true, opacity: 0.20, alphaTest: 0.10  });
+		var n_mesh_wf = new THREE.LineSegments(n_geo_wf, n_mat_wf );
+
+		n_mesh.visible = true;
+		n_mesh_wf.visible = true;
+
+		n_mesh.layers.set(10)
+		n_mesh_wf.layers.set(10)
+		n_mesh.add( n_mesh_wf );
+		scene.add( n_mesh );
+
+		l_text = new Text2D(escapeHTML(nebula.name), { align: textAlign.center,  font: '12px Arial', fillStyle: '#FAFAFA' , antialias: true });
+		l_text.material.alphaTest = 0.0;
+		l_text.position.set(nebula.position.x,nebula.position.y-5,nebula.position.z);
+		l_text.scale.set(0.15,0.15,0.15);
+		l_text.name = escapeHTML(nebula.name + "_label");
+		l_text.sprite.layers.set(10)
+		scene.add(l_text);
+		});
 }

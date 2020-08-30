@@ -21,6 +21,12 @@ function radians(degrees)
   return degrees * (pi/180);
 }
 
+async function asyncForEach(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
+}
+
 async function populateChangelog() {
 	$.ajax({
 		url: 'CHANGELOG.md',
@@ -287,7 +293,7 @@ async function populateUserFields() {
 
 
 		// Populate preferences pane
-		preferences.list().forEach(function( pref ) {
+		asyncForEach( preferences.list(), async ( pref ) => {
 			  if ($('#pref_' + pref).attr('type') == "checkbox") {
 					$('#pref_' + pref).prop("checked", (preferences.get( pref )) == "true"? true:false)
 				} else  {
