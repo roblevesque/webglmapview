@@ -1,6 +1,7 @@
 # Change Log
 
 **V0.6.8**
+* Minor performance improvements related to first interaction times. Very minor.
 * Moved route listing from select box to a select-able list. Input would be nice on layout and usability.  
 
 **V0.6.7a**
