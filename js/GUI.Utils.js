@@ -252,7 +252,7 @@ $(document).ready(async function() {
 	loadUIEventHandlers();
 	populateChangelog();
 
-	setInterval(update_animations, 100);
+	//setInterval(update_animations, 50);
 });
 
 
