@@ -160,18 +160,19 @@ function onCanvasClick( event ) {
 
 async function animate() {
 				var delta = clock.getDelta();
-				update_animations();
 	      scene.updateMatrixWorld()
 				controls.update(delta);
-	      render();
+				setTimeout(render,200);
 				requestAnimationFrame( animate );
 }
 
 function update_animations() {
-	var delta = clock.getDelta();
-	mixers.forEach(mixer => {mixer.update(delta) });
-	// Also make any misc things follow camera
-	misc_followers.forEach (function(follower) { var obj = scene.getObjectByName(escapeHTML(follower)); obj.lookAt(camera.position)  });
+	setTimeout(function() {
+		var delta = clock.getDelta();
+		mixers.forEach(mixer => {mixer.update(delta) });
+		// Also make any misc things follow camera
+		misc_followers.forEach (function(follower) { var obj = scene.getObjectByName(escapeHTML(follower)); obj.lookAt(camera.position)  });
+	}, 1000)
 }
 
 
