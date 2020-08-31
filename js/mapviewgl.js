@@ -162,7 +162,7 @@ async function animate() {
 				var delta = clock.getDelta();
 	      scene.updateMatrixWorld()
 				controls.update(delta);
-				setTimeout(render,200);
+				render();
 				requestAnimationFrame( animate );
 }
 
