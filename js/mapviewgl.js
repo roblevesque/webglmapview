@@ -159,15 +159,16 @@ function onCanvasClick( event ) {
 
 async function animate() {
 				var delta = clock.getDelta();
-				requestAnimationFrame( animate );
 				update_animations();
 	      scene.updateMatrixWorld()
 				controls.update(delta);
-				update_animations(delta)
+				update_animations()
 	      render();
+				requestAnimationFrame( animate );
 }
 
-function update_animations(delta) {
+function update_animations() {
+	var delta = clock.getDelta();
 	mixers.forEach(mixer => {mixer.update(delta) });
 	// Also make any misc things follow camera
 	misc_followers.forEach (function(follower) { var obj = scene.getObjectByName(escapeHTML(follower)); obj.lookAt(camera.position)  });
@@ -187,9 +188,6 @@ async function render() {
 
 		textLabels.forEach(label => {label.updatePosition()} )
 
-		// for(var i=0; i<textLabels.length; i++) {
-    //       textLabels[i].updatePosition();
-    //     }
     renderer.render( scene, camera );
  }
 
@@ -227,7 +225,6 @@ function zoomfocus(name) {
 					camera.position.set( parseFloat( vantage.x ), parseFloat( vantage.y ), parseFloat( vantage.z ) );
 					camera.lookAt( focus );
 					camera.updateProjectionMatrix();
-					// render();
 			} else {
 					zoomto = grabPositionByName(name);
 					if (zoomto != null) {
@@ -240,7 +237,6 @@ function zoomfocus(name) {
 							camera.position.set( parseFloat( vantage.x ), parseFloat( vantage.y ), parseFloat( vantage.z ) );
 							camera.lookAt( focus );
 							camera.updateProjectionMatrix();
-							// render();
 					}
 					else { return false; }
 
@@ -291,7 +287,7 @@ function drawline(origin,dest) {
 		scene.add( arrowHelper );
 }
 
-function drawcircleindicator(center, name="Beacon") {
+async function drawcircleindicator(center, name="Beacon") {
 	var Text2D = THREE_Text2D.SpriteText2D;
 	var SpriteText2D = THREE_Text2D.SpriteText2D;
 	var textAlign = THREE_Text2D.textAlign;
@@ -310,6 +306,7 @@ function drawcircleindicator(center, name="Beacon") {
 		var clips = object.animations;
     var clip = THREE.AnimationClip.findByName( clips, 'animation_0' );
 		var action = mixer.clipAction( clip );
+		action.timeScale = 10
 		action.play();
 		object.scene.scale.set(10,10,10);
 		object.scene.position.set(center.x,center.y,center.z);
