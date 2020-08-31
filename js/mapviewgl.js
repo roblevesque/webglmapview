@@ -475,6 +475,11 @@ function calcEndpointByHeading(heading,startvec = new THREE.Vector3(0,0,0)) {
 
 function calcBestRoute(pointa,pointb,speed,direct=false) {
 	var route = [{}];
+	var distance_a = {};
+	var distance_b = {};
+	var viawormhole = {};
+	var distance_wb = {};
+	var near_a,near_b;
 	delete route['0']; // WTF? We shouldn't need to do this. I hate JS....
 	// Calculate direct route.
 
@@ -484,11 +489,9 @@ function calcBestRoute(pointa,pointb,speed,direct=false) {
 
 
 	// Find route via stargate. !!! NO LONGER FUNCTIONAL BECAUSE THE ADMINS HATE THE UNITY PEOPLE   !!!
-	var distance_a = {};     // !!! This code stays though, just in case there is a change of heart !!!
-	var distance_b = {};
-	var viawormhole = {};
-	var distance_wb = {};
-	var near_a,near_b;
+	// !!! This code stays though, just in case there is a change of heart !!!
+
+
 	// Find gate closest to point a
 	//jsonGate.forEach(function(name) { distance_a[name.name] = calcDist(pointa,name.name);});
 	//var dist_a_sorted = Object.keys(distance_a).sort(function(a,b) {return distance_a[a]-distance_a[b]});
