@@ -19,7 +19,7 @@ window.onload = function() {
 		init();
 		populateUserFields();
 		setTimeout(animate,50);
-		setInterval(update_animations, 100)
+		setInterval(update_animations, 50)
 // updateMUSHData(); // Disable this until implemented properly
 });
 }
@@ -167,12 +167,11 @@ async function animate() {
 }
 
 function update_animations() {
-	setTimeout(function() {
 		var delta = clock.getDelta();
 		mixers.forEach(mixer => {mixer.update(delta) });
 		// Also make any misc things follow camera
 		misc_followers.forEach (function(follower) { var obj = scene.getObjectByName(escapeHTML(follower)); obj.lookAt(camera.position)  });
-	}, 1000)
+
 }
 
 
