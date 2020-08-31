@@ -19,6 +19,7 @@ window.onload = function() {
 		init();
 		populateUserFields();
 		setTimeout(animate,50);
+		setInterval(update_animations, 100)
 // updateMUSHData(); // Disable this until implemented properly
 });
 }
@@ -162,7 +163,6 @@ async function animate() {
 				update_animations();
 	      scene.updateMatrixWorld()
 				controls.update(delta);
-				update_animations()
 	      render();
 				requestAnimationFrame( animate );
 }
@@ -306,7 +306,7 @@ async function drawcircleindicator(center, name="Beacon") {
 		var clips = object.animations;
     var clip = THREE.AnimationClip.findByName( clips, 'animation_0' );
 		var action = mixer.clipAction( clip );
-		action.timeScale = 10
+		action.timeScale = 2
 		action.loop = THREE.LoopPingPong
 		action.play();
 		object.scene.scale.set(10,10,10);
