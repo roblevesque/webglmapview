@@ -307,6 +307,7 @@ async function drawcircleindicator(center, name="Beacon") {
     var clip = THREE.AnimationClip.findByName( clips, 'animation_0' );
 		var action = mixer.clipAction( clip );
 		action.timeScale = 10
+		action.loop = THREE.LoopPingPong
 		action.play();
 		object.scene.scale.set(10,10,10);
 		object.scene.position.set(center.x,center.y,center.z);
