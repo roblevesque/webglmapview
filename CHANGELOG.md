@@ -1,5 +1,7 @@
 # Change Log
 **NOTICE**
+MESSAGE FROM FREY
+
 I've stepped away from logging into ATS sometime over the last several months. While I was inactive previously as a player, I still watched the activity and participated on channels if I felt it was prudent.
 
 Now, however, I am completely disconnected. Likely for good. With that being said, I still want to keep this as an actively developed tool for the ATS players. If you would like to suggest features, or submit bug reports, please feel free to either do so in the GitHub issues page or email me at robert@slowsilver.net  
