@@ -1,5 +1,5 @@
 # Mapview WebGL
-* [Link to WebGL Mapview](http://zen.trekmush.org/ats/webglmapview/webviewgl.htm)
+* [Link to WebGL Mapview](https://mapview.slowsilver.net/)
 * [Link to issue tracker](https://goo.gl/7uDYCW)
 
 
